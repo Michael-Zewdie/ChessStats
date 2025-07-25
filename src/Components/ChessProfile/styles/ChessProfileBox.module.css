@@ -1,0 +1,71 @@
+.profileBox {
+  background-color: #18191b;
+  color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #374151;
+  margin-left: 0;
+  margin-right: auto;
+  align-self: flex-start;
+}
+
+.avatar {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 4px solid #374151;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.username {
+  font-size: 2rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.followers {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.country {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.countryLink {
+  text-decoration: underline;
+  color: inherit;
+  transition: color 0.2s;
+}
+.countryLink:hover {
+  color: #60a5fa;
+}
+
+.status {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+  text-transform: capitalize;
+}
+
+.streaming {
+  font-size: 1.5rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+} 

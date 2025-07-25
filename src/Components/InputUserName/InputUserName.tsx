@@ -1,0 +1,41 @@
+import React, { useState } from "react";
+import "./Styles/InputUserName.css";
+
+export default function InputUserName({ onSubmit, className }: { onSubmit: (username: string) => void; className?: string }) {
+  const [username, setUsername] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSubmit(username);
+    }
+  };
+
+  return (
+    <div id="poda">
+      <div className="darkBorderBg" />
+      <div className="border" />
+      <div className="white" />
+      <div className="glow" />
+      <div className="searchContainer">
+        <div className="searchIcon">
+          {/* search icon SVG */}
+        </div>
+        <input
+          className={className}
+          type="text"
+          placeholder="Enter username"
+          value={username}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+        <div className="filterIcon">
+          {/* filter icon SVG */}
+        </div>
+      </div>
+    </div>
+  );
+}
