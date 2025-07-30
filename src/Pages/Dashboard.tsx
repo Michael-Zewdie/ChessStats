@@ -9,8 +9,8 @@ export default function Dashboard() {
 
     return (
         <div>
-            <ChessProfileUI username={username} />
-            <BasicStatsUI username={username} />
+            {/* <ChessProfileUI username={username} />
+            <BasicStatsUI username={username} /> */}
             <MonthlyStatsUI username={username} />
         </div>
     );

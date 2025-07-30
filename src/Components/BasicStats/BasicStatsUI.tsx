@@ -1,5 +1,5 @@
 import BasicStatsBox from "./BasicStatsBox.tsx";
-import { useChessStats } from "../../hooks/useChessStats";
+import { useChessStats } from "../../Hooks/useChessStats";
 interface ChessStatsUIProps {
   username: string | undefined;
 }
