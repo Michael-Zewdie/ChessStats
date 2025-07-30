@@ -47,9 +47,9 @@ export function MonthlyStatsBox({ data }: MonthlyStatsBoxProps) {
 
   return (
     <div style={{
-      width: '104rem',
-      maxWidth: '104rem',
-      height: 600,
+      width: '80rem',
+      maxWidth: '80rem',
+      height: 500,
       backgroundColor: '#18191b',
       color: '#fff',
       borderRadius: '0.75rem',
@@ -88,7 +88,7 @@ export function MonthlyStatsBox({ data }: MonthlyStatsBoxProps) {
         <RatingProgressionChart
           games={selectedGames}
           title={`${selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)} Rating Progression`}
-          height={480}
+          height={380}
           lineColor={COLORS[selectedClass]}
         />
       </div>

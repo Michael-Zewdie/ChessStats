@@ -9,7 +9,7 @@ export default function BasicStatsUI({ username}: ChessStatsUIProps) {
 
   if (!stats) return null
     return (
-        <div className="fixed top-6 right- z-50">
+        <div className="fixed bottom-6 right-8 z-50">
           <BasicStatsBox stats={stats} />
         </div>);
 }

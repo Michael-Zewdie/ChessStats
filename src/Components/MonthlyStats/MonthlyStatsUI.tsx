@@ -14,7 +14,7 @@ export default function MonthlyStatsUI({ className, username }: MonthlyStatsUIPr
   if (!data.length) return <div className={className}>No games found.</div>;
 
   return (
-    <div className='fixed bottom-6 right-8'>
+    <div className='fixed top-6 right-6 z-10'>
       <MonthlyStatsBox data={data} />
     </div>
   );
