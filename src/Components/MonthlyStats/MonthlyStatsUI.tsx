@@ -1,4 +1,4 @@
-import { useMonthlyStats } from "../../hooks/useMonthlyStats";
+import { useMonthlyStats } from "../../Hooks/useMonthlyStats";
 import { MonthlyStatsBox } from "./MonthlyStatsBox"; // adjust path if needed
 
 interface MonthlyStatsUIProps {
