@@ -47,8 +47,8 @@ export function MonthlyStatsBox({ data }: MonthlyStatsBoxProps) {
 
   return (
     <div style={{
-      width: '80rem',
-      maxWidth: '80rem',
+      width: '100rem',
+      maxWidth: '100rem',
       height: 500,
       backgroundColor: '#18191b',
       color: '#fff',
