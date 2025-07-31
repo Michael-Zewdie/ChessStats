@@ -1,11 +1,4 @@
-export interface ChessGame {
-  opponent: string;
-  result: 'win' | 'loss' | 'draw';
-  userRating: number;
-  opponentRating: number;
-  date: string;
-  time_class: string; // 'bullet', 'blitz', 'rapid', 'daily'
-}
+export type { ChessGame } from '../../Types/ChessGame';
 
 export interface AdoptionRelationship {
   opponent: string;

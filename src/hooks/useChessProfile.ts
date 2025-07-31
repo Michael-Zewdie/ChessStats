@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchUserProfile, fetchCountry } from "../Api/ChessProfile/route";
+import { ChessDataService } from "../lib/data/chessDataService";
 import type { ChessProfile } from "../Types/ChessProfile";
 
 export function useChessProfile(username: string | undefined) {
@@ -10,11 +10,11 @@ export function useChessProfile(username: string | undefined) {
     useEffect(() => {
         if (!username) return;
         setError(null);
-        fetchUserProfile(username)
+        ChessDataService.fetchUserProfile(username)
             .then((data) => {
                 setProfile(data);
                 if (data?.country) {
-                    fetchCountry(data.country).then(setCountry);
+                    ChessDataService.fetchCountryInfo(data.country).then(setCountry);
                 }
             })
             .catch(() => {

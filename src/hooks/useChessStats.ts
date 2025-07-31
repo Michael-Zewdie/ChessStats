@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchStats } from "../Api/BasicStats/route";
+import { ChessDataService } from "../lib/data/chessDataService";
 import type { ChessProfileStats } from "../Types/ChessStats";
 
 export function useChessStats(username: string | undefined) {
@@ -11,7 +11,7 @@ export function useChessStats(username: string | undefined) {
     if (!username) return;
     setLoading(true);
     setError(null);
-    fetchStats(username)
+    ChessDataService.fetchUserStats(username)
       .then(setStats)
       .catch(() => {
         setError("Failed to fetch user stats.");

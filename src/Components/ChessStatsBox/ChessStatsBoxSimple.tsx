@@ -25,8 +25,8 @@ export default function ChessStatsBoxSimple({ games, currentRating }: ChessStats
         marginBottom: '1.5rem'
       }}>
         <div style={{ textAlign: 'center', padding: '0.75rem', backgroundColor: '#1f2937', borderRadius: '0.5rem' }}>
-          <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>😈</div>
-          <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Nemesis</div>
+          <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>⚔️</div>
+          <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Rival</div>
           <div style={{ fontSize: '0.8rem', fontWeight: '500' }}>Test</div>
         </div>
 

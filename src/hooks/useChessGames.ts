@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchChessGames, type ChessGame } from "../Api/ChessGames/route";
+import { ChessDataService } from "../lib/data/chessDataService";
+import type { ChessGame } from "../Types/ChessGame";
 
 export function useChessGames(username: string | undefined) {
   const [games, setGames] = useState<ChessGame[]>([]);
@@ -12,7 +13,7 @@ export function useChessGames(username: string | undefined) {
     setLoading(true);
     setError(null);
     
-    fetchChessGames(username)
+    ChessDataService.fetchChessGames(username)
       .then(setGames)
       .catch((err) => {
         console.error('Error fetching chess games:', err);

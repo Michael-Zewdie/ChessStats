@@ -1,8 +1,8 @@
 export default function MonthlyStatsSkeleton() {
   return (
     <div style={{
-      width: '105rem',
-      maxWidth: '105rem',
+      width: '100rem',
+      maxWidth: '100rem',
       height: 500,
       backgroundColor: '#18191b',
       color: '#fff',

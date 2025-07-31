@@ -1,8 +1,10 @@
 
 
 import { useEffect, useState } from "react";
-import { MonthlyStats } from "../Api/MonthlyStats/route";
-import type { MonthlyRatingPoint } from "../Api/MonthlyStats/route";
+import { ChessDataService } from "../lib/data/chessDataService";
+import type { MonthlyRatingPoint } from "../Types/MonthlyStats";
+
+export type { MonthlyRatingPoint };
 
 export function useMonthlyStats(username: string | undefined) {
   const [data, setData] = useState<MonthlyRatingPoint[]>([]);
@@ -18,7 +20,7 @@ export function useMonthlyStats(username: string | undefined) {
     setLoading(true);
     setError(null);
 
-    MonthlyStats(username)
+    ChessDataService.fetchMonthlyStats(username)
       .then((res) => {
         if (!cancelled) setData(res);
       })

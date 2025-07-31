@@ -1,27 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
-import { AdoptedService } from '../../../lib/services/FunStats/AdoptedService';
+import { RivalService } from '../../../lib/services/FunStats/RivalService';
 
-interface ParentBoxProps {
+interface RivalBoxProps {
   games: ChessGame[];
 }
 
-export default function ParentBox({ games }: ParentBoxProps) {
-  const adoptedStats = useMemo(() => AdoptedService.calculate(games), [games]);
-  const primaryParent = useMemo(() => AdoptedService.getPrimaryParent(adoptedStats), [adoptedStats]);
+export default function RivalBox({ games }: RivalBoxProps) {
+  const rivalStats = useMemo(() => RivalService.calculate(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
   
-  const tooltipText = primaryParent
-    ? `${primaryParent.opponent} adopted you with a ${primaryParent.streakLength}-game win streak in ${primaryParent.timeClass}`
-    : adoptedStats.totalParents > 0
-    ? `You were adopted by ${adoptedStats.totalParents} players`
-    : 'No adoptions (need 10+ loss streak against same opponent)';
-  
-  const displayText = primaryParent
-    ? primaryParent.opponent
-    : adoptedStats.totalParents > 0
-    ? `${adoptedStats.totalParents} players`
-    : 'None';
+  const tooltipText = rivalStats.rival 
+    ? `You have played ${rivalStats.totalGamesWithRival} games against ${rivalStats.rival}`
+    : 'No rival found (need at least 3 games with same opponent)';
   
   return (
     <div 
@@ -36,10 +27,10 @@ export default function ParentBox({ games }: ParentBoxProps) {
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>👨‍👧‍👦</div>
-      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Parent</div>
+      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>⚔️</div>
+      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Rival</div>
       <div style={{ fontSize: '0.8rem', fontWeight: '500' }}>
-        {displayText}
+        {rivalStats.rival || 'None'}
       </div>
       
       {showTooltip && (
@@ -57,9 +48,7 @@ export default function ParentBox({ games }: ParentBoxProps) {
             whiteSpace: 'nowrap',
             zIndex: 1000,
             marginBottom: '0.25rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-            maxWidth: '200px',
-            whiteSpace: 'normal'
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
           }}
         >
           {tooltipText}
