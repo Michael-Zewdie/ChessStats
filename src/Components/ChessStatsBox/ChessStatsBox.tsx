@@ -31,13 +31,18 @@ export default function ChessStatsBox({ games, currentRating }: ChessStatsBoxPro
       border: '1px solid #374151',
       height: '26.5rem',
       width: '60rem',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
       {/* Main Stats Grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
         gap: '1rem',
+        width: '100%',
+        maxWidth: 'calc(100% - 3rem)'
       }}>
         <RivalBox games={games} />
         <ChildBox games={games} />

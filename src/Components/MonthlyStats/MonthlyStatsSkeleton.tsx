@@ -1,8 +1,8 @@
 export default function MonthlyStatsSkeleton() {
   return (
     <div style={{
-      width: '100rem',
-      maxWidth: '100rem',
+      width: '105rem',
+      maxWidth: '105rem',
       height: 500,
       backgroundColor: '#18191b',
       color: '#fff',
@@ -59,15 +59,17 @@ export default function MonthlyStatsSkeleton() {
         gap: '1rem', 
         justifyContent: 'center' 
       }}>
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3].map((i) => (
           <div
             key={i}
             style={{
-              width: '4rem',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.5rem',
+              width: '5rem',
               height: '2.5rem',
               backgroundColor: '#374151',
-              borderRadius: '0.5rem',
-              animation: 'pulse 2s infinite'
+              animation: 'pulse 2s infinite',
+              animationDelay: `${i * 0.2}s`
             }}
           />
         ))}
@@ -75,25 +77,58 @@ export default function MonthlyStatsSkeleton() {
 
       {/* Chart skeleton */}
       <div style={{ 
-        flex: 1, 
-        display: 'flex', 
+        flex: 1,
+        display: 'flex',
         flexDirection: 'column',
         gap: '1rem'
       }}>
-        <div style={{
-          width: '12rem',
-          height: '1.5rem',
-          backgroundColor: '#374151',
-          borderRadius: '0.25rem',
-          margin: '0 auto',
-          animation: 'pulse 2s infinite'
-        }} />
+        {/* Chart area with more realistic skeleton */}
         <div style={{
           flex: 1,
           backgroundColor: '#374151',
           borderRadius: '0.5rem',
+          position: 'relative',
+          overflow: 'hidden',
           animation: 'pulse 2s infinite'
-        }} />
+        }}>
+          {/* Simulate chart axes */}
+          <div style={{
+            position: 'absolute',
+            bottom: '2rem',
+            left: '3rem',
+            right: '2rem',
+            height: '1px',
+            backgroundColor: '#4B5563',
+            opacity: 0.5
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '2rem',
+            left: '3rem',
+            top: '2rem',
+            width: '1px',
+            backgroundColor: '#4B5563',
+            opacity: 0.5
+          }} />
+          
+          {/* Simulate line chart points */}
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                bottom: `${20 + Math.random() * 60}%`,
+                left: `${15 + i * 15}%`,
+                width: '4px',
+                height: '4px',
+                borderRadius: '50%',
+                backgroundColor: '#6B7280',
+                animation: 'pulse 2s infinite',
+                animationDelay: `${i * 0.3}s`
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <style>

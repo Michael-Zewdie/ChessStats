@@ -1,57 +1,12 @@
 import { useChessGames } from "../../Hooks/useChessGames";
 import { useChessStats } from "../../Hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
+import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
 
 interface ChessStatsBoxUIProps {
   username: string | undefined;
 }
 
-function ChessStatsBoxSkeleton() {
-  return (
-    <div style={{
-      backgroundColor: '#18191b',
-      color: '#fff',
-      borderRadius: '0.75rem',
-      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
-      padding: '1.5rem',
-      border: '1px solid #374151',
-      width: '300px',
-      height: '200px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1rem'
-      }}>
-        <div style={{
-          width: '2rem',
-          height: '2rem',
-          border: '2px solid #374151',
-          borderTop: '2px solid #fff',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-        <div style={{ color: '#9ca3af', fontSize: '0.9rem' }}>
-          Loading chess stats...
-        </div>
-      </div>
-      
-      <style>
-        {`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}
-      </style>
-    </div>
-  );
-}
 
 export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
   const { games, loading: gamesLoading, error: gamesError } = useChessGames(username);
