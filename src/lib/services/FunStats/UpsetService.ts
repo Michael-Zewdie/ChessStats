@@ -33,7 +33,13 @@ export class UpsetService {
     }
   }
 
-  static findBiggestUpset(games: ChessGame[]): { opponent: string; ratingDiff: number } | null {
+  static findBiggestUpset(games: ChessGame[]): { 
+    opponent: string; 
+    ratingDiff: number; 
+    userRating: number; 
+    opponentRating: number; 
+    timeClass: string 
+  } | null {
     if (!games || games.length === 0) return null;
     
     try {
@@ -54,7 +60,10 @@ export class UpsetService {
 
       return {
         opponent: biggestUpset.opponent,
-        ratingDiff: biggestUpset.opponentRating - biggestUpset.userRating
+        ratingDiff: biggestUpset.opponentRating - biggestUpset.userRating,
+        userRating: biggestUpset.userRating,
+        opponentRating: biggestUpset.opponentRating,
+        timeClass: biggestUpset.time_class
       };
     } catch (error) {
       console.error('Error finding biggest upset:', error);
