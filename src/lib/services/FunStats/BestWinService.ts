@@ -1,15 +1,15 @@
 import type { ChessGame } from '../../../Types/ChessGame';
 
-export interface UpsetStats {
-  upsetScore: number;
+export interface BestWinStats {
+  bestWinScore: number;
   totalGamesAgainstHigherRated: number;
   winsAgainstHigherRated: number;
 }
 
-export class UpsetService {
-  static calculate(games: ChessGame[]): UpsetStats {
+export class BestWinService {
+  static calculate(games: ChessGame[]): BestWinStats {
     if (!games || games.length === 0) {
-      return { upsetScore: 0, totalGamesAgainstHigherRated: 0, winsAgainstHigherRated: 0 };
+      return { bestWinScore: 0, totalGamesAgainstHigherRated: 0, winsAgainstHigherRated: 0 };
     }
     
     try {
@@ -18,22 +18,22 @@ export class UpsetService {
       );
       const winsAgainstHigherRated = gamesAgainstHigherRated.filter(game => game.result === 'win').length;
       
-      const upsetScore = gamesAgainstHigherRated.length > 0 
+      const bestWinScore = gamesAgainstHigherRated.length > 0 
         ? Math.round((winsAgainstHigherRated / gamesAgainstHigherRated.length) * 100)
         : 0;
       
       return {
-        upsetScore,
+        bestWinScore,
         totalGamesAgainstHigherRated: gamesAgainstHigherRated.length,
         winsAgainstHigherRated
       };
     } catch (error) {
-      console.error('Error calculating upset stats:', error);
-      return { upsetScore: 0, totalGamesAgainstHigherRated: 0, winsAgainstHigherRated: 0 };
+      console.error('Error calculating best win stats:', error);
+      return { bestWinScore: 0, totalGamesAgainstHigherRated: 0, winsAgainstHigherRated: 0 };
     }
   }
 
-  static findBiggestUpset(games: ChessGame[]): { 
+  static findBestWin(games: ChessGame[]): { 
     opponent: string; 
     ratingDiff: number; 
     userRating: number; 
@@ -43,30 +43,30 @@ export class UpsetService {
     if (!games || games.length === 0) return null;
     
     try {
-      const upsetWins = games.filter(game => 
+      const bestWins = games.filter(game => 
         game.result === 'win' && 
         game.opponentRating && 
         game.userRating && 
         game.opponentRating > game.userRating
       );
       
-      if (upsetWins.length === 0) return null;
+      if (bestWins.length === 0) return null;
       
-      const biggestUpset = upsetWins.reduce((biggest, current) => {
+      const bestWin = bestWins.reduce((biggest, current) => {
         const currentDiff = current.opponentRating - current.userRating;
         const biggestDiff = biggest.opponentRating - biggest.userRating;
         return currentDiff > biggestDiff ? current : biggest;
       });
 
       return {
-        opponent: biggestUpset.opponent,
-        ratingDiff: biggestUpset.opponentRating - biggestUpset.userRating,
-        userRating: biggestUpset.userRating,
-        opponentRating: biggestUpset.opponentRating,
-        timeClass: biggestUpset.time_class
+        opponent: bestWin.opponent,
+        ratingDiff: bestWin.opponentRating - bestWin.userRating,
+        userRating: bestWin.userRating,
+        opponentRating: bestWin.opponentRating,
+        timeClass: bestWin.time_class
       };
     } catch (error) {
-      console.error('Error finding biggest upset:', error);
+      console.error('Error finding best win:', error);
       return null;
     }
   }

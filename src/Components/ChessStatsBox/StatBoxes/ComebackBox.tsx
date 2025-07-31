@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
-import { BullyService } from '../../../lib/services/FunStats/BullyService';
+import { ComebackService } from '../../../lib/services/FunStats/ComebackService';
 
-interface BullyBoxProps {
+interface ComebackBoxProps {
   games: ChessGame[];
 }
 
-export default function BullyBox({ games }: BullyBoxProps) {
-  const bullyStats = useMemo(() => BullyService.calculate(games), [games]);
+export default function ComebackBox({ games }: ComebackBoxProps) {
+  const comebackStats = useMemo(() => ComebackService.calculate(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
   
@@ -93,11 +93,11 @@ export default function BullyBox({ games }: BullyBoxProps) {
             borderBottom: '2px solid rgba(251, 191, 36, 0.3)',
             paddingBottom: '0.5rem'
           }}>
-            💪 Bully Stat Explained
+            📈 Comeback Stat Explained
           </div>
-          <div style={{ fontSize: '0.9rem', color: '#e5e7eb', marginBottom: '1rem' }}>Your <strong>bully score</strong> shows your win percentage against lower-rated opponents. Higher is better!</div>
+          <div style={{ fontSize: '0.9rem', color: '#e5e7eb', marginBottom: '1rem' }}>Your <strong>comeback score</strong> shows the most rating points you've gained in a single day across all game types.</div>
           <div style={{ fontSize: '0.85rem', color: '#d1d5db', marginBottom: '0.75rem' }}><strong>How it's calculated:</strong></div>
-          <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem', paddingLeft: '1rem' }}>• Counts wins against opponents with lower ratings<br/>• Divides by total games against lower-rated players<br/>• Shows percentage - measures consistency vs weaker opponents</div>
+          <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem', paddingLeft: '1rem' }}>• Tracks rating changes between consecutive games<br/>• Groups rating gains by calendar date<br/>• Shows your biggest single-day rating improvement</div>
           <button
             style={{
               background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
@@ -146,10 +146,10 @@ export default function BullyBox({ games }: BullyBoxProps) {
           onClick={() => setShowDescription(false)}
         />
       )}
-      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>💪</div>
-      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Bully</div>
+      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>📈</div>
+      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Comeback</div>
       <div style={{ fontSize: '0.8rem', fontWeight: '500' }}>
-        {bullyStats.bullyScore}%
+        +{comebackStats.maxPointsGainedInOneDay}
       </div>
       
       {showTooltip && (
@@ -183,20 +183,16 @@ export default function BullyBox({ games }: BullyBoxProps) {
             borderBottom: '1px solid rgba(251, 191, 36, 0.2)',
             paddingBottom: '0.25rem'
           }}>
-            Bully Score
+            Best Comeback Day
           </div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '0.75rem',
-            marginBottom: '0.4rem'
-          }}>
-            <span style={{ fontWeight: '600', color: '#fbbf24' }}>{bullyStats.bullyScore}%</span>
-            <span style={{ marginLeft: '0.5rem', color: '#9ca3af' }}>win rate vs lower rated</span>
+          <div style={{ fontSize: '0.75rem', color: '#e5e7eb', marginBottom: '0.4rem' }}>
+            <strong>Max points gained:</strong> +{comebackStats.maxPointsGainedInOneDay} points
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#9ca3af' }}>
-            {bullyStats.winsAgainstLowerRated} wins out of {bullyStats.totalGamesAgainstLowerRated} games
-          </div>
+          {comebackStats.dateOfMaxGain && (
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+              <strong>Date:</strong> {ComebackService.formatDate(comebackStats.dateOfMaxGain)}
+            </div>
+          )}
           <div
             style={{
               position: 'absolute',

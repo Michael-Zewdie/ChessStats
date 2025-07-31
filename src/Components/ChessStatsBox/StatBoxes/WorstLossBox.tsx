@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
-import { UpsetService } from '../../../lib/services/FunStats/UpsetService';
+import { WorstLossService } from '../../../lib/services/FunStats/WorstLossService';
 
-interface UpsetBoxProps {
+interface WorstLossBoxProps {
   games: ChessGame[];
 }
 
-export default function UpsetBox({ games }: UpsetBoxProps) {
-  const upsetStats = useMemo(() => UpsetService.calculate(games), [games]);
-  const biggestUpset = useMemo(() => UpsetService.findBiggestUpset(games), [games]);
+export default function WorstLossBox({ games }: WorstLossBoxProps) {
+  const worstLossStats = useMemo(() => WorstLossService.calculate(games), [games]);
+  const worstLoss = useMemo(() => WorstLossService.findWorstLoss(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
   
@@ -94,11 +94,11 @@ export default function UpsetBox({ games }: UpsetBoxProps) {
             borderBottom: '2px solid rgba(251, 191, 36, 0.3)',
             paddingBottom: '0.5rem'
           }}>
-            ⬆️ Upset Stat Explained
+            💔 Worst Loss Stat Explained
           </div>
-          <div style={{ fontSize: '0.9rem', color: '#e5e7eb', marginBottom: '1rem' }}>Your <strong>upset</strong> shows your biggest rating victory against a higher-rated opponent and your overall upset percentage.</div>
+          <div style={{ fontSize: '0.9rem', color: '#e5e7eb', marginBottom: '1rem' }}>Your <strong>worst loss</strong> shows the opponent you lost to with the greatest rating difference in your favor.</div>
           <div style={{ fontSize: '0.85rem', color: '#d1d5db', marginBottom: '0.75rem' }}><strong>How it's calculated:</strong></div>
-          <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem', paddingLeft: '1rem' }}>• Finds your largest rating difference victory vs higher-rated player<br/>• Calculates win percentage against all higher-rated opponents<br/>• Shows both individual best upset and overall upset rate</div>
+          <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem', paddingLeft: '1rem' }}>• Finds losses where you had a higher rating than your opponent<br/>• Calculates the rating difference (your rating - opponent rating)<br/>• Shows the opponent from your most painful loss</div>
           <button
             style={{
               background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
@@ -147,11 +147,11 @@ export default function UpsetBox({ games }: UpsetBoxProps) {
           onClick={() => setShowDescription(false)}
         />
       )}
-      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>⚔️</div>
-      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Upset</div>
+      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>💔</div>
+      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Worst Loss</div>
       <div style={{ fontSize: '0.8rem', fontWeight: '500' }}>
-        {biggestUpset 
-          ? biggestUpset.opponent
+        {worstLoss 
+          ? worstLoss.opponent
           : 'None'
         }
       </div>
@@ -187,19 +187,19 @@ export default function UpsetBox({ games }: UpsetBoxProps) {
             borderBottom: '1px solid rgba(251, 191, 36, 0.2)',
             paddingBottom: '0.25rem'
           }}>
-            Biggest Upset
+            Worst Loss
           </div>
-          {biggestUpset ? (
+          {worstLoss ? (
             <div style={{
               fontSize: '0.75rem',
               color: '#e5e7eb',
               textAlign: 'center'
             }}>
-              You beat {biggestUpset.opponent} in {biggestUpset.timeClass} when you were rated {biggestUpset.userRating} and they were rated {biggestUpset.opponentRating}
+              You lost to {worstLoss.opponent} in {worstLoss.timeClass} when you were rated {worstLoss.userRating} and they were rated {worstLoss.opponentRating} (-{worstLoss.ratingDiff} rating difference)
             </div>
           ) : (
             <div style={{ color: '#9ca3af', fontSize: '0.75rem', textAlign: 'center' }}>
-              No upsets found (no wins against higher-rated opponents)
+              No losses found against lower-rated opponents
             </div>
           )}
           <div

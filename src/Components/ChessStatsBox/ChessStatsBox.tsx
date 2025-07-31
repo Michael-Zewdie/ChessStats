@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import RivalBox from './StatBoxes/RivalBox';
 import ChildBox from './StatBoxes/ChildBox';
 import ParentBox from './StatBoxes/ParentBox';
-import BullyBox from './StatBoxes/BullyBox';
-import UpsetBox from './StatBoxes/UpsetBox';
+import TiltmasterBox from './StatBoxes/TiltmasterBox';
+import BestWinBox from './StatBoxes/BestWinBox';
+import WorstLossBox from './StatBoxes/WorstLossBox';
+import WinStreakBox from './StatBoxes/WinStreakBox';
+import DedicationBox from './StatBoxes/DedicationBox';
+import ComebackBox from './StatBoxes/ComebackBox';
+import FreefallBox from './StatBoxes/FreefallBox';
+import NemesisBox from './StatBoxes/NemesisBox';
+import VictimBox from './StatBoxes/VictimBox';
 import type { ChessGame } from './types';
 
 interface ChessStatsBoxProps {
@@ -29,15 +36,21 @@ export default function ChessStatsBox({ games, currentRating }: ChessStatsBoxPro
       {/* Main Stats Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
+        gridTemplateColumns: '1fr 1fr 1fr 1fr',
         gap: '1rem',
-        marginBottom: '1.5rem'
       }}>
         <RivalBox games={games} />
         <ChildBox games={games} />
         <ParentBox games={games} />
-        <BullyBox games={games} />
-        <UpsetBox games={games} />
+        <TiltmasterBox games={games} />
+        <BestWinBox games={games} />
+        <WorstLossBox games={games} />
+        <WinStreakBox games={games} />
+        <DedicationBox games={games} />
+        <ComebackBox games={games} />
+        <FreefallBox games={games} />
+        <NemesisBox games={games} />
+        <VictimBox games={games} />
       </div>
     </div>
   );
