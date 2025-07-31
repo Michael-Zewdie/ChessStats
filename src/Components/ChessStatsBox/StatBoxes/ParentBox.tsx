@@ -11,10 +11,11 @@ export default function ParentBox({ games }: ParentBoxProps) {
   const primaryParent = useMemo(() => AdoptedService.getPrimaryParent(adoptedStats), [adoptedStats]);
   const [showTooltip, setShowTooltip] = useState(false);
   
-  const tooltipText = primaryParent
-    ? `${primaryParent.opponent} adopted you with a ${primaryParent.streakLength}-game win streak in ${primaryParent.timeClass}`
-    : adoptedStats.totalParents > 0
-    ? `You were adopted by ${adoptedStats.totalParents} players`
+  const tooltipText = adoptedStats.totalParents > 0
+    ? `Parents (${adoptedStats.totalParents}):\n` + 
+      adoptedStats.parents.map(parent => 
+        `• ${parent.opponent} (${parent.streakLength}-game streak in ${parent.timeClass})`
+      ).join('\n')
     : 'No adoptions (need 10+ loss streak against same opponent)';
   
   const displayText = primaryParent
@@ -31,7 +32,13 @@ export default function ParentBox({ games }: ParentBoxProps) {
         backgroundColor: '#1f2937', 
         borderRadius: '0.5rem',
         position: 'relative',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        transform: showTooltip ? 'translateY(-4px) scale(1.05)' : 'translateY(0) scale(1)',
+        boxShadow: showTooltip 
+          ? '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 20px rgba(251, 191, 36, 0.4)'
+          : '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        border: showTooltip ? '1px solid rgba(251, 191, 36, 0.3)' : '1px solid transparent'
       }}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
@@ -49,20 +56,54 @@ export default function ParentBox({ games }: ParentBoxProps) {
             bottom: '100%',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: '#000',
-            color: '#fff',
-            padding: '0.5rem',
-            borderRadius: '0.25rem',
+            background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+            color: '#f9fafb',
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
             fontSize: '0.75rem',
-            whiteSpace: 'nowrap',
             zIndex: 1000,
-            marginBottom: '0.25rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-            maxWidth: '200px',
-            whiteSpace: 'normal'
+            marginBottom: '0.5rem',
+            boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 191, 36, 0.1)',
+            minWidth: '250px',
+            maxWidth: '300px',
+            lineHeight: '1.4',
+            border: '1px solid rgba(55, 65, 81, 0.6)',
+            backdropFilter: 'blur(8px)',
+            animation: 'fadeInUp 0.2s ease-out'
           }}
         >
-          {tooltipText}
+          <div style={{ 
+            fontSize: '0.8rem', 
+            fontWeight: '600', 
+            color: '#fbbf24', 
+            marginBottom: '0.5rem',
+            borderBottom: '1px solid rgba(251, 191, 36, 0.2)',
+            paddingBottom: '0.25rem'
+          }}>
+            Parents ({adoptedStats.totalParents})
+          </div>
+          {adoptedStats.parents.map((parent, index) => (
+            <div key={index} style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: index < adoptedStats.parents.length - 1 ? '0.4rem' : '0',
+              fontSize: '0.75rem'
+            }}>
+              <span style={{ 
+                color: '#ef4444', 
+                marginRight: '0.5rem',
+                fontWeight: '600'
+              }}>•</span>
+              <span style={{ fontWeight: '500', color: '#e5e7eb' }}>{parent.opponent}</span>
+              <span style={{ 
+                marginLeft: '0.5rem',
+                color: '#9ca3af',
+                fontSize: '0.7rem'
+              }}>
+                ({parent.streakLength}-game streak in {parent.timeClass})
+              </span>
+            </div>
+          ))}
           <div
             style={{
               position: 'absolute',
@@ -71,9 +112,10 @@ export default function ParentBox({ games }: ParentBoxProps) {
               transform: 'translateX(-50%)',
               width: 0,
               height: 0,
-              borderLeft: '5px solid transparent',
-              borderRight: '5px solid transparent',
-              borderTop: '5px solid #000'
+              borderLeft: '8px solid transparent',
+              borderRight: '8px solid transparent',
+              borderTop: '8px solid #1f2937',
+              filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))'
             }}
           />
         </div>
