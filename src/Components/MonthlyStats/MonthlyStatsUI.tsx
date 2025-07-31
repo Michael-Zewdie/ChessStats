@@ -17,7 +17,7 @@ export default function MonthlyStatsUI({ className, username }: MonthlyStatsUIPr
 
   return (
     <div className='fixed top-6 right-6 z-10'>
-      <MonthlyStatsBox data={data} profile={profile} country={country} />
+      <MonthlyStatsBox data={data} profile={profile || undefined} country={country} />
     </div>
   );
 }
