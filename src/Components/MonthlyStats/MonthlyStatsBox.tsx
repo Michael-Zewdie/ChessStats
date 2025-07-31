@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import type { MonthlyRatingPoint } from "../../Api/MonthlyStats/route.ts";
+import type { ChessProfile } from "../../Types/ChessProfile";
 import { RatingProgressionChart, type GameData } from '../RatingProgressionChart';
 import '../../index.css'
 
 interface MonthlyStatsBoxProps {
   data: MonthlyRatingPoint[]; // raw MonthlyStats(username) output
+  profile?: ChessProfile;
+  country?: string | null;
 }
 
 const COLORS: Record<string, string> = {
@@ -36,7 +39,148 @@ function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[
   return gamesByTimeClass;
 }
 
-export function MonthlyStatsBox({ data }: MonthlyStatsBoxProps) {
+function getCountryFlag(country: string | null): string {
+  if (!country) return '🌍';
+  
+  // Country name to flag emoji mapping
+  const countryFlags: Record<string, string> = {
+    // Africa
+    'ethiopia': '🇪🇹',
+    'south africa': '🇿🇦',
+    'egypt': '🇪🇬',
+    'nigeria': '🇳🇬',
+    'kenya': '🇰🇪',
+    'morocco': '🇲🇦',
+    'ghana': '🇬🇭',
+    'tunisia': '🇹🇳',
+    'algeria': '🇩🇿',
+    'uganda': '🇺🇬',
+    'tanzania': '🇹🇿',
+    'zimbabwe': '🇿🇼',
+    'zambia': '🇿🇲',
+    'botswana': '🇧🇼',
+    'senegal': '🇸🇳',
+    
+    // North America
+    'united states': '🇺🇸',
+    'canada': '🇨🇦',
+    'mexico': '🇲🇽',
+    'guatemala': '🇬🇹',
+    'cuba': '🇨🇺',
+    'jamaica': '🇯🇲',
+    'costa rica': '🇨🇷',
+    'panama': '🇵🇦',
+    
+    // South America
+    'brazil': '🇧🇷',
+    'argentina': '🇦🇷',
+    'chile': '🇨🇱',
+    'colombia': '🇨🇴',
+    'peru': '🇵🇪',
+    'venezuela': '🇻🇪',
+    'ecuador': '🇪🇨',
+    'uruguay': '🇺🇾',
+    'bolivia': '🇧🇴',
+    'paraguay': '🇵🇾',
+    
+    // Europe
+    'united kingdom': '🇬🇧',
+    'germany': '🇩🇪',
+    'france': '🇫🇷',
+    'spain': '🇪🇸',
+    'italy': '🇮🇹',
+    'russia': '🇷🇺',
+    'poland': '🇵🇱',
+    'ukraine': '🇺🇦',
+    'netherlands': '🇳🇱',
+    'belgium': '🇧🇪',
+    'switzerland': '🇨🇭',
+    'austria': '🇦🇹',
+    'sweden': '🇸🇪',
+    'norway': '🇳🇴',
+    'denmark': '🇩🇰',
+    'finland': '🇫🇮',
+    'iceland': '🇮🇸',
+    'portugal': '🇵🇹',
+    'greece': '🇬🇷',
+    'turkey': '🇹🇷',
+    'czech republic': '🇨🇿',
+    'hungary': '🇭🇺',
+    'romania': '🇷🇴',
+    'bulgaria': '🇧🇬',
+    'croatia': '🇭🇷',
+    'serbia': '🇷🇸',
+    'bosnia and herzegovina': '🇧🇦',
+    'slovenia': '🇸🇮',
+    'slovakia': '🇸🇰',
+    'estonia': '🇪🇪',
+    'latvia': '🇱🇻',
+    'lithuania': '🇱🇹',
+    'ireland': '🇮🇪',
+    'luxembourg': '🇱🇺',
+    'malta': '🇲🇹',
+    'cyprus': '🇨🇾',
+    
+    // Asia
+    'china': '🇨🇳',
+    'japan': '🇯🇵',
+    'india': '🇮🇳',
+    'south korea': '🇰🇷',
+    'indonesia': '🇮🇩',
+    'thailand': '🇹🇭',
+    'vietnam': '🇻🇳',
+    'philippines': '🇵🇭',
+    'malaysia': '🇲🇾',
+    'singapore': '🇸🇬',
+    'taiwan': '🇹🇼',
+    'hong kong': '🇭🇰',
+    'pakistan': '🇵🇰',
+    'bangladesh': '🇧🇩',
+    'sri lanka': '🇱🇰',
+    'nepal': '🇳🇵',
+    'myanmar': '🇲🇲',
+    'cambodia': '🇰🇭',
+    'laos': '🇱🇦',
+    'mongolia': '🇲🇳',
+    'kazakhstan': '🇰🇿',
+    'uzbekistan': '🇺🇿',
+    'kyrgyzstan': '🇰🇬',
+    'tajikistan': '🇹🇯',
+    'turkmenistan': '🇹🇲',
+    'afghanistan': '🇦🇫',
+    'iran': '🇮🇷',
+    'iraq': '🇮🇶',
+    'syria': '🇸🇾',
+    'lebanon': '🇱🇧',
+    'jordan': '🇯🇴',
+    'israel': '🇮🇱',
+    'palestine': '🇵🇸',
+    'saudi arabia': '🇸🇦',
+    'united arab emirates': '🇦🇪',
+    'qatar': '🇶🇦',
+    'kuwait': '🇰🇼',
+    'bahrain': '🇧🇭',
+    'oman': '🇴🇲',
+    'yemen': '🇾🇪',
+    'georgia': '🇬🇪',
+    'armenia': '🇦🇲',
+    'azerbaijan': '🇦🇿',
+    
+    // Oceania
+    'australia': '🇦🇺',
+    'new zealand': '🇳🇿',
+    'fiji': '🇫🇯',
+    'papua new guinea': '🇵🇬',
+    'samoa': '🇼🇸',
+    'tonga': '🇹🇴',
+    'vanuatu': '🇻🇺',
+    'solomon islands': '🇸🇧'
+  };
+  
+  return countryFlags[country.toLowerCase()] || '🌍';
+}
+
+export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps) {
   if (!data || data.length === 0) return null;
 
   const timeClasses = Array.from(new Set(data.map((d) => d.time_class)));
@@ -60,8 +204,36 @@ export function MonthlyStatsBox({ data }: MonthlyStatsBoxProps) {
       border: '1px solid #374151',
       marginLeft: 0,
       marginRight: 'auto',
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      position: 'relative'
     }}>
+      {profile && (
+        <div style={{
+          position: 'absolute',
+          top: '1rem',
+          left: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          zIndex: 10
+        }}>
+          <img
+            src={profile.avatar && profile.avatar.trim() !== "" ? profile.avatar : "/public/default-avatar.png"}
+            alt={profile.name}
+            style={{
+              width: '3rem',
+              height: '3rem',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              border: '2px solid #374151'
+            }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <div style={{ fontSize: '1rem', fontWeight: '500' }}>{profile.username}</div>
+            <div style={{ fontSize: '1.25rem' }}>{getCountryFlag(country)}</div>
+          </div>
+        </div>
+      )}
       <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         {timeClasses.map((tc) => (
           <button
