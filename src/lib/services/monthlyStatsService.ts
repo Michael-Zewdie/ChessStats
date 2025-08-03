@@ -55,6 +55,24 @@ export class MonthlyStatsService {
 
       normalized.sort((a, b) => a.ts - b.ts);
 
+      // Calculate first game date and total games per time class
+      const timeClassStats = new Map<string, { firstGameDate: string; totalGames: number }>();
+      for (const { ts, time_class } of normalized) {
+        const existing = timeClassStats.get(time_class);
+        if (!existing) {
+          timeClassStats.set(time_class, { 
+            firstGameDate: new Date(ts).toISOString(), 
+            totalGames: 1 
+          });
+        } else {
+          // Keep the earliest date and increment total games
+          if (ts < new Date(existing.firstGameDate).getTime()) {
+            existing.firstGameDate = new Date(ts).toISOString();
+          }
+          existing.totalGames++;
+        }
+      }
+
       const byMonthClass = new Map<string, { month: string; time_class: string; start: number; end: number }>();
       for (const { ts, rating, time_class } of normalized) {
         const month = new Date(ts).toISOString().slice(0, 7);
@@ -68,13 +86,18 @@ export class MonthlyStatsService {
       }
 
       const result: MonthlyRatingPoint[] = Array.from(byMonthClass.values())
-        .map(v => ({
-          month: v.month,
-          start: v.start,
-          end: v.end,
-          change: v.end - v.start,
-          time_class: v.time_class,
-        }))
+        .map(v => {
+          const timeClassStat = timeClassStats.get(v.time_class);
+          return {
+            month: v.month,
+            start: v.start,
+            end: v.end,
+            change: v.end - v.start,
+            time_class: v.time_class,
+            firstGameDate: timeClassStat?.firstGameDate,
+            totalGames: timeClassStat?.totalGames,
+          };
+        })
         .sort((a, b) => {
           if (a.time_class === b.time_class) {
             return a.month.localeCompare(b.month);

@@ -49,6 +49,11 @@ export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps
   
   const gamesByTimeClass = convertToGameData(data);
   const selectedGames = gamesByTimeClass[selectedClass] || [];
+  
+  // Get first game date and total games for selected time class
+  const selectedTimeClassData = data.find(d => d.time_class === selectedClass);
+  const firstGameDate = selectedTimeClassData?.firstGameDate;
+  const totalGames = selectedTimeClassData?.totalGames;
 
   return (
     <div style={{
@@ -106,6 +111,8 @@ export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps
           title={`${selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)} Rating Progression`}
           height={380}
           lineColor={COLORS[selectedClass]}
+          firstGameDate={firstGameDate}
+          totalGames={totalGames}
         />
       </div>
     </div>

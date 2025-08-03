@@ -28,6 +28,8 @@ export interface RatingProgressionChartProps {
   height?: number;
   lineColor?: string;
   className?: string;
+  firstGameDate?: string;
+  totalGames?: number;
 }
 
 type TimeInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
@@ -163,7 +165,9 @@ export function RatingProgressionChart({
   title,
   height = 400,
   lineColor,
-  className = ''
+  className = '',
+  firstGameDate,
+  totalGames
 }: RatingProgressionChartProps) {
   if (!games || games.length === 0) {
     return (
@@ -201,9 +205,6 @@ export function RatingProgressionChart({
   const finalLineColor = lineColor || getLineColor(chartData);
   
   const currentRating = chartData[chartData.length - 1]?.rating;
-  const timespan = chartData.length > 1 
-    ? `${chartData[0].displayLabel} - ${chartData[chartData.length - 1].displayLabel}`
-    : chartData[0].displayLabel;
 
   return (
     <div style={{ backgroundColor: 'transparent', width: '100%', height: '100%' }}>
@@ -222,8 +223,25 @@ export function RatingProgressionChart({
             color: '#9ca3af',
             margin: 0
           }}>
-            {timespan} • Current Rating: {currentRating}
+            {firstGameDate && `Your first ${title?.toLowerCase().includes('blitz') ? 'blitz' : 
+                                          title?.toLowerCase().includes('bullet') ? 'bullet' : 
+                                          title?.toLowerCase().includes('rapid') ? 'rapid' : 
+                                          title?.toLowerCase().includes('daily') ? 'daily' : ''} game was on ${new Date(firstGameDate).toLocaleDateString('en-US', { 
+                                            weekday: 'long', 
+                                            year: 'numeric', 
+                                            month: 'long', 
+                                            day: 'numeric' 
+                                          })}`}
           </p>
+          {totalGames && (
+            <p style={{ 
+              fontSize: '14px', 
+              color: '#9ca3af',
+              margin: '4px 0 0 0'
+            }}>
+              You have played {totalGames.toLocaleString()} total games
+            </p>
+          )}
         </div>
       )}
       

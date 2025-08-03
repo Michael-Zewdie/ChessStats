@@ -31,7 +31,7 @@ npm run preview
   - `/profile/:username` - Dashboard displaying user stats and charts
 
 ### Key Directories
-- `src/Api/` - API integration modules for Chess.com endpoints
+- `src/lib/` - Client-side services and data handling for Chess.com API
 - `src/Components/` - Reusable UI components organized by feature
 - `src/hooks/` - Custom React hooks for data fetching and state management  
 - `src/Types/` - TypeScript type definitions for Chess.com API responses
@@ -42,7 +42,7 @@ npm run preview
 ### Data Flow
 1. User enters username on landing page
 2. Dashboard page uses custom hooks (useChessStats, useChessProfile, useMonthlyStats) 
-3. Hooks fetch data from Chess.com API via route modules in `src/Api/`
+3. Hooks fetch data from Chess.com API via services in `src/lib/`
 4. Raw API responses are transformed using utility functions
 5. Components render charts and stats using processed data
 

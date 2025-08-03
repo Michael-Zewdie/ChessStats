@@ -48,7 +48,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 - `src/Components/` — UI components (profile, stats, charts)
 - `src/hooks/` — Custom React hooks for data fetching
-- `src/Api/` — API integration and backend logic
+- `src/lib/` — Client-side services and data handling
 - `src/Types/` — TypeScript type definitions
 - `src/Utils/` — Data transformation utilities
 
