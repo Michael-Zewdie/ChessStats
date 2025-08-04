@@ -1,4 +1,4 @@
-import type { ChessGame, ChessComGameDetailed } from '../../Types/ChessGame';
+import type { ChessGame, ChessComGameRaw } from '../../Types/ChessGame';
 import { determineResult } from '../utils/gameHelpers';
 
 export class GameService {
@@ -18,11 +18,11 @@ export class GameService {
     }
   }
 
-  static async fetchMonthlyGames(archiveUrl: string): Promise<ChessComGameDetailed[] | null> {
+  static async fetchMonthlyGames(archiveUrl: string): Promise<ChessComGameRaw[] | null> {
     try {
       const res = await fetch(archiveUrl);
       if (!res.ok) return null;
-      const data = (await res.json()) as { games: ChessComGameDetailed[] };
+      const data = (await res.json()) as { games: ChessComGameRaw[] };
       return data.games || [];
     } catch (error) {
       console.error('Error fetching monthly games:', error);
@@ -40,9 +40,9 @@ export class GameService {
         archives.map(url => this.fetchMonthlyGames(url))
       );
 
-      const allGames: ChessComGameDetailed[] = monthlyPayloads
+      const allGames: ChessComGameRaw[] = monthlyPayloads
         .filter(Boolean)
-        .flatMap((games) => games as ChessComGameDetailed[]);
+        .flatMap((games) => games as ChessComGameRaw[]);
 
       const chessGames: ChessGame[] = allGames
         .map((game) => {

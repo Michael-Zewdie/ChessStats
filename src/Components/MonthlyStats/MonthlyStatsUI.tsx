@@ -1,5 +1,5 @@
-import { useMonthlyStats } from "../../Hooks/useMonthlyStats";
-import { useChessProfile } from "../../Hooks/useChessProfile";
+import { useMonthlyStats } from "../../hooks/useMonthlyStats";
+import { useChessProfile } from "../../hooks/useChessProfile";
 import { MonthlyStatsBox } from "./MonthlyStatsBox"; // adjust path if needed
 import MonthlyStatsSkeleton from "./MonthlyStatsSkeleton";
 

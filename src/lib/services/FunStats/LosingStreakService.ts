@@ -1,11 +1,11 @@
 import type { ChessGame } from '../../../Types/ChessGame';
 
-export interface TiltmasterStats {
+export interface LosingStreakStats {
   worstLosingStreak: number;
 }
 
-export class TiltmasterService {
-  static calculate(games: ChessGame[]): TiltmasterStats {
+export class LosingStreakService {
+  static calculate(games: ChessGame[]): LosingStreakStats {
     if (!games || games.length === 0) {
       return { worstLosingStreak: 0 };
     }
@@ -31,7 +31,7 @@ export class TiltmasterService {
         worstLosingStreak
       };
     } catch (error) {
-      console.error('Error calculating tiltmaster stats:', error);
+      console.error('Error calculating losing streak stats:', error);
       return { worstLosingStreak: 0 };
     }
   }

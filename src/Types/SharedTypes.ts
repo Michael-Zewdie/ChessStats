@@ -1,38 +1,5 @@
-export interface ChessGame {
-    opponent: string;
-    result: 'win' | 'loss' | 'draw';
-    userRating: number;
-    opponentRating: number;
-    date: string;
-    time_class: string;
-}
-export interface ChessComGameDetailed {
-    end_time?: number;
-    time_class: string;
-    white: {
-        username: string;
-        rating: number;
-        result?: string;
-    };
-    black: {
-        username: string;
-        rating: number;
-        result?: string;
-    };
-    rules?: string;
-}
-export interface ChessComGame {
-    end_time?: number;
-    time_class: string;
-    white: {
-        username: string;
-        rating: number;
-    };
-    black: {
-        username: string;
-        rating: number;
-    };
-}
+// Re-export the chess game types from the main ChessGame module
+export type { ChessGame, ChessComGameRaw } from './ChessGame';
 export interface ChessProfile {
     avatar?: string;
     player_id: number;

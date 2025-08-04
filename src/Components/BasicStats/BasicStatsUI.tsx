@@ -1,6 +1,6 @@
 import BasicStatsBox from "./BasicStatsBox.tsx";
-import BasicStatsSkeleton from "./BasicStatsSkeleton";
-import { useChessStats } from "../../Hooks/useChessStats";
+import BasicStatsSkeleton from "./skeleton/BasicStatsSkeleton.tsx";
+import { useChessStats } from "../../hooks/useChessStats";
 
 interface ChessStatsUIProps {
   username: string | undefined;

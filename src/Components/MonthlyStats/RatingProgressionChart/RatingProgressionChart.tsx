@@ -240,6 +240,13 @@ export function RatingProgressionChart({
               margin: '4px 0 0 0'
             }}>
               You have played {totalGames.toLocaleString()} total games
+              {firstGameDate && (() => {
+                const firstDate = new Date(firstGameDate);
+                const lastDate = new Date(Math.max(...games.map(g => new Date(g.date).getTime())));
+                const daysDiff = Math.max(1, Math.ceil((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24)));
+                const gamesPerDay = Math.round((totalGames / daysDiff) * 100) / 100;
+                return `, that is ${gamesPerDay} games per day!`;
+              })()}
             </p>
           )}
         </div>

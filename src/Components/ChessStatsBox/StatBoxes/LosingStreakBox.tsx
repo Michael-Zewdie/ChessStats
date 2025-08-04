@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
-import { WinStreakService } from '../../../lib/services/FunStats/WinStreakService';
+import { LosingStreakService } from '../../../lib/services/FunStats/LosingStreakService';
 import styles from '../styles/StatBox.module.css';
 import StatExplainer from '../StatExplainer';
 
-interface WinStreakBoxProps {
+interface LosingStreakBoxProps {
   games: ChessGame[];
 }
 
-export default function WinStreakBox({ games }: WinStreakBoxProps) {
-  const winStreakStats = useMemo(() => WinStreakService.calculate(games), [games]);
+export default function LosingStreakBox({ games }: LosingStreakBoxProps) {
+  const losingStreakStats = useMemo(() => LosingStreakService.calculate(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
   
   return (
@@ -19,26 +19,26 @@ export default function WinStreakBox({ games }: WinStreakBoxProps) {
       onMouseLeave={() => setShowTooltip(false)}
     >
       <StatExplainer
-        title="Win Streak Stat Explained"
-        emoji="🔥"
-        description="Your longest win streak shows the maximum consecutive wins you've achieved chronologically across all game types."
+        title="Losing Streak Stat Explained"
+        emoji="😠"
+        description="Your losing streak shows your worst consecutive losses. Lower is better!"
         calculation="How it's calculated:"
-        details="• Counts consecutive wins in chronological order<br/>• Works across all time controls and game types<br/>• Tracks your longest streak ever achieved"
+        details="• Counts consecutive losses in chronological order<br/>• Tracks the longest streak of losses<br/>• Shows the maximum consecutive losses you've had"
         showWhenVisible={showTooltip}
       />
-      <div className={styles.emoji}>🔥</div>
-      <div className={styles.label}>Win Streak</div>
+      <div className={styles.emoji}>😠</div>
+      <div className={styles.label}>Losing Streak</div>
       <div className={styles.displayText}>
-        {winStreakStats.longestWinStreak}
+        {losingStreakStats.worstLosingStreak}
       </div>
       
       {showTooltip && (
         <div className={styles.tooltip}>
           <div className={styles.tooltipTitle}>
-            Longest Win Streak
+            Worst Losing Streak
           </div>
           <div className={styles.tooltipItem}>
-            Longest win streak: {winStreakStats.longestWinStreak} games in a row
+            Worst losing streak: {losingStreakStats.worstLosingStreak} games in a row
           </div>
           <div className={styles.tooltipArrow} />
         </div>

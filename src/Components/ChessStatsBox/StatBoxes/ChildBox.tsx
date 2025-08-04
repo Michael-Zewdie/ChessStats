@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
 import { AdoptedService } from '../../../lib/services/FunStats/AdoptedService';
+import styles from '../styles/StatBox.module.css';
+import StatExplainer from '../StatExplainer';
 
 interface ChildBoxProps {
   games: ChessGame[];
@@ -10,231 +12,46 @@ export default function ChildBox({ games }: ChildBoxProps) {
   const adoptedStats = useMemo(() => AdoptedService.calculate(games), [games]);
   const primaryChild = useMemo(() => AdoptedService.getPrimaryChild(adoptedStats), [adoptedStats]);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showDescription, setShowDescription] = useState(false);
-  
-  const tooltipText = adoptedStats.totalChildren > 0
-    ? `Children (${adoptedStats.totalChildren}):\n` + 
-      adoptedStats.children.map(child => 
-        `• ${child.opponent} (${child.streakLength}-game streak in ${child.timeClass})`
-      ).join('\n')
-    : 'No adoptions (need 10+ win streak against same opponent)';
   
   const displayText = primaryChild
     ? primaryChild.opponent
-    : adoptedStats.totalChildren > 0
-    ? `${adoptedStats.totalChildren} players`
-    : 'None';
+    : 'You haven\'t adopted anyone';
   
   return (
     <div 
-      style={{ 
-        textAlign: 'center', 
-        padding: '0.75rem', 
-        backgroundColor: '#1f2937', 
-        borderRadius: '0.5rem',
-        position: 'relative',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        transform: showTooltip ? 'translateY(-4px) scale(1.05)' : 'translateY(0) scale(1)',
-        boxShadow: showTooltip 
-          ? '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 20px rgba(251, 191, 36, 0.4)'
-          : '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-        border: showTooltip ? '1px solid rgba(251, 191, 36, 0.3)' : '1px solid transparent'
-      }}
+      className={styles.container}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      {showTooltip && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '0.5rem',
-            right: '0.5rem',
-            width: '16px',
-            height: '16px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(251, 191, 36, 0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '10px',
-            color: '#fbbf24',
-            border: '1px solid rgba(251, 191, 36, 0.4)',
-            cursor: 'pointer',
-            zIndex: 1001,
-            transition: 'all 0.2s ease',
-            opacity: 1,
-            transform: 'scale(1)'
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowDescription(!showDescription);
-          }}
-          onMouseEnter={(e) => e.stopPropagation()}
-        >
-          ?
-        </div>
-      )}
-
-      {showDescription && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '100%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
-            color: '#f9fafb',
-            padding: '1.5rem',
-            borderRadius: '0.75rem',
-            fontSize: '0.875rem',
-            zIndex: 2000,
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(251, 191, 36, 0.2)',
-            minWidth: '400px',
-            maxWidth: '500px',
-            lineHeight: '1.6',
-            border: '1px solid rgba(55, 65, 81, 0.6)',
-            backdropFilter: 'blur(16px)',
-            marginBottom: '0.5rem'
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div style={{ 
-            fontSize: '1.1rem', 
-            fontWeight: '700', 
-            color: '#fbbf24', 
-            marginBottom: '1rem',
-            borderBottom: '2px solid rgba(251, 191, 36, 0.3)',
-            paddingBottom: '0.5rem'
-          }}>
-            👶 Child Stat Explained
-          </div>
-          <div style={{ fontSize: '0.9rem', color: '#e5e7eb', marginBottom: '1rem' }}>Your <strong>children</strong> are opponents you've "adopted" by winning 10+ consecutive games against them in the same time class.</div>
-          <div style={{ fontSize: '0.85rem', color: '#d1d5db', marginBottom: '0.75rem' }}><strong>How it's calculated:</strong></div>
-          <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem', paddingLeft: '1rem' }}>• Groups games by opponent and time class<br/>• Finds streaks of 10+ consecutive wins vs same player<br/>• Each qualifying streak creates a "child" relationship</div>
-          <button
-            style={{
-              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-              color: '#1f2937',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.375rem',
-              fontSize: '0.8rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              marginTop: '0.5rem'
-            }}
-            onClick={() => setShowDescription(false)}
-          >
-            Got it!
-          </button>
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 0,
-              height: 0,
-              borderLeft: '8px solid transparent',
-              borderRight: '8px solid transparent',
-              borderTop: '8px solid #1f2937',
-              filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))'
-            }}
-          />
-        </div>
-      )}
-
-      {showDescription && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 1999
-          }}
-          onClick={() => setShowDescription(false)}
-        />
-      )}
-      <div style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>👶</div>
-      <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.25rem' }}>Child</div>
-      <div style={{ fontSize: '0.8rem', fontWeight: '500' }}>
+      <StatExplainer
+        title="Child Stat Explained"
+        emoji="👶"
+        description="Your children are opponents you've adopted by winning 10+ consecutive games against them in the same time class."
+        calculation="How it's calculated:"
+        details="• Groups games by opponent and time class<br/>• Finds streaks of 10+ consecutive wins vs same player<br/>• Each qualifying streak creates a child relationship"
+        showWhenVisible={showTooltip}
+      />
+      <div className={styles.emoji}>👶</div>
+      <div className={styles.label}>Child</div>
+      <div className={styles.displayText}>
         {displayText}
       </div>
       
       {showTooltip && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '100%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
-            color: '#f9fafb',
-            padding: '0.75rem',
-            borderRadius: '0.5rem',
-            fontSize: '0.75rem',
-            zIndex: 1000,
-            marginBottom: '0.5rem',
-            boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 191, 36, 0.1)',
-            minWidth: '250px',
-            maxWidth: '300px',
-            lineHeight: '1.4',
-            border: '1px solid rgba(55, 65, 81, 0.6)',
-            backdropFilter: 'blur(8px)',
-            animation: 'fadeInUp 0.2s ease-out'
-          }}
-        >
-          <div style={{ 
-            fontSize: '0.8rem', 
-            fontWeight: '600', 
-            color: '#fbbf24', 
-            marginBottom: '0.5rem',
-            borderBottom: '1px solid rgba(251, 191, 36, 0.2)',
-            paddingBottom: '0.25rem'
-          }}>
-            Children ({adoptedStats.totalChildren})
+        <div className={styles.tooltip}>
+          <div className={styles.tooltipTitle}>
+            Top {Math.min(5, adoptedStats.totalChildren)} Children ({adoptedStats.totalChildren} total)
           </div>
-          {adoptedStats.children.map((child, index) => (
-            <div key={index} style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: index < adoptedStats.children.length - 1 ? '0.4rem' : '0',
-              fontSize: '0.75rem'
-            }}>
-              <span style={{ 
-                color: '#10b981', 
-                marginRight: '0.5rem',
-                fontWeight: '600'
-              }}>•</span>
-              <span style={{ fontWeight: '500', color: '#e5e7eb' }}>{child.opponent}</span>
-              <span style={{ 
-                marginLeft: '0.5rem',
-                color: '#9ca3af',
-                fontSize: '0.7rem'
-              }}>
+          {adoptedStats.children.slice(0, 5).map((child, index) => (
+            <div key={index} className={styles.tooltipItem}>
+              <span className={`${styles.tooltipBullet} ${styles.tooltipBulletGreen}`}>•</span>
+              <span className={styles.tooltipOpponent}>{child.opponent}</span>
+              <span className={styles.tooltipStreak}>
                 ({child.streakLength}-game streak in {child.timeClass})
               </span>
             </div>
           ))}
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 0,
-              height: 0,
-              borderLeft: '8px solid transparent',
-              borderRight: '8px solid transparent',
-              borderTop: '8px solid #1f2937',
-              filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))'
-            }}
-          />
+          <div className={styles.tooltipArrow} />
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
-import type { ChessComGame } from '../../Types/ChessGame';
+import type { ChessComGameRaw } from '../../Types/ChessGame';
 
 export class MonthlyStatsService {
   private static readonly BASE_URL = 'https://api.chess.com/pub/player';
@@ -29,16 +29,16 @@ export class MonthlyStatsService {
           const res = await fetch(url);
           if (!res.ok) return null;
           try {
-            return (await res.json()) as { games: ChessComGame[] };
+            return (await res.json()) as { games: ChessComGameRaw[] };
           } catch {
             return null;
           }
         })
       );
 
-      const allGames: ChessComGame[] = monthlyPayloads
+      const allGames: ChessComGameRaw[] = monthlyPayloads
         .filter(Boolean)
-        .flatMap((m) => (m as { games: ChessComGame[] }).games || []);
+        .flatMap((m) => (m as { games: ChessComGameRaw[] }).games || []);
 
       const normalized = allGames
         .map((g) => {
