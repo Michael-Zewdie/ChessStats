@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./Styles/InputUserName.css";
 
-export default function InputUserName({ onSubmit, className }: { onSubmit: (username: string) => void; className?: string }) {
+export default function InputUserName({ onSubmit, className, onInputChange }: { onSubmit: (username: string) => void; className?: string; onInputChange?: (username: string) => void }) {
   const [username, setUsername] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+    onInputChange?.(e.target.value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

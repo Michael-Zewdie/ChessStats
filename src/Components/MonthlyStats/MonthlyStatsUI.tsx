@@ -4,11 +4,10 @@ import { MonthlyStatsBox } from "./MonthlyStatsBox"; // adjust path if needed
 import MonthlyStatsSkeleton from "./MonthlyStatsSkeleton";
 
 interface MonthlyStatsUIProps {
-  className?: string;
   username?: string;
 }
 
-export default function MonthlyStatsUI({ className, username }: MonthlyStatsUIProps) {
+export default function MonthlyStatsUI({ username }: MonthlyStatsUIProps) {
   const { data, loading, error } = useMonthlyStats(username);
   const { profile, country } = useChessProfile(username);
 
@@ -17,8 +16,10 @@ export default function MonthlyStatsUI({ className, username }: MonthlyStatsUIPr
       <MonthlyStatsSkeleton />
     </div>
   );
-  if (error) return null;
-  if (!data.length) return <div className={className}>No games found.</div>;
+  
+  if (error || !data.length) {
+    return null;
+  }
 
   return (
     <div className='fixed top-6 right-6 z-10'>
