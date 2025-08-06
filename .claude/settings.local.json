@@ -17,7 +17,10 @@
       "mcp__playwright__browser_evaluate",
       "mcp__playwright__browser_take_screenshot",
       "Bash(npm run:*)",
-      "mcp__playwright__browser_navigate"
+      "mcp__playwright__browser_navigate",
+      "Bash(tsc:*)",
+      "Bash(vite build)",
+      "Bash(npx vite:*)"
     ],
     "deny": []
   }
