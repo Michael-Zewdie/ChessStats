@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
 import { WorstLossService } from '../../../lib/services/FunStats/WorstLossService';
 import styles from '../styles/StatBox.module.css';
@@ -9,7 +9,6 @@ interface WorstLossBoxProps {
 }
 
 export default function WorstLossBox({ games }: WorstLossBoxProps) {
-  const worstLossStats = useMemo(() => WorstLossService.calculate(games), [games]);
   const worstLoss = useMemo(() => WorstLossService.findWorstLoss(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
   
@@ -24,16 +23,47 @@ export default function WorstLossBox({ games }: WorstLossBoxProps) {
         emoji="💔"
         description="Your worst loss shows the opponent you lost to with the greatest rating difference in your favor."
         calculation="How it's calculated:"
-        details="• Finds losses where you had a higher rating than your opponent<br/>• Calculates the rating difference (your rating - opponent rating)<br/>• Shows the opponent from your most painful loss"
+        details="• Finds losses where you had a higher rating than your opponent<br/>• Calculates the rating difference (your rating - opponent rating)<br/>• Shows opponent name normally, 'View Game' button on hover"
         showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>💔</div>
       <div className={styles.label}>Worst Loss</div>
       <div className={styles.displayText}>
-        {worstLoss 
-          ? worstLoss.opponent
-          : 'None'
-        }
+        {!showTooltip ? (
+          worstLoss ? worstLoss.opponent : 'None'
+        ) : (
+          worstLoss?.gameUrl ? (
+            <a 
+              href={worstLoss.gameUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                color: '#ef4444',
+                textDecoration: 'none',
+                fontSize: 'inherit',
+                fontWeight: '600',
+                padding: '0',
+                border: 'none',
+                borderRadius: '0',
+                display: 'inline',
+                transition: 'all 0.2s ease',
+                backgroundColor: 'transparent'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.textShadow = '0 0 8px #ef4444';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#ef4444';
+                e.currentTarget.style.textShadow = 'none';
+              }}
+            >
+              💔 View Game
+            </a>
+          ) : (
+            'None'
+          )
+        )}
       </div>
       
       {showTooltip && (

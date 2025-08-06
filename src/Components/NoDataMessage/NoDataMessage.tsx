@@ -1,0 +1,84 @@
+
+interface NoDataMessageProps {
+  username?: string;
+  message?: string;
+  suggestion?: string;
+  className?: string;
+}
+
+export default function NoDataMessage({ 
+  username, 
+  message = "No chess data found",
+  suggestion = "This user may not have played any rated games on Chess.com or their games may be private.",
+  className = ""
+}: NoDataMessageProps) {
+  return (
+    <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ${className}`}>
+      <div 
+        style={{
+          backgroundColor: '#1f2937',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          maxWidth: '28rem',
+          width: '90%',
+          textAlign: 'center',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 20px rgba(251, 191, 36, 0.4)',
+          border: '1px solid rgba(251, 191, 36, 0.3)',
+          color: '#f0f0f0'
+        }}
+      >
+        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏁</div>
+        
+        <h3 style={{ 
+          fontSize: '1.25rem', 
+          fontWeight: '600', 
+          color: '#fbbf24',
+          marginBottom: '0.75rem'
+        }}>
+          {message}
+        </h3>
+        
+        {username && (
+          <div style={{ 
+            marginBottom: '1rem',
+            padding: '0.5rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '0.375rem',
+            border: '1px solid rgba(75, 85, 99, 0.3)'
+          }}>
+            <span style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Username: </span>
+            <span style={{ 
+              fontFamily: 'monospace', 
+              fontWeight: '500', 
+              color: '#60a5fa',
+              fontSize: '0.875rem'
+            }}>
+              {username}
+            </span>
+          </div>
+        )}
+        
+        <p style={{ 
+          color: '#d1d5db', 
+          fontSize: '0.875rem', 
+          lineHeight: '1.5',
+          marginBottom: '1.5rem'
+        }}>
+          {suggestion}
+        </p>
+        
+        <div 
+          style={{
+            marginTop: '1.5rem',
+            paddingTop: '1rem',
+            borderTop: '1px solid rgba(75, 85, 99, 0.3)'
+          }}
+        >
+          <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+            💡 Try searching for a different Chess.com username
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

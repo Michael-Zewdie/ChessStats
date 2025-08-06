@@ -23,7 +23,6 @@ export class WorstLossService {
         totalLosses
       };
     } catch (error) {
-      console.error('Error calculating worst loss stats:', error);
       return { worstLossScore: 0, totalLosses: 0 };
     }
   }
@@ -33,7 +32,8 @@ export class WorstLossService {
     ratingDiff: number; 
     userRating: number; 
     opponentRating: number; 
-    timeClass: string 
+    timeClass: string;
+    gameUrl?: string;
   } | null {
     if (!games || games.length === 0) return null;
     
@@ -59,10 +59,10 @@ export class WorstLossService {
         ratingDiff: worstLoss.userRating - worstLoss.opponentRating,
         userRating: worstLoss.userRating,
         opponentRating: worstLoss.opponentRating,
-        timeClass: worstLoss.time_class
+        timeClass: worstLoss.time_class,
+        gameUrl: worstLoss.gameUrl
       };
     } catch (error) {
-      console.error('Error finding worst loss:', error);
       return null;
     }
   }

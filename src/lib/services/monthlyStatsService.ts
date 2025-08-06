@@ -1,60 +1,31 @@
 import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
-import type { ChessComGameRaw } from '../../Types/ChessGame';
+import { GameService } from './gameService';
 
 export class MonthlyStatsService {
-  private static readonly BASE_URL = 'https://api.chess.com/pub/player';
-
-  static async fetchGameArchives(username: string): Promise<string[]> {
-    try {
-      const archivesRes = await fetch(`${this.BASE_URL}/${username}/games/archives`);
-      if (!archivesRes.ok) {
-        throw new Error(`Failed to fetch archives for ${username}: ${archivesRes.status}`);
-      }
-      const { archives } = (await archivesRes.json()) as { archives: string[] };
-      return archives;
-    } catch (error) {
-      console.error('Error fetching game archives:', error);
-      return [];
-    }
-  }
-
+  /**
+   * Processes chess games to generate monthly rating statistics
+   * Groups games by month and time class, calculating rating changes
+   */
   static async fetchMonthlyStats(username: string): Promise<MonthlyRatingPoint[]> {
-    const userLc = username.toLowerCase();
-
     try {
-      const archives = await this.fetchGameArchives(username);
+      const games = await GameService.fetchChessGames(username);
       
-      const monthlyPayloads = await Promise.all(
-        archives.map(async (url) => {
-          const res = await fetch(url);
-          if (!res.ok) return null;
-          try {
-            return (await res.json()) as { games: ChessComGameRaw[] };
-          } catch {
-            return null;
-          }
-        })
-      );
+      if (!games || games.length === 0) {
+        return [];
+      }
 
-      const allGames: ChessComGameRaw[] = monthlyPayloads
-        .filter(Boolean)
-        .flatMap((m) => (m as { games: ChessComGameRaw[] }).games || []);
-
-      const normalized = allGames
-        .map((g) => {
-          const youAreWhite = g.white?.username?.toLowerCase() === userLc;
-          const me = youAreWhite ? g.white : g.black;
-          const tsMs = (g.end_time ?? 0) * 1000;
-          return {
-            ts: tsMs,
-            rating: me?.rating,
-            time_class: g.time_class,
-          };
-        })
+      // Convert ChessGame format to the normalized format needed for processing
+      const normalized = games
+        .map((game) => ({
+          ts: new Date(game.date).getTime(),
+          rating: game.userRating,
+          time_class: game.time_class,
+        }))
         .filter((r) => typeof r.rating === 'number' && r.ts);
 
       normalized.sort((a, b) => a.ts - b.ts);
 
+      // Track statistics for each time class
       // Calculate first game date and total games per time class
       const timeClassStats = new Map<string, { firstGameDate: string; totalGames: number }>();
       for (const { ts, time_class } of normalized) {
@@ -73,6 +44,7 @@ export class MonthlyStatsService {
         }
       }
 
+      // Group games by month and time class, tracking first and last ratings
       const byMonthClass = new Map<string, { month: string; time_class: string; start: number; end: number }>();
       for (const { ts, rating, time_class } of normalized) {
         const month = new Date(ts).toISOString().slice(0, 7);
@@ -107,7 +79,6 @@ export class MonthlyStatsService {
 
       return result;
     } catch (error) {
-      console.error('Error fetching monthly stats:', error);
       return [];
     }
   }

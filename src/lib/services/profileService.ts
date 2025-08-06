@@ -14,7 +14,6 @@ export class ProfileService {
       const raw = await res.json();
       return toChessProfile(raw);
     } catch (error) {
-      console.error('Error fetching user profile:', error);
       return null;
     }
   }
@@ -28,7 +27,6 @@ export class ProfileService {
       const json = await res.json();
       return toChessProfileStats(json);
     } catch (error) {
-      console.error('Error fetching user stats:', error);
       throw error;
     }
   }
@@ -42,7 +40,6 @@ export class ProfileService {
       const data = await res.json();
       return data.name;
     } catch (error) {
-      console.error('Error fetching country info:', error);
       return '';
     }
   }

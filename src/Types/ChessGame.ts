@@ -26,6 +26,7 @@ export interface ChessGame {
   opponentRating: number;      // Opponent's rating in this game
   date: string;                // ISO date string (calculated from end_time)
   time_class: string;          // Time control (bullet, blitz, rapid, daily)
+  gameUrl?: string;            // URL to view the game on Chess.com
 }
 
 // // Type aliases for backward compatibility and clarity

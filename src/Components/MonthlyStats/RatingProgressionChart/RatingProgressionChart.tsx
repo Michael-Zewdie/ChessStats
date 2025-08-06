@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   LineChart,
   Line,
@@ -34,6 +33,12 @@ export interface RatingProgressionChartProps {
 
 type TimeInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
+/**
+ * Determines the appropriate time interval for chart display based on data span
+ * Less than 6 months: weekly grouping
+ * 6 months to 5 years: monthly grouping
+ * More than 5 years: yearly grouping
+ */
 function determineTimeInterval(games: GameData[]): TimeInterval {
   if (games.length === 0) return 'monthly';
   
@@ -85,6 +90,10 @@ function formatDisplayLabel(period: string, interval: TimeInterval): string {
   }
 }
 
+/**
+ * Groups game data by time interval and returns the last rating for each period
+ * This creates chart data points showing rating progression over time
+ */
 function groupGamesByInterval(games: GameData[]): ChartDataPoint[] {
   if (games.length === 0) return [];
   
@@ -137,7 +146,7 @@ function getLineColor(data: ChartDataPoint[]): string {
   return lastRating >= firstRating ? '#00C853' : '#D50000';
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as ChartDataPoint;
     return (
@@ -165,7 +174,6 @@ export function RatingProgressionChart({
   title,
   height = 400,
   lineColor,
-  className = '',
   firstGameDate,
   totalGames
 }: RatingProgressionChartProps) {
@@ -185,6 +193,7 @@ export function RatingProgressionChart({
   }
 
   const chartData = groupGamesByInterval(games);
+  const interval = determineTimeInterval(games);
   
   if (chartData.length === 0) {
     return (
@@ -204,7 +213,6 @@ export function RatingProgressionChart({
   const { min, max } = getRatingBounds(chartData);
   const finalLineColor = lineColor || getLineColor(chartData);
   
-  const currentRating = chartData[chartData.length - 1]?.rating;
 
   return (
     <div style={{ backgroundColor: 'transparent', width: '100%', height: '100%' }}>
@@ -216,7 +224,7 @@ export function RatingProgressionChart({
             color: '#fff',
             margin: '0 0 8px 0'
           }}>
-            {title}
+            {title} ({interval})
           </h3>
           <p style={{ 
             fontSize: '14px', 

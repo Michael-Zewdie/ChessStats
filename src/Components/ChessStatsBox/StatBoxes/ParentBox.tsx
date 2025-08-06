@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
 import { AdoptedService } from '../../../lib/services/FunStats/AdoptedService';
 import styles from '../styles/StatBox.module.css';
@@ -40,6 +40,7 @@ export default function ParentBox({ games }: ParentBoxProps) {
       
       {showTooltip && (
         <div
+          // Custom tooltip with gradient background and enhanced styling
           style={{
             position: 'absolute',
             bottom: '100%',

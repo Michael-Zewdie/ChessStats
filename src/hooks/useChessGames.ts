@@ -16,7 +16,6 @@ export function useChessGames(username: string | undefined) {
     ChessDataService.fetchChessGames(username)
       .then(setGames)
       .catch((err) => {
-        console.error('Error fetching chess games:', err);
         setError("Failed to fetch chess games.");
         setGames([]);
       })

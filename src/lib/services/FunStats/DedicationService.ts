@@ -46,7 +46,6 @@ export class DedicationService {
         totalPlayingDays
       };
     } catch (error) {
-      console.error('Error calculating dedication stats:', error);
       return { maxGamesInOneDay: 0, dateOfMaxGames: null, totalPlayingDays: 0 };
     }
   }

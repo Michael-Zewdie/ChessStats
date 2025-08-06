@@ -12,11 +12,10 @@ import type { ChessGame } from './types';
 
 interface ChessStatsBoxProps {
   games: ChessGame[];
-  currentRating: number;
 }
 
 
-export default function ChessStatsBox({ games, currentRating }: ChessStatsBoxProps) {
+export default function ChessStatsBox({ games }: ChessStatsBoxProps) {
   
   return (
     <div style={{

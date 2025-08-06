@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './styles/StatBox.module.css';
 
 interface StatExplainerProps {
   title: string;
   emoji: string;
   description: string;
-  calculation: string;
   details: string;
   showWhenVisible?: boolean;
 }
@@ -14,7 +13,6 @@ export default function StatExplainer({
   title, 
   emoji, 
   description, 
-  calculation, 
   details,
   showWhenVisible = false 
 }: StatExplainerProps) {

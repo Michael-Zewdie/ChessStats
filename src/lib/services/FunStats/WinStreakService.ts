@@ -49,7 +49,6 @@ export class WinStreakService {
         totalWins
       };
     } catch (error) {
-      console.error('Error calculating win streak stats:', error);
       return { longestWinStreak: 0, currentWinStreak: 0, totalWins: 0 };
     }
   }

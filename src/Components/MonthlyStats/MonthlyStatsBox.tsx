@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import type { MonthlyRatingPoint } from "../../Hooks/useMonthlyStats";
+import { useState } from 'react';
+import type { MonthlyRatingPoint } from "../../hooks/useMonthlyStats";
 import type { ChessProfile } from "../../Types/ChessProfile";
 import { RatingProgressionChart, type GameData } from './RatingProgressionChart/index.ts';
 import ProfileMini from '../MonthlyStats/ProfileMini/ProfileMini.tsx';

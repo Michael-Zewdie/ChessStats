@@ -85,7 +85,6 @@ export class RivalService {
         drawsAgainstRival: rivalStats.draws
       };
     } catch (error) {
-      console.error('Error calculating rival:', error);
       return { 
         rival: null, 
         totalGamesWithRival: 0, 

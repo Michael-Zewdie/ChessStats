@@ -31,7 +31,6 @@ export class LosingStreakService {
         worstLosingStreak
       };
     } catch (error) {
-      console.error('Error calculating losing streak stats:', error);
       return { worstLosingStreak: 0 };
     }
   }

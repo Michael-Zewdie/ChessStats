@@ -13,7 +13,6 @@ export class GameService {
       const { archives } = (await archivesRes.json()) as { archives: string[] };
       return archives;
     } catch (error) {
-      console.error('Error fetching game archives:', error);
       return [];
     }
   }
@@ -25,7 +24,6 @@ export class GameService {
       const data = (await res.json()) as { games: ChessComGameRaw[] };
       return data.games || [];
     } catch (error) {
-      console.error('Error fetching monthly games:', error);
       return null;
     }
   }
@@ -44,7 +42,7 @@ export class GameService {
         .filter(Boolean)
         .flatMap((games) => games as ChessComGameRaw[]);
 
-      const chessGames: ChessGame[] = allGames
+      const validGames = allGames
         .map((game) => {
           const youAreWhite = game.white?.username?.toLowerCase() === userLc;
           const userColor = youAreWhite ? 'white' : 'black';
@@ -63,15 +61,16 @@ export class GameService {
             userRating: user.rating,
             opponentRating: opponent.rating,
             date: new Date(game.end_time * 1000).toISOString(),
-            time_class: game.time_class
-          };
+            time_class: game.time_class,
+            gameUrl: game.url
+          } as ChessGame;
         })
-        .filter((game): game is ChessGame => game !== null)
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        .filter((game): game is ChessGame => game !== null);
+
+      const chessGames = validGames.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       return chessGames;
     } catch (error) {
-      console.error('Error fetching chess games:', error);
       return [];
     }
   }

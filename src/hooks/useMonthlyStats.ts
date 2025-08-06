@@ -25,7 +25,6 @@ export function useMonthlyStats(username: string | undefined) {
         if (!cancelled) setData(res);
       })
       .catch((err) => {
-        console.error("useMonthlyStats: fetch error =", err);
         if (!cancelled) setError("Failed to fetch monthly stats.");
       })
       .finally(() => {

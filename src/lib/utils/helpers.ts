@@ -1,5 +1,5 @@
 import type { ChessGame } from '../../Types/ChessGame';
-import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
+import type { ComparisonPoint, MultiPlayerData } from '../../Types/StatTypes';
 
 export interface GameFilter {
   timeClass?: string;

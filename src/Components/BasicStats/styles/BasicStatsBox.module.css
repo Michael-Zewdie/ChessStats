@@ -1,26 +1,26 @@
 .tooltip {
     background-color: #111;
-    padding: 9.88px 12.16px; /* 5% smaller */
-    border-radius: 7.9px; /* 5% smaller */
+    padding: 9.88px 12.16px;
+    border-radius: 7.9px;
     color: #f0f0f0;
-    font-size: 12.76px; /* 5% smaller */
+    font-size: 12.76px;
     line-height: 1.4;
-    box-shadow: 0 0 9.88px rgba(0, 0, 0, 0.6); /* 5% smaller */
+    box-shadow: 0 0 9.88px rgba(0, 0, 0, 0.6);
 }
 
 .tooltipLabel {
     font-weight: 600;
-    margin-bottom: 3.95px; /* 5% smaller */
+    margin-bottom: 3.95px;
 }
 
 .StatsBox {
     background-color: #18191b;
     color: #fff;
-    border-radius: 0.74rem; /* 5% smaller */
-    box-shadow: 0 9.88px 14.86px -3.66px rgba(0,0,0,0.1), 0 3.95px 6.08px -3.95px rgba(0,0,0,0.1); /* 5% smaller */
-    padding: 1.48rem; /* 5% smaller */
-    width: 41.26rem; /* 5% smaller */
-    height: 26.58rem; /* 5% smaller */
+    border-radius: 0.74rem;
+    box-shadow: 0 9.88px 14.86px -3.66px rgba(0,0,0,0.1), 0 3.95px 6.08px -3.95px rgba(0,0,0,0.1);
+    padding: 1.48rem;
+    width: 43.75rem;
+    height: 26.58rem;
     display: flex;
     flex-direction: column;
     align-items: center;

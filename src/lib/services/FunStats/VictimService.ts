@@ -8,6 +8,10 @@ export interface VictimStats {
 }
 
 export class VictimService {
+  /**
+   * Identifies the opponent the player beats most often ("victim")
+   * A victim must have been beaten at least twice
+   */
   static calculate(games: ChessGame[]): VictimStats {
     if (!games || games.length === 0) {
       return { victimOpponent: null, winsAgainstVictim: 0, totalGamesVsVictim: 0, winRateVsVictim: 0 };
@@ -72,7 +76,6 @@ export class VictimService {
         winRateVsVictim
       };
     } catch (error) {
-      console.error('Error calculating victim stats:', error);
       return { victimOpponent: null, winsAgainstVictim: 0, totalGamesVsVictim: 0, winRateVsVictim: 0 };
     }
   }

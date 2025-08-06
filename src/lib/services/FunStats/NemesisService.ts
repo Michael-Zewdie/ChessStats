@@ -72,7 +72,6 @@ export class NemesisService {
         winRateVsNemesis
       };
     } catch (error) {
-      console.error('Error calculating nemesis stats:', error);
       return { nemesisOpponent: null, lossesToNemesis: 0, totalGamesVsNemesis: 0, winRateVsNemesis: 0 };
     }
   }

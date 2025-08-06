@@ -1,7 +1,8 @@
 import { useMonthlyStats } from "../../hooks/useMonthlyStats";
 import { useChessProfile } from "../../hooks/useChessProfile";
-import { MonthlyStatsBox } from "./MonthlyStatsBox"; // adjust path if needed
+import { MonthlyStatsBox } from "./MonthlyStatsBox";
 import MonthlyStatsSkeleton from "./MonthlyStatsSkeleton";
+import NoDataMessage from "../NoDataMessage/NoDataMessage";
 
 interface MonthlyStatsUIProps {
   username?: string;
@@ -17,8 +18,24 @@ export default function MonthlyStatsUI({ username }: MonthlyStatsUIProps) {
     </div>
   );
   
-  if (error || !data.length) {
-    return null;
+  if (error) {
+    return (
+      <NoDataMessage 
+        username={username}
+        message="Error loading monthly stats"
+        suggestion={error}
+      />
+    );
+  }
+
+  if (!data.length) {
+    return (
+      <NoDataMessage 
+        username={username}
+        message="No monthly game data found"
+        suggestion="This user doesn't have any game history on Chess.com or their games may be private."
+      />
+    );
   }
 
   return (

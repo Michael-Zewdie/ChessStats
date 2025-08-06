@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
 import { BestWinService } from '../../../lib/services/FunStats/BestWinService';
 import styles from '../styles/StatBox.module.css';
@@ -23,17 +23,47 @@ export default function BestWinBox({ games }: BestWinBoxProps) {
         emoji="🏆"
         description="Your best win shows your biggest rating victory against a higher-rated opponent."
         calculation="How it's calculated:"
-        details="• Finds your largest rating difference victory vs higher-rated player<br/>• Shows the opponent's name of your best win<br/>• Displays details when you hover over the box"
+        details="• Finds your largest rating difference victory vs higher-rated player<br/>• Shows opponent name normally, 'View Game' button on hover<br/>• Hover for detailed rating information and game access"
         showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>🏆</div>
       <div className={styles.label}>Best Win</div>
       <div className={styles.displayText}>
-        {bestWin 
-          ? bestWin.opponent
-          : 'None'
-        }
-      
+        {!showTooltip ? (
+          bestWin ? bestWin.opponent : 'None'
+        ) : (
+          bestWin?.gameUrl ? (
+            <a 
+              href={bestWin.gameUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                color: '#10b981',
+                textDecoration: 'none',
+                fontSize: 'inherit',
+                fontWeight: '600',
+                padding: '0',
+                border: 'none',
+                borderRadius: '0',
+                display: 'inline',
+                transition: 'all 0.2s ease',
+                backgroundColor: 'transparent'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.textShadow = '0 0 8px #10b981';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#10b981';
+                e.currentTarget.style.textShadow = 'none';
+              }}
+            >
+              🏆 View Game
+            </a>
+          ) : (
+            'None'
+          )
+        )}
       </div>
       {showTooltip && (
         <div className={styles.tooltip}>

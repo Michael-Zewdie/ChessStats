@@ -1,5 +1,4 @@
 import { ChessHelpers } from "../lib/utils/helpers";
-import type { ComparisonPoint, MultiPlayerData } from "../Types/StatTypes";
 
 export const mergePlayersData = ChessHelpers.mergePlayersData;
 export const getTimeClasses = ChessHelpers.getTimeClassesFromComparison;

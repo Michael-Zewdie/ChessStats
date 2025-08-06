@@ -139,7 +139,6 @@ export class AdoptedService {
         totalParents: parents.length
       };
     } catch (error) {
-      console.error('Error calculating adoption relationships:', error);
       return {
         children: [],
         parents: [],

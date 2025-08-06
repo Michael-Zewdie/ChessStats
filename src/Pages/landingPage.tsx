@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import InputUserName from '../Components/InputUserName/InputUserName';
 import { isValidUsername } from '../lib/utils/isValidUsername';
+import NoDataMessage from '../Components/NoDataMessage/NoDataMessage';
 
 export default function LandingPage() {
     const navigate = useNavigate();
@@ -21,7 +22,6 @@ export default function LandingPage() {
                 navigate(`/profile/${userName}`);
             }
         } catch (error) {
-            console.error('Error validating username:', error);
             setIsValid(false);
         }
     };
@@ -41,16 +41,11 @@ export default function LandingPage() {
           gap: '1rem'
         }}>
           {isValid === false && (
-            <div style={{
-              color: '#ff6b6b',
-              textAlign: 'center',
-              fontSize: '2rem',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              maxWidth: '800px'
-            }}>
-              "{checkedUsername}" doesn't exist in the Chess.com database
-            </div>
+            <NoDataMessage 
+              username={checkedUsername}
+              message="User not found"
+              suggestion="This username doesn't exist in the Chess.com database. Please check the spelling and try again."
+            />
           )}
           <div id="main" style={{ display: 'contents' }}>
             <InputUserName 

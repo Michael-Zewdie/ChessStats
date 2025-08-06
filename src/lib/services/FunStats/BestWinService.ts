@@ -6,6 +6,7 @@ type BestWin = {
   userRating: number; 
   opponentRating: number; 
   timeClass: string;
+  gameUrl?: string;
 }
 
 export class BestWinService {
@@ -34,10 +35,10 @@ export class BestWinService {
         ratingDiff: bestWin.opponentRating - bestWin.userRating,
         userRating: bestWin.userRating,
         opponentRating: bestWin.opponentRating,
-        timeClass: bestWin.time_class
+        timeClass: bestWin.time_class,
+        gameUrl: bestWin.gameUrl
       };
     } catch (error) {
-      console.error('Error finding best win:', error);
       return null;
     }
   }

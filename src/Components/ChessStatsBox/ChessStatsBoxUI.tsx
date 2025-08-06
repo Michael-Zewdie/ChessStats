@@ -1,12 +1,12 @@
-import { useChessGames } from "../../Hooks/useChessGames";
-import { useChessStats } from "../../Hooks/useChessStats";
+import { useChessGames } from "../../hooks/useChessGames";
+import { useChessStats } from "../../hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
 import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
+import NoDataMessage from "../NoDataMessage/NoDataMessage";
 
 interface ChessStatsBoxUIProps {
   username: string | undefined;
 }
-
 
 export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
   const { games, loading: gamesLoading, error: gamesError } = useChessGames(username);
@@ -18,8 +18,24 @@ export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
     return <ChessStatsBoxSkeleton />;
   }
 
-  if (gamesError || !games || games.length === 0) {
-    return null;
+  if (gamesError) {
+    return (
+      <NoDataMessage 
+        username={username}
+        message="Error loading game data"
+        suggestion={gamesError}
+      />
+    );
+  }
+
+  if (!games || games.length === 0) {
+    return (
+      <NoDataMessage 
+        username={username}
+        message="No games found"
+        suggestion="This user doesn't have any game data on Chess.com or their games may be private."
+      />
+    );
   }
 
   // Get current rating from stats
@@ -28,12 +44,15 @@ export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
                        stats?.chess_bullet?.last?.rating || 
                        1200; // fallback rating
 
-  console.log('Rendering ChessStatsBox with', games.length, 'games');
-  
   try {
     return <ChessStatsBox games={games} currentRating={currentRating} />;
   } catch (error) {
-    console.error('Error rendering ChessStatsBox:', error);
-    return null;
+    return (
+      <NoDataMessage 
+        username={username}
+        message="Error displaying stats"
+        suggestion="There was an unexpected error processing the chess statistics."
+      />
+    );
   }
 }

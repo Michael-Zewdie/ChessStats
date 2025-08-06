@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChessGame } from '../types';
 import { VictimService } from '../../../lib/services/FunStats/VictimService';
 import styles from '../styles/StatBox.module.css';

@@ -1,9 +1,15 @@
-import { SECTION_CONFIG } from '../Config/statMode.ts'
 import type { ChessProfileStats } from '../Types/ChessStats.ts';
 import type { ChartRow } from "../Types/StatTypes.ts"
 
+const CHESS_TIME_CLASSES = [
+    { key: 'chess_daily', name: 'Daily' },
+    { key: 'chess_rapid', name: 'Rapid' },
+    { key: 'chess_bullet', name: 'Bullet' },
+    { key: 'chess_blitz', name: 'Blitz' },
+] as const;
+
 export function buildChartData(stats: ChessProfileStats): ChartRow[] {
-    return SECTION_CONFIG
+    return CHESS_TIME_CLASSES
         .filter(({ key }) => stats[key])
         .map(({ key, name }) => ({
             name,

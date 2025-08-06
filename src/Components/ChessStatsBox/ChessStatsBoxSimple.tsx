@@ -1,12 +1,10 @@
-import React from 'react';
 import type { ChessGame } from './types';
 
 interface ChessStatsBoxProps {
   games: ChessGame[];
-  currentRating: number;
 }
 
-export default function ChessStatsBoxSimple({ games, currentRating }: ChessStatsBoxProps) {
+export default function ChessStatsBoxSimple({ games }: ChessStatsBoxProps) {
   return (
     <div style={{
       backgroundColor: '#18191b',
