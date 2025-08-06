@@ -5,7 +5,7 @@ import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
 
 import { ProfileService } from '../services/profileService';
 import { GameService } from '../services/gameService';
-import { MonthlyStatsService } from '../services/MonthlyStatsService';
+import { monthlyStatsService } from '../services/monthlyStatsService';
 
 export class ChessDataService {
   // Profile methods
@@ -28,6 +28,6 @@ export class ChessDataService {
 
   // Monthly stats methods
   static async fetchMonthlyStats(username: string): Promise<MonthlyRatingPoint[]> {
-    return MonthlyStatsService.fetchMonthlyStats(username);
+    return monthlyStatsService.fetchMonthlyStats(username);
   }
 }

@@ -1,7 +1,7 @@
 import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
 import { GameService } from './gameService';
 
-export class MonthlyStatsService {
+export class monthlyStatsService {
   /**
    * Processes chess games to generate monthly rating statistics
    * Groups games by month and time class, calculating rating changes
