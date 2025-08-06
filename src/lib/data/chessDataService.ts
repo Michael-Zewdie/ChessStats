@@ -5,7 +5,7 @@ import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
 
 import { ProfileService } from '../services/profileService';
 import { GameService } from '../services/gameService';
-import { MonthlyStatsService } from '../services/MonthlyStatsService.js';
+import { MonthlyStatsService } from '../services/MonthlyStatsService';
 
 export class ChessDataService {
   // Profile methods
