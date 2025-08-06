@@ -12,6 +12,7 @@ import type { ChessGame } from './types';
 
 interface ChessStatsBoxProps {
   games: ChessGame[];
+  currentRating: number;
 }
 
 

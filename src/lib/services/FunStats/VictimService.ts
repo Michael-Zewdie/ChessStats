@@ -66,7 +66,6 @@ export class VictimService {
       // Calculate stats for the victim
       const winsAgainstVictim = victimOpponent ? (winsPerOpponent.get(victimOpponent) || 0) : 0;
       const totalGamesVsVictim = victimOpponent ? (totalGamesPerOpponent.get(victimOpponent) || 0) : 0;
-      const lossesVsVictim = victimOpponent ? (lossesPerOpponent.get(victimOpponent) || 0) : 0;
       const winRateVsVictim = totalGamesVsVictim > 0 ? Math.round((winsAgainstVictim / totalGamesVsVictim) * 100) : 0;
       
       return {

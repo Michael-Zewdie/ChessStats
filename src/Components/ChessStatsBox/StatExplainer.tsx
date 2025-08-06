@@ -5,6 +5,7 @@ interface StatExplainerProps {
   title: string;
   emoji: string;
   description: string;
+  calculation: string;
   details: string;
   showWhenVisible?: boolean;
 }
@@ -13,6 +14,7 @@ export default function StatExplainer({
   title, 
   emoji, 
   description, 
+  calculation,
   details,
   showWhenVisible = false 
 }: StatExplainerProps) {
@@ -45,7 +47,7 @@ export default function StatExplainer({
             {description}
           </div>
           <div className={styles.descriptionCalculation}>
-            <strong>How it's calculated:</strong>
+            <strong>{calculation}</strong>
           </div>
           <div 
             className={styles.descriptionDetails}

@@ -46,7 +46,7 @@ export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
 
   try {
     return <ChessStatsBox games={games} currentRating={currentRating} />;
-  } catch (error) {
+  } catch (_error) {
     return (
       <NoDataMessage 
         username={username}

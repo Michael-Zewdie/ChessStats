@@ -42,10 +42,10 @@ function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[
 
 
 export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps) {
+  const timeClasses = data && data.length > 0 ? Array.from(new Set(data.map((d) => d.time_class))) : [];
+  const [selectedClass, setSelectedClass] = useState<string>(timeClasses[0] || '');
+  
   if (!data || data.length === 0) return null;
-
-  const timeClasses = Array.from(new Set(data.map((d) => d.time_class)));
-  const [selectedClass, setSelectedClass] = useState<string>(timeClasses[0]);
   
   const gamesByTimeClass = convertToGameData(data);
   const selectedGames = gamesByTimeClass[selectedClass] || [];
