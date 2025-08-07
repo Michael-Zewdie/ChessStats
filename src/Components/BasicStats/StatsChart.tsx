@@ -1,11 +1,18 @@
 import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import styles from "./styles/BasicStatsBox.module.css";
-import type {ChartRow} from "../../Types/StatTypes.ts";
+import type { ChartRow } from "../../Types/StatTypes.ts";
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload || !payload.length) return null;
-    const current = payload.find((p: any) => p.dataKey === "current")?.value;
-    const best = payload.find((p: any) => p.dataKey === "best")?.value;
+type TooltipEntry = { dataKey: 'current' | 'best'; value: number };
+interface TooltipProps {
+    active?: boolean;
+    payload?: TooltipEntry[];
+    label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
+    if (!active || !payload || payload.length === 0) return null;
+    const current = payload.find((p) => p.dataKey === "current")?.value;
+    const best = payload.find((p) => p.dataKey === "best")?.value;
 
     return (
         <div className={styles.tooltip}>

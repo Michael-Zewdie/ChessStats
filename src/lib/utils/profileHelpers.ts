@@ -1,14 +1,16 @@
 import type { ChessProfile, rawChessProfile } from '../../Types/ChessProfile';
 import type { ChessProfileStats } from '../../Types/ChessStats';
 
-export function normalizeBestRating(control: any): void {
+type ModeStats = NonNullable<ChessProfileStats['chess_blitz']>;
+
+export function normalizeBestRating(control: ModeStats | undefined): void {
   if (!control) return;
   if (!control.best || control.best.rating === 100 || control.best.rating < control.last.rating) {
     control.best = { ...control.last };
   }
 }
 
-export function toChessProfileStats(raw: any): ChessProfileStats {
+export function toChessProfileStats(raw: ChessProfileStats): ChessProfileStats {
   normalizeBestRating(raw.chess_daily);
   normalizeBestRating(raw.chess_rapid);
   normalizeBestRating(raw.chess_bullet);

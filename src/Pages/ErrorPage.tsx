@@ -1,4 +1,5 @@
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import type React from 'react';
 
 interface ErrorPageProps {
   username?: string;
@@ -91,8 +92,8 @@ export default function ErrorPage({
               cursor: 'pointer',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#fbbf24'}
-            onMouseLeave={(e) => e.target.style.color = '#6b7280'}
+            onMouseEnter={(e: React.MouseEvent<HTMLParagraphElement>) => { e.currentTarget.style.color = '#fbbf24'; }}
+            onMouseLeave={(e: React.MouseEvent<HTMLParagraphElement>) => { e.currentTarget.style.color = '#6b7280'; }}
           >
             💡 Try searching for a different Chess.com username
           </p>

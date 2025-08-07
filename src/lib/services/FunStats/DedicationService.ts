@@ -45,7 +45,7 @@ export class DedicationService {
         dateOfMaxGames,
         totalPlayingDays
       };
-    } catch (error) {
+    } catch {
       return { maxGamesInOneDay: 0, dateOfMaxGames: null, totalPlayingDays: 0 };
     }
   }
@@ -58,7 +58,7 @@ export class DedicationService {
         month: 'short', 
         day: 'numeric' 
       });
-    } catch (error) {
+    } catch {
       return dateString;
     }
   }

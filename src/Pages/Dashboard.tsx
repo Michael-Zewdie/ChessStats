@@ -10,7 +10,7 @@ import { hasEnoughGamesInAnyTimeClass } from "../lib/utils/gameFilters";
 export default function Dashboard() {
     const { username } = useParams<{ username: string }>();
     
-    const { games, loading: gamesLoading, error: gamesError } = useChessGames(username);
+    const { games, loading: gamesLoading } = useChessGames(username);
 
     // Wait for games to load before making decisions
     if (gamesLoading) {

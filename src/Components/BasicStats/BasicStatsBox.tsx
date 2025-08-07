@@ -1,12 +1,12 @@
 import styles from "./styles/BasicStatsBox.module.css";
-import type {ChessProfileStats} from "../../Types/ChessStats";
-import {StatsChart} from "./StatsChart.tsx";
-import {buildChartData} from "../../Utils/buildChartData.tsx";
+import type { ChessProfileStats } from "../../Types/ChessStats";
+import { StatsChart } from "./StatsChart.tsx";
+import { buildChartData } from "../../Utils/buildChartData.tsx";
 
 
 
 interface ChessStatsBoxProps {
-  stats: ChessProfileStats | null;
+  stats: Partial<ChessProfileStats> | null;
 }
 
 

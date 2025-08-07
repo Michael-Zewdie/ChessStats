@@ -38,7 +38,7 @@ export class BestWinService {
         timeClass: bestWin.time_class,
         gameUrl: bestWin.gameUrl
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   }

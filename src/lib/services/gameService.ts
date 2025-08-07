@@ -12,7 +12,7 @@ export class GameService {
       }
       const { archives } = (await archivesRes.json()) as { archives: string[] };
       return archives;
-    } catch (error) {
+    } catch {
       return [];
     }
   }
@@ -23,7 +23,7 @@ export class GameService {
       if (!res.ok) return null;
       const data = (await res.json()) as { games: ChessComGameRaw[] };
       return data.games || [];
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -70,7 +70,7 @@ export class GameService {
       const chessGames = validGames.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       return chessGames;
-    } catch (error) {
+    } catch {
       return [];
     }
   }

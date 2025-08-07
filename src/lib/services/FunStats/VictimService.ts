@@ -74,7 +74,7 @@ export class VictimService {
         totalGamesVsVictim,
         winRateVsVictim
       };
-    } catch (error) {
+    } catch {
       return { victimOpponent: null, winsAgainstVictim: 0, totalGamesVsVictim: 0, winRateVsVictim: 0 };
     }
   }

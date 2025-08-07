@@ -13,7 +13,7 @@ export class ProfileService {
       }
       const raw = await res.json();
       return toChessProfile(raw);
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -26,7 +26,7 @@ export class ProfileService {
       }
       const json = await res.json();
       return toChessProfileStats(json);
-    } catch (error) {
+    } catch {
       throw error;
     }
   }
@@ -39,7 +39,7 @@ export class ProfileService {
       }
       const data = await res.json();
       return data.name;
-    } catch (error) {
+    } catch {
       return '';
     }
   }

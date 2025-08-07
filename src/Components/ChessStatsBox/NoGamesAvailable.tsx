@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import type React from 'react';
 
 export default function NoGamesAvailable() {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ export default function NoGamesAvailable() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      position: 'fixed',
       overflow: 'hidden',
       zIndex: 1000
     }}>
@@ -202,17 +202,19 @@ export default function NoGamesAvailable() {
             minWidth: '200px',
             margin: '2rem auto 1.5rem auto'
           }}
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = 'rgba(251, 191, 36, 0.2)';
-            e.target.style.borderColor = 'rgba(251, 191, 36, 0.5)';
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 6px 20px rgba(251, 191, 36, 0.2)';
+          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+            const btn = e.currentTarget;
+            btn.style.backgroundColor = 'rgba(251, 191, 36, 0.2)';
+            btn.style.borderColor = 'rgba(251, 191, 36, 0.5)';
+            btn.style.transform = 'translateY(-2px)';
+            btn.style.boxShadow = '0 6px 20px rgba(251, 191, 36, 0.2)';
           }}
-          onMouseOut={(e) => {
-            e.target.style.backgroundColor = 'rgba(251, 191, 36, 0.1)';
-            e.target.style.borderColor = 'rgba(251, 191, 36, 0.3)';
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+            const btn = e.currentTarget;
+            btn.style.backgroundColor = 'rgba(251, 191, 36, 0.1)';
+            btn.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+            btn.style.transform = 'translateY(0)';
+            btn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
           }}
         >
           <span>🔍</span>

@@ -60,13 +60,17 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
   
   switch (interval) {
     case 'weekly':
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay());
-      return `${year}-W${Math.ceil((weekStart.getDate() + new Date(year, 0, 1).getDay()) / 7)}`;
+      {
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        return `${year}-W${Math.ceil((weekStart.getDate() + new Date(year, 0, 1).getDay()) / 7)}`;
+      }
     case 'monthly':
       return `${year}-${String(month + 1).padStart(2, '0')}`;
     case 'quarterly':
-      return `${year}-Q${Math.ceil((month + 1) / 3)}`;
+      {
+        return `${year}-Q${Math.ceil((month + 1) / 3)}`;
+      }
     case 'yearly':
       return String(year);
   }
@@ -75,16 +79,22 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
 function formatDisplayLabel(period: string, interval: TimeInterval): string {
   switch (interval) {
     case 'weekly':
-      const [year, week] = period.split('-W');
-      return `${year} W${week}`;
+      {
+        const [year, week] = period.split('-W');
+        return `${year} W${week}`;
+      }
     case 'monthly':
-      const [monthYear, monthNum] = period.split('-');
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return `${monthNames[parseInt(monthNum) - 1]} ${monthYear}`;
+      {
+        const [monthYear, monthNum] = period.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${monthNames[parseInt(monthNum) - 1]} ${monthYear}`;
+      }
     case 'quarterly':
-      const [qYear, quarter] = period.split('-Q');
-      return `${qYear} Q${quarter}`;
+      {
+        const [qYear, quarter] = period.split('-Q');
+        return `${qYear} Q${quarter}`;
+      }
     case 'yearly':
       return period;
   }
@@ -146,7 +156,8 @@ function getLineColor(data: ChartDataPoint[]): string {
   return lastRating >= firstRating ? '#00C853' : '#D50000';
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+interface LineTooltipEntry { payload: ChartDataPoint }
+const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: LineTooltipEntry[] | undefined }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as ChartDataPoint;
     return (

@@ -2,7 +2,6 @@ import { useChessStats } from "../../hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
 import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 import type { ChessGame } from "../../Types/ChessGame";
 
@@ -33,7 +32,7 @@ export default function ChessStatsBoxUI({ username, games }: ChessStatsBoxUIProp
 
   try {
     return <ChessStatsBox games={games} currentRating={currentRating} />;
-  } catch (_error) {
+  } catch {
     navigate(`/error?username=${encodeURIComponent(username || '')}&message=${encodeURIComponent('Error displaying stats')}&suggestion=${encodeURIComponent('There was an unexpected error processing the chess statistics.')}`);
     return null;
   }

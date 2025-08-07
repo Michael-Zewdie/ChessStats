@@ -22,7 +22,7 @@ export class WorstLossService {
         worstLossScore,
         totalLosses
       };
-    } catch (error) {
+    } catch {
       return { worstLossScore: 0, totalLosses: 0 };
     }
   }
@@ -62,7 +62,7 @@ export class WorstLossService {
         timeClass: worstLoss.time_class,
         gameUrl: worstLoss.gameUrl
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   }
