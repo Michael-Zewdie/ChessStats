@@ -1,42 +1,29 @@
-import { useChessGames } from "../../hooks/useChessGames";
 import { useChessStats } from "../../hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
 import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
-import NoDataMessage from "../NoDataMessage/NoDataMessage";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+import type { ChessGame } from "../../Types/ChessGame";
 
 interface ChessStatsBoxUIProps {
   username: string | undefined;
+  games?: ChessGame[];
 }
 
-export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
-  const { games, loading: gamesLoading, error: gamesError } = useChessGames(username);
+export default function ChessStatsBoxUI({ username, games }: ChessStatsBoxUIProps) {
   const { stats, loading: statsLoading } = useChessStats(username);
+  const navigate = useNavigate();
 
-  const loading = gamesLoading || statsLoading;
+  const loading = statsLoading;
   
-  if (loading) {
+  if (loading || !games) {
     return <ChessStatsBoxSkeleton />;
   }
 
-  if (gamesError) {
-    return (
-      <NoDataMessage 
-        username={username}
-        message="Error loading game data"
-        suggestion={gamesError}
-      />
-    );
-  }
-
-  if (!games || games.length === 0) {
-    return (
-      <NoDataMessage 
-        username={username}
-        message="No games found"
-        suggestion="This user doesn't have any game data on Chess.com or their games may be private."
-      />
-    );
-  }
+  // if (games.length === 0) {
+  //   return <div>No games data available</div>;
+  // }
 
   // Get current rating from stats
   const currentRating = stats?.chess_blitz?.last?.rating || 
@@ -47,12 +34,7 @@ export default function ChessStatsBoxUI({ username }: ChessStatsBoxUIProps) {
   try {
     return <ChessStatsBox games={games} currentRating={currentRating} />;
   } catch (_error) {
-    return (
-      <NoDataMessage 
-        username={username}
-        message="Error displaying stats"
-        suggestion="There was an unexpected error processing the chess statistics."
-      />
-    );
+    navigate(`/error?username=${encodeURIComponent(username || '')}&message=${encodeURIComponent('Error displaying stats')}&suggestion=${encodeURIComponent('There was an unexpected error processing the chess statistics.')}`);
+    return null;
   }
 }

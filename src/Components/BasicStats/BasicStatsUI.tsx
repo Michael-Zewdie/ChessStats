@@ -1,13 +1,15 @@
 import BasicStatsBox from "./BasicStatsBox.tsx";
 import BasicStatsSkeleton from "./skeleton/BasicStatsSkeleton.tsx";
-import NoDataMessage from "../NoDataMessage/NoDataMessage.tsx";
 import { useChessStats } from "../../hooks/useChessStats";
+import { getEligibleTimeControls, filterStatsForEligibleTimeControls } from "../../lib/utils/gameFilters";
+import type { ChessGame } from "../../Types/ChessGame";
 
 interface ChessStatsUIProps {
   username: string | undefined;
+  games?: ChessGame[];
 }
 
-export default function BasicStatsUI({ username}: ChessStatsUIProps) {
+export default function BasicStatsUI({ username, games}: ChessStatsUIProps) {
   const { stats, loading, error} = useChessStats(username);
 
   if (loading) return (
@@ -17,24 +19,24 @@ export default function BasicStatsUI({ username}: ChessStatsUIProps) {
   );
 
   if (error) return (
-    <NoDataMessage 
-      username={username}
-      message="Error loading chess stats"
-      suggestion={error}
-    />
+    <div className="fixed bottom-6 right-6 z-50">
+      <div>Error loading stats: {error}</div>
+    </div>
   );
 
-  if (!stats) return (
-    <NoDataMessage 
-      username={username}
-      message="No chess ratings found"
-      suggestion="This user doesn't have any rated chess games on Chess.com or their stats may be private."
-    />
-  );
+  if (!stats) return null;
+
+  // Filter stats based on games if games are provided
+  const filteredStats = games && games.length > 0 
+    ? filterStatsForEligibleTimeControls(stats, getEligibleTimeControls(games))
+    : stats;
+
+  // If no eligible time controls, don't render
+  if (games && games.length > 0 && getEligibleTimeControls(games).length === 0) {
+    return null;
+  }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <BasicStatsBox stats={stats} />
-    </div>
+    <BasicStatsBox stats={filteredStats} />
   );
 }
