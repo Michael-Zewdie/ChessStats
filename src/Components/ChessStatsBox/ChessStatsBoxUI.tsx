@@ -1,6 +1,6 @@
 import { useChessStats } from "../../hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
-import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
+import ChessStatsBoxSkeleton from "./skeleton/ChessStatsBoxSkeleton";
 import { ChessStatsBoxMobile, ChessStatsBoxMobileSkeleton } from "./mobile";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";

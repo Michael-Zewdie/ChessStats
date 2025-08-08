@@ -1,7 +1,7 @@
 import { useMonthlyStats } from "../../hooks/useMonthlyStats";
 import { useChessProfile } from "../../hooks/useChessProfile";
 import { MonthlyStatsBox } from "./MonthlyStatsBox";
-import MonthlyStatsSkeleton from "./MonthlyStatsSkeleton";
+import MonthlyStatsSkeleton from "./skeleton/MonthlyStatsSkeleton";
 import { hasEnoughGamesForTimeControl } from "../../lib/utils/gameFilters";
 import { TIME_CONTROLS, type TimeControlKey } from "../../lib/config/gameThresholds";
 import type { ChessGame } from "../../Types/ChessGame";
