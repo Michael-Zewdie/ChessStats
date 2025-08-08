@@ -4,7 +4,7 @@ export default function MonthlyStatsSkeleton() {
       {/* Profile mini area placeholder (inside box, larger like live UI) */}
       <div
         className="monthly-profile"
-        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', top: '0.75rem', left: '0.75rem' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', top: '1.25rem', left: '1.25rem' }}
       >
         <div style={{ position: 'relative', width: '6rem', height: '6rem' }}>
           <div
@@ -21,7 +21,7 @@ export default function MonthlyStatsSkeleton() {
       {/* Tabs placeholder (4 tabs: Blitz, Bullet, Daily, Rapid) */}
       <div className="monthly-tabs">
         {[0,1,2,3].map((i) => (
-          <div key={i} className="skeleton" style={{ width: '5.25rem', height: '2.25rem', borderRadius: '0.5rem' }} />
+          <div key={i} className="skeleton" style={{ width: '4.25rem', height: '2.25rem', borderRadius: '0.5rem' }} />
         ))}
       </div>
 

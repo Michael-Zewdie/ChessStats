@@ -220,6 +220,7 @@ button:focus-visible {
   top: 1rem;
   left: 1rem;
   z-index: 10;
+  pointer-events: none; /* ensure it sits visually without overlapping borders */
 }
 
 .monthly-tabs {
