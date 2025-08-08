@@ -12,8 +12,8 @@ export default function BasicStatsSkeleton() {
           <div style={{ position: 'absolute', bottom: '2rem', top: '0.75rem', left: '2.5rem', width: 1, backgroundColor: '#374151' }} />
 
           {/* Bars */}
-          <div style={{ position: 'absolute', left: '3.5rem', right: '2rem', bottom: '2rem', top: '1rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', columnGap: '1.25rem', alignItems: 'end' }}>
-            {[55, 65, 45].map((h, i) => (
+          <div style={{ position: 'absolute', left: '3.5rem', right: '2rem', bottom: '2rem', top: '1rem', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: '1.25rem', alignItems: 'end' }}>
+            {[52, 64, 78, 58].map((h, i) => (
               <div key={i} className="skeleton" style={{ height: `${h}%`, borderRadius: '4px' }} />
             ))}
           </div>

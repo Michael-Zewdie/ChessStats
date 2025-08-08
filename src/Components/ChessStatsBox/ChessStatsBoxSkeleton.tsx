@@ -2,9 +2,14 @@ export default function ChessStatsBoxSkeleton() {
   return (
     <div className="chess-stats-container" role="status" aria-busy="true">
       <div className="chess-stats-grid">
-        {/* 8 standard tiles */}
-        {Array.from({ length: 8 }, (_, i) => (
-          <div key={`tile-${i}`} className="skeleton-tile" />
+        {/* First row: Rival, Nemesis, Victim, Dedication */}
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={`r1-${i}`} className="skeleton-tile" />
+        ))}
+
+        {/* Second row: Best Win, Worst Loss, Win Streak, Losing Streak */}
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={`r2-${i}`} className="skeleton-tile" />
         ))}
 
         {/* Child and Parent rows use the same wrappers to preserve grid spans */}
@@ -14,7 +19,7 @@ export default function ChessStatsBoxSkeleton() {
 
       <style>{`
         .skeleton-tile {
-          height: 5rem;
+          height: 6.25rem;
           border-radius: 0.5rem;
           background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
           background-size: 400% 100%;

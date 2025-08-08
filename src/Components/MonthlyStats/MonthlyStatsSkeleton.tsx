@@ -10,10 +10,10 @@ export default function MonthlyStatsSkeleton() {
         </div>
       </div>
 
-      {/* Tabs placeholder */}
+      {/* Tabs placeholder (4 tabs: Blitz, Bullet, Daily, Rapid) */}
       <div className="monthly-tabs">
-        {[0,1,2].map((i) => (
-          <div key={i} className="skeleton" style={{ width: '5rem', height: '2.25rem', borderRadius: '0.5rem' }} />
+        {[0,1,2,3].map((i) => (
+          <div key={i} className="skeleton" style={{ width: '5.25rem', height: '2.25rem', borderRadius: '0.5rem' }} />
         ))}
       </div>
 
@@ -23,8 +23,8 @@ export default function MonthlyStatsSkeleton() {
         <div style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '2.5rem', height: 1, backgroundColor: '#374151' }} />
         <div style={{ position: 'absolute', bottom: '2.5rem', top: '1rem', left: '3rem', width: 1, backgroundColor: '#374151' }} />
 
-        {/* Line stub */}
-        <div className="skeleton" style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '6rem', height: 3, borderRadius: 2 }} />
+        {/* Line stub resembling yearly trend */}
+        <div className="skeleton" style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '7rem', height: 3, borderRadius: 2 }} />
       </div>
 
       <style>{`
