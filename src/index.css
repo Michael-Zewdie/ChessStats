@@ -331,7 +331,7 @@ button:focus-visible {
 /* Ensure stat boxes fit within grid cells but maintain minimum size */
 .chess-stats-grid > * {
   min-height: 60px;
-  overflow: hidden;
+  overflow: visible; /* allow stat popovers to overflow grid cell wrappers */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -382,6 +382,7 @@ button:focus-visible {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.75rem;
+    overflow: visible; /* ensure bottom wide tiles can overflow */
   }
   
   .child-box-wrapper {
@@ -440,6 +441,7 @@ button:focus-visible {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 0.875rem;
+    overflow: visible; /* ensure bottom wide tiles can overflow */
   }
   
   .child-box-wrapper {
