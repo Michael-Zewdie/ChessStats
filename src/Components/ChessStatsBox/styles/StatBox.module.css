@@ -149,6 +149,7 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
+  pointer-events: none; /* keep overlay visual-only to avoid hover jitter */
 }
 
 /* Tooltip */
