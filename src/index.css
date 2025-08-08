@@ -412,6 +412,43 @@ button:focus-visible {
   }
 }
 
+/* Mobile Dashboard - ChessStatsBox Only */
+.mobile-dashboard {
+  height: 100vh;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mobile-chess-stats {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Override chess stats container for mobile-only view */
+.mobile-dashboard .chess-stats-container {
+  height: 100%;
+  max-height: none;
+  overflow: auto;
+}
+
+.mobile-dashboard .chess-stats-grid {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Ensure stat boxes are properly sized on mobile */
+.mobile-dashboard .chess-stats-grid > * {
+  min-height: fit-content;
+}
+
 /* Landing Page Responsive Styles */
 .landing-page {
   min-height: 100vh;

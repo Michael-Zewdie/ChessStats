@@ -4,16 +4,28 @@ import MonthlyStatsUI from "../Components/MonthlyStats/MonthlyStatsUI.tsx";
 import ChessStatsBoxUI from "../Components/ChessStatsBox/ChessStatsBoxUI.tsx";
 import NoGamesAvailable from "../Components/ChessStatsBox/NoGamesAvailable.tsx";   
 import { useChessGames } from "../hooks/useChessGames";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { hasEnoughGamesInAnyTimeClass } from "../lib/utils/gameFilters";
 
 
 export default function Dashboard() {
     const { username } = useParams<{ username: string }>();
+    const isMobile = useIsMobile();
     
     const { games, loading: gamesLoading } = useChessGames(username);
 
     // Wait for games to load before making decisions
     if (gamesLoading) {
+        if (isMobile) {
+            return (
+                <div className="mobile-dashboard">
+                    <div className="mobile-chess-stats">
+                        <ChessStatsBoxUI username={username} games={games} />
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="responsive-dashboard">
                 <div className="stats-grid">
@@ -41,6 +53,16 @@ export default function Dashboard() {
     // If no games at all (empty array), show fallback
     if (games && games.length === 0) {
         return <NoGamesAvailable />;
+    }
+
+    if (isMobile) {
+        return (
+            <div className="mobile-dashboard">
+                <div className="mobile-chess-stats">
+                    <ChessStatsBoxUI username={username} games={games} />
+                </div>
+            </div>
+        );
     }
 
     return (
