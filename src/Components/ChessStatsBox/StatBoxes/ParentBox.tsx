@@ -51,7 +51,7 @@ export default function ParentBox({ games }: ParentBoxProps) {
             padding: '0.75rem',
             borderRadius: '0.5rem',
             fontSize: '0.75rem',
-            zIndex: 1000,
+            zIndex: 10000,
             marginBottom: '0.5rem',
             boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 191, 36, 0.1)',
             minWidth: '250px',

@@ -18,10 +18,14 @@ export default function ChessStatsBoxSkeleton() {
       </div>
 
       <style>{`
+        /* Allow scrolling so bottom row never gets clipped on short viewports */
+        .chess-stats-container { overflow-y: auto !important; padding-bottom: 0.5rem; }
+
         /* Force consistent 3-row grid for skeleton, mirroring live layout */
         .chess-stats-grid {
           grid-template-columns: repeat(4, 1fr);
-          grid-template-rows: repeat(3, minmax(7rem, 1fr));
+          grid-template-rows: repeat(3, minmax(6.75rem, auto));
+          gap: 0.75rem;
         }
 
         .skeleton-tile {
@@ -41,6 +45,18 @@ export default function ChessStatsBoxSkeleton() {
         }
         .child-box-wrapper .skeleton-tile,
         .parent-box-wrapper .skeleton-tile { height: 100%; width: 100%; }
+
+        /* When vertical space is tight, decrease row minimum height a bit */
+        @media (max-height: 820px) {
+          .chess-stats-grid { grid-template-rows: repeat(3, minmax(6rem, auto)); gap: 0.625rem; }
+        }
+        @media (max-height: 760px) {
+          .chess-stats-grid { grid-template-rows: repeat(3, minmax(5.5rem, auto)); gap: 0.5rem; }
+        }
+        @media (max-height: 700px) {
+          .chess-stats-grid { grid-template-rows: repeat(3, minmax(5rem, auto)); gap: 0.375rem; }
+          .chess-stats-container { padding: 0.75rem; }
+        }
 
         @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
       `}</style>

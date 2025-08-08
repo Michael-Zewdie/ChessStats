@@ -315,7 +315,7 @@ button:focus-visible {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible; /* allow tooltips/descriptions to overflow */
 }
 
 .chess-stats-grid {
@@ -324,7 +324,7 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   flex: 1;
-  overflow: hidden;
+  overflow: visible; /* ensure children popovers are not clipped by the grid */
   min-height: 0;
 }
 
