@@ -24,7 +24,7 @@ export default function DedicationBox({ games }: DedicationBoxProps) {
         description="Your dedication score shows the most games you've ever played in a single day."
         calculation="How it's calculated:"
         details="• Groups all games by date<br/>• Counts games played on each day<br/>• Shows your highest single-day game count"
-        showWhenVisible={true}
+        showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>💪</div>
       <div className={styles.label}>Dedication</div>

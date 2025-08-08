@@ -29,7 +29,7 @@ export default function ParentBox({ games }: ParentBoxProps) {
         description="Your parents are opponents who have adopted you by winning 10+ consecutive games in the same time class."
         calculation="How it's calculated:"
         details="• Groups games by opponent and time class<br/>• Finds streaks of 10+ consecutive losses to same player<br/>• Each qualifying streak creates a parent relationship"
-        showWhenVisible={true}
+        showWhenVisible={showTooltip}
       />
 
       <div className={styles.emoji}>👨‍👧‍👦</div>

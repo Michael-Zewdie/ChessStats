@@ -24,7 +24,7 @@ export default function VictimBox({ games }: VictimBoxProps) {
         description="Your victim is the opponent you've beaten the most (minimum 2 wins required)."
         calculation="How it's calculated:"
         details="• Counts wins against each opponent<br/>• Finds the player you've beaten most often<br/>• Requires at least 2 wins to qualify as victim"
-        showWhenVisible={true}
+        showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>🎯</div>
       <div className={styles.label}>Victim</div>

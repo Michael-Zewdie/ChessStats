@@ -24,7 +24,7 @@ export default function WorstLossBox({ games }: WorstLossBoxProps) {
         description="Your worst loss shows the opponent you lost to with the greatest rating difference in your favor."
         calculation="How it's calculated:"
         details="• Finds losses where you had a higher rating than your opponent<br/>• Calculates the rating difference (your rating - opponent rating)<br/>• Shows opponent name normally, 'View Game' button on hover"
-        showWhenVisible={true}
+        showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>💔</div>
       <div className={styles.label}>Worst Loss</div>

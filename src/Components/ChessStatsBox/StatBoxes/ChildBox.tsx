@@ -29,7 +29,7 @@ export default function ChildBox({ games }: ChildBoxProps) {
         description="Your children are opponents you've adopted by winning 10+ consecutive games against them in the same time class."
         calculation="How it's calculated:"
         details="• Groups games by opponent and time class<br/>• Finds streaks of 10+ consecutive wins vs same player<br/>• Each qualifying streak creates a child relationship"
-        showWhenVisible={true}
+        showWhenVisible={showTooltip}
       />
       <div className={styles.emoji}>👶</div>
       <div className={styles.label}>Child</div>
