@@ -18,14 +18,30 @@ export default function ChessStatsBoxSkeleton() {
       </div>
 
       <style>{`
+        /* Force consistent 3-row grid for skeleton, mirroring live layout */
+        .chess-stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(3, minmax(7rem, 1fr));
+        }
+
         .skeleton-tile {
-          height: 6.25rem;
-          border-radius: 0.5rem;
+          width: 100%;
+          height: 100%;
+          border-radius: 0.75rem;
           background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
           background-size: 400% 100%;
           animation: shimmer 1.2s ease-in-out infinite;
           border: 1px solid #2f3136;
         }
+
+        /* Ensure bottom wide tiles fill their grid area fully */
+        .child-box-wrapper, .parent-box-wrapper {
+          display: flex;
+          align-items: stretch;
+        }
+        .child-box-wrapper .skeleton-tile,
+        .parent-box-wrapper .skeleton-tile { height: 100%; width: 100%; }
+
         @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
       `}</style>
     </div>

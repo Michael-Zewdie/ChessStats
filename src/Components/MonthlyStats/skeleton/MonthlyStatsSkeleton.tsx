@@ -4,7 +4,7 @@ export default function MonthlyStatsSkeleton() {
       {/* Profile mini area placeholder (inside box, larger like live UI) */}
       <div
         className="monthly-profile"
-        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', top: '1.25rem', left: '1.25rem' }}
+        style={{ display: 'flex', alignItems: 'center', padding: '1.5rem' }}
       >
         <div style={{ position: 'relative', width: '6rem', height: '6rem' }}>
           <div
@@ -12,7 +12,7 @@ export default function MonthlyStatsSkeleton() {
             style={{ width: '6rem', height: '6rem', borderRadius: '50%', border: '4px solid #374151' }}
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{marginLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <div className="skeleton" style={{ width: '10rem', height: '2rem', borderRadius: 6 }} />
           <div className="skeleton" style={{ width: '2rem', height: '1.25rem', borderRadius: 3 }} />
         </div>
@@ -21,17 +21,21 @@ export default function MonthlyStatsSkeleton() {
       {/* Tabs placeholder (4 tabs: Blitz, Bullet, Daily, Rapid) */}
       <div className="monthly-tabs">
         {[0,1,2,3].map((i) => (
-          <div key={i} className="skeleton" style={{ width: '4.25rem', height: '2.25rem', borderRadius: '0.5rem' }} />
+          <div key={i} className="skeleton" style={{ width: '5.25rem', height: '2.25rem', borderRadius: '0.5rem' }} />
         ))}
+      </div>
+
+      {/* Title/description skeletons centered above the chart */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+        <div className="skeleton" style={{ width: 'min(90%, 20rem)', height: '1.6rem', borderRadius: 6 }} />
+        <div className="skeleton" style={{ width: 'min(90%, 26rem)', height: '0.9rem', borderRadius: 4 }} />
+        <div className="skeleton" style={{ width: 'min(90%, 32rem)', height: '0.9rem', borderRadius: 4 }} />
       </div>
 
       {/* Chart area placeholder (fills remaining height) */}
       <div className="monthly-chart" style={{ position: 'relative' }}>
-        {/* Axes */}
         <div style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '2.5rem', height: 1, backgroundColor: '#374151' }} />
         <div style={{ position: 'absolute', bottom: '2.5rem', top: '1rem', left: '3rem', width: 1, backgroundColor: '#374151' }} />
-
-        {/* Line stub resembling yearly trend */}
         <div className="skeleton" style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '7rem', height: 3, borderRadius: 2 }} />
       </div>
 
