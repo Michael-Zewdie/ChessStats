@@ -1,0 +1,41 @@
+/* Mobile ChessStatsBox - Space-efficient 2x5 grid */
+.mobileContainer {
+  padding: 0.5rem;
+  margin: 0;
+  background-color: #18191b;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  border: 1px solid #374151;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.statboxes {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  gap: 0.5rem;
+  padding: 0.25rem;
+  overflow: hidden;
+}
+
+.statboxes > * {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.875rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-height: 0;
+}
