@@ -19,7 +19,7 @@ export default function ChessStatsBoxUI({ username, games }: ChessStatsBoxUIProp
 
   const loading = statsLoading;
   
-  if (loading || !games) {
+  if (loading || !games || games.length === 0) {
     return isMobile ? <ChessStatsBoxMobileSkeleton /> : <ChessStatsBoxSkeleton />;
   }
 

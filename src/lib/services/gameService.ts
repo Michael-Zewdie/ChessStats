@@ -7,12 +7,18 @@ export class GameService {
   static async fetchGameArchives(username: string): Promise<string[]> {
     try {
       const archivesRes = await fetch(`${this.BASE_URL}/${username}/games/archives`);
+      if (archivesRes.status === 404) {
+        throw new Error('USER_NOT_FOUND');
+      }
       if (!archivesRes.ok) {
         throw new Error(`Failed to fetch archives for ${username}: ${archivesRes.status}`);
       }
       const { archives } = (await archivesRes.json()) as { archives: string[] };
       return archives;
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.message === 'USER_NOT_FOUND') {
+        throw error;
+      }
       return [];
     }
   }

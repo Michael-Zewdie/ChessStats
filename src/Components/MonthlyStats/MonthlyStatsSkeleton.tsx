@@ -1,148 +1,40 @@
 export default function MonthlyStatsSkeleton() {
   return (
-    <div style={{
-      width: '105rem',
-      maxWidth: '105rem',
-      height: 500,
-      backgroundColor: '#18191b',
-      color: '#fff',
-      borderRadius: '0.75rem',
-      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
-      padding: '1.5rem',
-      display: 'flex',
-      flexDirection: 'column',
-      border: '1px solid #374151',
-      marginLeft: 0,
-      marginRight: 'auto',
-      alignSelf: 'flex-start',
-      position: 'relative'
-    }}>
-      {/* Profile skeleton */}
-      <div style={{
-        position: 'absolute',
-        top: '1rem',
-        left: '1.5rem',
-        zIndex: 10,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem'
-      }}>
-        <div style={{
-          width: '3rem',
-          height: '3rem',
-          borderRadius: '50%',
-          backgroundColor: '#374151',
-          animation: 'pulse 2s infinite'
-        }} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{
-            width: '4rem',
-            height: '1rem',
-            backgroundColor: '#374151',
-            borderRadius: '0.25rem',
-            animation: 'pulse 2s infinite'
-          }} />
-          <div style={{
-            width: '1.5rem',
-            height: '1.25rem',
-            backgroundColor: '#374151',
-            borderRadius: '0.25rem',
-            animation: 'pulse 2s infinite'
-          }} />
+    <div className="monthly-stats-container" role="status" aria-busy="true">
+      {/* Profile mini area placeholder */}
+      <div className="monthly-profile" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="skeleton" style={{ width: '3rem', height: '3rem', borderRadius: '50%' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+          <div className="skeleton" style={{ width: '6rem', height: '0.9rem', borderRadius: 4 }} />
+          <div className="skeleton" style={{ width: '1.5rem', height: '1.2rem', borderRadius: 4 }} />
         </div>
       </div>
 
-      {/* Time class buttons skeleton */}
-      <div style={{ 
-        marginBottom: '1rem', 
-        display: 'flex', 
-        gap: '1rem', 
-        justifyContent: 'center' 
-      }}>
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
-              width: '5rem',
-              height: '2.5rem',
-              backgroundColor: '#374151',
-              animation: 'pulse 2s infinite',
-              animationDelay: `${i * 0.2}s`
-            }}
-          />
+      {/* Tabs placeholder */}
+      <div className="monthly-tabs">
+        {[0,1,2].map((i) => (
+          <div key={i} className="skeleton" style={{ width: '5rem', height: '2.25rem', borderRadius: '0.5rem' }} />
         ))}
       </div>
 
-      {/* Chart skeleton */}
-      <div style={{ 
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
-        {/* Chart area with more realistic skeleton */}
-        <div style={{
-          flex: 1,
-          backgroundColor: '#374151',
-          borderRadius: '0.5rem',
-          position: 'relative',
-          overflow: 'hidden',
-          animation: 'pulse 2s infinite'
-        }}>
-          {/* Simulate chart axes */}
-          <div style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '3rem',
-            right: '2rem',
-            height: '1px',
-            backgroundColor: '#4B5563',
-            opacity: 0.5
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '3rem',
-            top: '2rem',
-            width: '1px',
-            backgroundColor: '#4B5563',
-            opacity: 0.5
-          }} />
-          
-          {/* Simulate line chart points */}
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                bottom: `${20 + Math.random() * 60}%`,
-                left: `${15 + i * 15}%`,
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                backgroundColor: '#6B7280',
-                animation: 'pulse 2s infinite',
-                animationDelay: `${i * 0.3}s`
-              }}
-            />
-          ))}
-        </div>
+      {/* Chart area placeholder (fills remaining height) */}
+      <div className="monthly-chart" style={{ position: 'relative' }}>
+        {/* Axes */}
+        <div style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '2.5rem', height: 1, backgroundColor: '#374151' }} />
+        <div style={{ position: 'absolute', bottom: '2.5rem', top: '1rem', left: '3rem', width: 1, backgroundColor: '#374151' }} />
+
+        {/* Line stub */}
+        <div className="skeleton" style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '6rem', height: 3, borderRadius: 2 }} />
       </div>
 
-      <style>
-        {`
-          @keyframes pulse {
-            0%, 100% {
-              opacity: 1;
-            }
-            50% {
-              opacity: 0.5;
-            }
-          }
-        `}
-      </style>
+      <style>{`
+        .skeleton { 
+          background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
+          background-size: 400% 100%;
+          animation: shimmer 1.2s ease-in-out infinite;
+        }
+        @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+      `}</style>
     </div>
   );
 }

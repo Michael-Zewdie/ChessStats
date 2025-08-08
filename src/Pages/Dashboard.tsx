@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BasicStatsUI from "../Components/BasicStats/BasicStatsUI.tsx";
 import MonthlyStatsUI from "../Components/MonthlyStats/MonthlyStatsUI.tsx";
 import ChessStatsBoxUI from "../Components/ChessStatsBox/ChessStatsBoxUI.tsx";
@@ -6,13 +6,22 @@ import NoGamesAvailable from "../Components/ChessStatsBox/NoGamesAvailable.tsx";
 import { useChessGames } from "../hooks/useChessGames";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { hasEnoughGamesInAnyTimeClass } from "../lib/utils/gameFilters";
+import { useEffect } from "react";
 
 
 export default function Dashboard() {
     const { username } = useParams<{ username: string }>();
     const isMobile = useIsMobile();
+    const navigate = useNavigate();
     
-    const { games, loading: gamesLoading } = useChessGames(username);
+    const { games, loading: gamesLoading, userNotFound } = useChessGames(username);
+
+    // Redirect to error page if user doesn't exist
+    useEffect(() => {
+        if (userNotFound && username) {
+            navigate(`/error?username=${encodeURIComponent(username)}&message=${encodeURIComponent('User not found')}&suggestion=${encodeURIComponent('Please check the username spelling or try a different Chess.com user.')}`);
+        }
+    }, [userNotFound, username, navigate]);
 
     // Wait for games to load before making decisions
     if (gamesLoading) {
