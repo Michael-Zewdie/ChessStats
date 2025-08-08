@@ -6,4 +6,5 @@ export type MonthlyRatingPoint = {
   time_class: string;     // rapid / blitz / bullet / daily etc.
   firstGameDate?: string; // Date of first game for this time class (ISO string)
   totalGames?: number;    // Total number of games played in this time class
+  lastGameDate?: string;  // Date of last game within this month (ISO string)
 };

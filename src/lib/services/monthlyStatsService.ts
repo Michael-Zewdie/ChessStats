@@ -44,16 +44,17 @@ export class monthlyStatsService {
         }
       }
 
-      // Group games by month and time class, tracking first and last ratings
-      const byMonthClass = new Map<string, { month: string; time_class: string; start: number; end: number }>();
+      // Group games by month and time class, tracking first/last ratings and last game date within month
+      const byMonthClass = new Map<string, { month: string; time_class: string; start: number; end: number; lastTs: number }>();
       for (const { ts, rating, time_class } of normalized) {
         const month = new Date(ts).toISOString().slice(0, 7);
         const key = `${month}|${time_class}`;
         const existing = byMonthClass.get(key);
         if (!existing) {
-          byMonthClass.set(key, { month, time_class, start: rating!, end: rating! });
+          byMonthClass.set(key, { month, time_class, start: rating!, end: rating!, lastTs: ts });
         } else {
           existing.end = rating!;
+          existing.lastTs = Math.max(existing.lastTs, ts);
         }
       }
 
@@ -68,6 +69,7 @@ export class monthlyStatsService {
             time_class: v.time_class,
             firstGameDate: timeClassStat?.firstGameDate,
             totalGames: timeClassStat?.totalGames,
+            lastGameDate: new Date(v.lastTs).toISOString(),
           };
         })
         .sort((a, b) => {

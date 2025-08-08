@@ -26,12 +26,18 @@ function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[
       gamesByTimeClass[point.time_class] = [];
     }
     
-    // Convert month string (YYYY-MM) to a proper date (end of month for better progression)
-    const [year, month] = point.month.split('-');
-    const lastDayOfMonth = new Date(parseInt(year), parseInt(month), 0);
+    // Use lastGameDate when available; otherwise fallback to last day of month
+    let dateIso: string;
+    if (point.lastGameDate) {
+      dateIso = new Date(point.lastGameDate).toISOString().split('T')[0];
+    } else {
+      const [year, month] = point.month.split('-');
+      const lastDayOfMonth = new Date(parseInt(year), parseInt(month), 0);
+      dateIso = lastDayOfMonth.toISOString().split('T')[0];
+    }
     
     gamesByTimeClass[point.time_class].push({
-      date: lastDayOfMonth.toISOString().split('T')[0],
+      date: dateIso,
       rating: point.end,
       time_class: point.time_class
     });

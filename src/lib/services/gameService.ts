@@ -48,7 +48,12 @@ export class GameService {
         .filter(Boolean)
         .flatMap((games) => games as ChessComGameRaw[]);
 
-      const validGames = allGames
+      // Keep only standard chess games. Exclude variants like chess960, kingofthehill, etc.
+      const standardGames: ChessComGameRaw[] = allGames.filter(
+        (game) => (game.rules ?? 'chess') === 'chess'
+      );
+
+      const validGames = standardGames
         .map((game) => {
           const youAreWhite = game.white?.username?.toLowerCase() === userLc;
           const userColor = youAreWhite ? 'white' : 'black';
