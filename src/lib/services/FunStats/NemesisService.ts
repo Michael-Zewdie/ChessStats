@@ -71,7 +71,7 @@ export class NemesisService {
         totalGamesVsNemesis,
         winRateVsNemesis
       };
-    } catch (error) {
+    } catch {
       return { nemesisOpponent: null, lossesToNemesis: 0, totalGamesVsNemesis: 0, winRateVsNemesis: 0 };
     }
   }

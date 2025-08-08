@@ -48,7 +48,7 @@ export class WinStreakService {
         currentWinStreak,
         totalWins
       };
-    } catch (error) {
+    } catch {
       return { longestWinStreak: 0, currentWinStreak: 0, totalWins: 0 };
     }
   }

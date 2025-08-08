@@ -30,7 +30,7 @@ export class LosingStreakService {
       return {
         worstLosingStreak
       };
-    } catch (error) {
+    } catch {
       return { worstLosingStreak: 0 };
     }
   }

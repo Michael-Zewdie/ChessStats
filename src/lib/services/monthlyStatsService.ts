@@ -78,7 +78,7 @@ export class monthlyStatsService {
         });
 
       return result;
-    } catch (error) {
+    } catch {
       return [];
     }
   }

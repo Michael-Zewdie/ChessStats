@@ -138,7 +138,7 @@ export class AdoptedService {
         totalChildren: children.length,
         totalParents: parents.length
       };
-    } catch (error) {
+    } catch {
       return {
         children: [],
         parents: [],

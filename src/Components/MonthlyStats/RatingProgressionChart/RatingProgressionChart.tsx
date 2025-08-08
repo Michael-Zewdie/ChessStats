@@ -60,13 +60,17 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
   
   switch (interval) {
     case 'weekly':
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay());
-      return `${year}-W${Math.ceil((weekStart.getDate() + new Date(year, 0, 1).getDay()) / 7)}`;
+      {
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        return `${year}-W${Math.ceil((weekStart.getDate() + new Date(year, 0, 1).getDay()) / 7)}`;
+      }
     case 'monthly':
       return `${year}-${String(month + 1).padStart(2, '0')}`;
     case 'quarterly':
-      return `${year}-Q${Math.ceil((month + 1) / 3)}`;
+      {
+        return `${year}-Q${Math.ceil((month + 1) / 3)}`;
+      }
     case 'yearly':
       return String(year);
   }
@@ -75,16 +79,22 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
 function formatDisplayLabel(period: string, interval: TimeInterval): string {
   switch (interval) {
     case 'weekly':
-      const [year, week] = period.split('-W');
-      return `${year} W${week}`;
+      {
+        const [year, week] = period.split('-W');
+        return `${year} W${week}`;
+      }
     case 'monthly':
-      const [monthYear, monthNum] = period.split('-');
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return `${monthNames[parseInt(monthNum) - 1]} ${monthYear}`;
+      {
+        const [monthYear, monthNum] = period.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${monthNames[parseInt(monthNum) - 1]} ${monthYear}`;
+      }
     case 'quarterly':
-      const [qYear, quarter] = period.split('-Q');
-      return `${qYear} Q${quarter}`;
+      {
+        const [qYear, quarter] = period.split('-Q');
+        return `${qYear} Q${quarter}`;
+      }
     case 'yearly':
       return period;
   }
@@ -146,7 +156,8 @@ function getLineColor(data: ChartDataPoint[]): string {
   return lastRating >= firstRating ? '#00C853' : '#D50000';
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+interface LineTooltipEntry { payload: ChartDataPoint }
+const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: LineTooltipEntry[] | undefined }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as ChartDataPoint;
     return (
@@ -172,18 +183,17 @@ const CustomTooltip = ({ active, payload }: any) => {
 export function RatingProgressionChart({
   games,
   title,
-  height = 400,
   lineColor,
   firstGameDate,
   totalGames
-}: RatingProgressionChartProps) {
+}: Omit<RatingProgressionChartProps, 'height'>) {
   if (!games || games.length === 0) {
     return (
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '256px',
+        height: '100%',
         backgroundColor: 'transparent',
         borderRadius: '8px'
       }}>
@@ -201,7 +211,7 @@ export function RatingProgressionChart({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '256px',
+        height: '100%',
         backgroundColor: 'transparent',
         borderRadius: '8px'
       }}>
@@ -215,19 +225,19 @@ export function RatingProgressionChart({
   
 
   return (
-    <div style={{ backgroundColor: 'transparent', width: '100%', height: '100%' }}>
+    <div style={{ backgroundColor: 'transparent', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {title && (
-        <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+        <div style={{ marginBottom: '8px', textAlign: 'center' }}>
           <h3 style={{ 
-            fontSize: '20px', 
+            fontSize: '18px', 
             fontWeight: 'bold', 
             color: '#fff',
-            margin: '0 0 8px 0'
+            margin: '0 0 4px 0'
           }}>
             {title} ({interval})
           </h3>
           <p style={{ 
-            fontSize: '14px', 
+            fontSize: '13px', 
             color: '#9ca3af',
             margin: 0
           }}>
@@ -243,9 +253,9 @@ export function RatingProgressionChart({
           </p>
           {totalGames && (
             <p style={{ 
-              fontSize: '14px', 
+              fontSize: '13px', 
               color: '#9ca3af',
-              margin: '4px 0 0 0'
+              margin: '2px 0 0 0'
             }}>
               You have played {totalGames.toLocaleString()} total games
               {firstGameDate && (() => {
@@ -260,29 +270,29 @@ export function RatingProgressionChart({
         </div>
       )}
       
-      <ResponsiveContainer width="100%" height={height}>
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={chartData}
           margin={{
             top: 5,
-            right: 30,
-            left: 20,
-            bottom: 60,
+            right: window.innerWidth < 768 ? 15 : 30,
+            left: window.innerWidth < 768 ? 10 : 20,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis 
             dataKey="displayLabel"
-            tick={{ fontSize: 12, fill: '#9ca3af' }}
+            tick={{ fontSize: window.innerWidth < 768 ? 10 : 12, fill: '#9ca3af' }}
             angle={-45}
             textAnchor="end"
-            height={60}
+            height={window.innerWidth < 768 ? 45 : 60}
             axisLine={{ stroke: '#4b5563' }}
             tickLine={{ stroke: '#4b5563' }}
           />
           <YAxis 
             domain={[min, max]}
-            tick={{ fontSize: 12, fill: '#9ca3af' }}
+            tick={{ fontSize: window.innerWidth < 768 ? 10 : 12, fill: '#9ca3af' }}
             axisLine={{ stroke: '#4b5563' }}
             tickLine={{ stroke: '#4b5563' }}
           />
@@ -296,7 +306,8 @@ export function RatingProgressionChart({
             activeDot={{ r: 6, stroke: finalLineColor, strokeWidth: 2, fill: '#1f2937' }}
           />
         </LineChart>
-      </ResponsiveContainer>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

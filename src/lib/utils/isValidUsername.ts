@@ -23,7 +23,7 @@ export async function isValidUsername(username: string): Promise<boolean> {
     
     // For other errors (network issues, etc.), assume invalid
     return false;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

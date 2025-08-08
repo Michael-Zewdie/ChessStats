@@ -13,22 +13,18 @@ export class ProfileService {
       }
       const raw = await res.json();
       return toChessProfile(raw);
-    } catch (error) {
+    } catch {
       return null;
     }
   }
 
   static async fetchUserStats(username: string): Promise<ChessProfileStats> {
-    try {
-      const res = await fetch(`${this.BASE_URL}/${username}/stats`);
-      if (!res.ok) {
-        throw new Error(`Failed to fetch stats for ${username}: ${res.status}`);
-      }
-      const json = await res.json();
-      return toChessProfileStats(json);
-    } catch (error) {
-      throw error;
+    const res = await fetch(`${this.BASE_URL}/${username}/stats`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch stats for ${username}: ${res.status}`);
     }
+    const json = await res.json();
+    return toChessProfileStats(json);
   }
 
   static async fetchCountryInfo(countryUrl: string): Promise<string> {
@@ -39,7 +35,7 @@ export class ProfileService {
       }
       const data = await res.json();
       return data.name;
-    } catch (error) {
+    } catch {
       return '';
     }
   }

@@ -84,7 +84,7 @@ export class RivalService {
         lossesAgainstRival: rivalStats.losses,
         drawsAgainstRival: rivalStats.draws
       };
-    } catch (error) {
+    } catch {
       return { 
         rival: null, 
         totalGamesWithRival: 0, 

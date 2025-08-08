@@ -8,7 +8,7 @@ const CHESS_TIME_CLASSES = [
     { key: 'chess_blitz', name: 'Blitz' },
 ] as const;
 
-export function buildChartData(stats: ChessProfileStats): ChartRow[] {
+export function buildChartData(stats: Partial<ChessProfileStats>): ChartRow[] {
     return CHESS_TIME_CLASSES
         .filter(({ key }) => stats[key])
         .map(({ key, name }) => ({

@@ -1,19 +1,29 @@
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import type React from 'react';
 
-interface NoDataMessageProps {
+interface ErrorPageProps {
   username?: string;
   message?: string;
   suggestion?: string;
-  className?: string;
 }
 
-export default function NoDataMessage({ 
-  username, 
-  message = "No chess data found",
-  suggestion = "This user may not have played any rated games on Chess.com or their games may be private.",
-  className = ""
-}: NoDataMessageProps) {
+export default function ErrorPage({ 
+  username: propUsername, 
+  message: propMessage, 
+  suggestion: propSuggestion 
+}: ErrorPageProps = {}) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const state = location.state as { username?: string; message?: string; suggestion?: string } | null;
+  
+  // Props take precedence, then state, then URL search params
+  const username = propUsername || state?.username || searchParams.get('username') || '';
+  const message = propMessage || state?.message || searchParams.get('message') || 'No chess data found';
+  const suggestion = propSuggestion || state?.suggestion || searchParams.get('suggestion') || 'This user may not have played any rated games on Chess.com or their games may be private.';
+
   return (
-    <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ${className}`}>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div 
         style={{
           backgroundColor: '#1f2937',
@@ -74,7 +84,17 @@ export default function NoDataMessage({
             borderTop: '1px solid rgba(75, 85, 99, 0.3)'
           }}
         >
-          <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+          <p 
+            onClick={() => navigate('/')}
+            style={{ 
+              fontSize: '0.75rem', 
+              color: '#6b7280',
+              cursor: 'pointer',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e: React.MouseEvent<HTMLParagraphElement>) => { e.currentTarget.style.color = '#fbbf24'; }}
+            onMouseLeave={(e: React.MouseEvent<HTMLParagraphElement>) => { e.currentTarget.style.color = '#6b7280'; }}
+          >
             💡 Try searching for a different Chess.com username
           </p>
         </div>

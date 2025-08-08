@@ -37,8 +37,8 @@ export default function DedicationBox({ games }: DedicationBoxProps) {
           <div className={styles.tooltipTitle}>
             Most Dedicated Day
           </div>
-          <div className={styles.tooltipItem}>
-            <strong>Max games in one day:</strong> {dedicationStats.maxGamesInOneDay}
+          <div className={`${styles.tooltipItem}`}>
+            <p>You played {dedicationStats.maxGamesInOneDay} chess games in one day!</p>
           </div>
           {dedicationStats.dateOfMaxGames && (
             <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.4rem' }}>

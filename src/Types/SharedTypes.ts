@@ -62,7 +62,7 @@ export interface ApiResponse<T> {
     error?: {
         message: string;
         code?: string;
-        details?: any;
+        details?: unknown;
     };
     timestamp: string;
 }
@@ -78,6 +78,6 @@ export interface ApiError {
     message: string;
     statusCode: number;
     code?: string;
-    details?: any;
+    details?: unknown;
 }
 //# sourceMappingURL=index.d.ts.map
