@@ -24,7 +24,7 @@ export default function NemesisBox({ games }: NemesisBoxProps) {
         description="Your nemesis is the opponent you've lost to the most (minimum 2 losses required)."
         calculation="How it's calculated:"
         details="• Counts losses against each opponent<br/>• Finds the player who has beaten you most often<br/>• Requires at least 2 losses to qualify as nemesis"
-        showWhenVisible={showTooltip}
+        showWhenVisible={true}
       />
       <div className={styles.emoji}>😈</div>
       <div className={styles.label}>Nemesis</div>

@@ -24,7 +24,7 @@ export default function RivalBox({ games }: RivalBoxProps) {
         description="Your rival is the opponent you've played the most games against."
         calculation="How it's calculated:"
         details="• Counts total games played against each opponent<br/>• Finds the opponent with the highest game count<br/>• Requires at least 3 games to qualify as a rival"
-        showWhenVisible={showTooltip}
+        showWhenVisible={true}
       />
       <div className={styles.emoji}>⚔️</div>
       <div className={styles.label}>Rival</div>

@@ -24,7 +24,7 @@ export default function BestWinBox({ games }: BestWinBoxProps) {
         description="Your best win shows your biggest rating victory against a higher-rated opponent."
         calculation="How it's calculated:"
         details="• Finds your largest rating difference victory vs higher-rated player<br/>• Shows opponent name normally, 'View Game' button on hover<br/>• Hover for detailed rating information and game access"
-        showWhenVisible={showTooltip}
+        showWhenVisible={true}
       />
       <div className={styles.emoji}>🏆</div>
       <div className={styles.label}>Best Win</div>

@@ -20,12 +20,18 @@ export default function StatExplainer({
 }: StatExplainerProps) {
   const [showDescription, setShowDescription] = useState(false);
 
-  if (!showWhenVisible) return null;
+  // Show the help button on hover, but keep the explainer mounted.
+  // Once opened, the explainer stays until user clicks "Got it!".
+  const helpButtonStyle: React.CSSProperties = {
+    opacity: showWhenVisible ? 1 : 0,
+    pointerEvents: showWhenVisible ? 'auto' : 'none',
+  };
 
   return (
     <>
       <div
         className={styles.helpButton}
+        style={helpButtonStyle}
         onClick={(e) => {
           e.stopPropagation();
           setShowDescription(!showDescription);
@@ -66,7 +72,8 @@ export default function StatExplainer({
       {showDescription && (
         <div
           className={styles.overlay}
-          onClick={() => setShowDescription(false)}
+          // Do not close on overlay click; explainer should persist until "Got it!"
+          onClick={(e) => e.stopPropagation()}
         />
       )}
     </>

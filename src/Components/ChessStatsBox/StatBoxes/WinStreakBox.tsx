@@ -24,7 +24,7 @@ export default function WinStreakBox({ games }: WinStreakBoxProps) {
         description="Your longest win streak shows the maximum consecutive wins you've achieved chronologically across all game types."
         calculation="How it's calculated:"
         details="• Counts consecutive wins in chronological order<br/>• Works across all time controls and game types<br/>• Tracks your longest streak ever achieved"
-        showWhenVisible={showTooltip}
+        showWhenVisible={true}
       />
       <div className={styles.emoji}>🔥</div>
       <div className={styles.label}>Win Streak</div>

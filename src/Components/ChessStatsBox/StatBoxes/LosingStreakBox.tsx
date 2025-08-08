@@ -24,7 +24,7 @@ export default function LosingStreakBox({ games }: LosingStreakBoxProps) {
         description="Your losing streak shows your worst consecutive losses. Lower is better!"
         calculation="How it's calculated:"
         details="• Counts consecutive losses in chronological order<br/>• Tracks the longest streak of losses<br/>• Shows the maximum consecutive losses you've had"
-        showWhenVisible={showTooltip}
+        showWhenVisible={true}
       />
       <div className={styles.emoji}>😠</div>
       <div className={styles.label}>Losing Streak</div>
