@@ -56,48 +56,23 @@ export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps
   const totalGames = selectedTimeClassData?.totalGames;
 
   return (
-    <div style={{
-      width: '105rem',
-      maxWidth: '105rem',
-      height: 500,
-      backgroundColor: '#18191b',
-      color: '#fff',
-      borderRadius: '0.75rem',
-      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
-      padding: '1.5rem',
-      display: 'flex',
-      flexDirection: 'column',
-      border: '1px solid #374151',
-      marginLeft: 0,
-      marginRight: 'auto',
-      alignSelf: 'flex-start',
-      position: 'relative'
-    }}>
+    <div className="monthly-stats-container">
       {profile && (
-        <div style={{
-          position: 'absolute',
-          top: '1rem',
-          left: '1.5rem',
-          zIndex: 10
-        }}>
+        <div className="monthly-profile" style={{ padding: '1.5rem' }}>
           <ProfileMini profile={profile} country={country ?? null} />
         </div>
       )}
-      <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+      <div className="monthly-tabs">
         {timeClasses.map((tc) => (
           <button
             key={tc}
             onClick={() => setSelectedClass(tc)}
+            className="monthly-tab"
             style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '0.5rem',
               border: selectedClass === tc ? `2px solid ${COLORS[tc] || '#fff'}` : '2px solid transparent',
               backgroundColor: selectedClass === tc ? `${COLORS[tc] || '#fff'}20` : 'transparent',
               color: COLORS[tc] || '#fff',
-              cursor: 'pointer',
-              fontSize: '0.9rem',
               fontWeight: selectedClass === tc ? 'bold' : 'normal',
-              transition: 'all 0.2s ease'
             }}
           >
             {tc.charAt(0).toUpperCase() + tc.slice(1)}
@@ -105,11 +80,10 @@ export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps
         ))}
       </div>
       
-      <div style={{ flex: 1}}>
+      <div className="monthly-chart">
         <RatingProgressionChart
           games={selectedGames}
           title={`${selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)} Rating Progression`}
-          height={380}
           lineColor={COLORS[selectedClass]}
           firstGameDate={firstGameDate}
           totalGames={totalGames}

@@ -16,17 +16,11 @@ export default function MonthlyStatsUI({ username, games }: MonthlyStatsUIProps)
   const { data, loading, error } = useMonthlyStats(username);
   const { profile, country } = useChessProfile(username);
 
-  if (loading) return (
-    <div className='fixed top-6 right-6 z-10'>
-      <MonthlyStatsSkeleton />
-    </div>
-  );
+  if (loading) return <MonthlyStatsSkeleton />;
   
   if (error) {
     return (
-      <div className='fixed top-6 right-6 z-10'>
-        <div>Error loading monthly stats: {error}</div>
-      </div>
+      <div>Error loading monthly stats: {error}</div>
     );
   }
 

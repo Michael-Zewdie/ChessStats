@@ -10,6 +10,12 @@
   transition: all 0.3s ease;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border: 1px solid transparent;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  overflow: visible;
 }
 
 .container:hover {
@@ -64,14 +70,16 @@
   padding: 1.5rem;
   border-radius: 0.75rem;
   font-size: 0.875rem;
-  z-index: 2000;
+  z-index: 10000;
+  margin-bottom: 0.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(251, 191, 36, 0.2);
   min-width: 400px;
   max-width: 500px;
+  max-height: 80vh;
   line-height: 1.6;
   border: 1px solid rgba(55, 65, 81, 0.6);
   backdrop-filter: blur(16px);
-  margin-bottom: 0.5rem;
+  overflow-y: auto;
 }
 
 .descriptionTitle {
@@ -140,7 +148,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1999;
+  z-index: 9999;
 }
 
 /* Tooltip */
@@ -154,7 +162,7 @@
   padding: 0.75rem;
   border-radius: 0.5rem;
   font-size: 0.75rem;
-  z-index: 1000;
+  z-index: 9999;
   margin-bottom: 0.5rem;
   box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 191, 36, 0.1);
   min-width: 250px;
@@ -163,6 +171,7 @@
   border: 1px solid rgba(55, 65, 81, 0.6);
   backdrop-filter: blur(8px);
   animation: fadeInUp 0.2s ease-out;
+  pointer-events: none;
 }
 
 .tooltipTitle {
@@ -230,5 +239,107 @@
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive StatBox Styles */
+
+/* Mobile */
+@media (max-width: 767px) {
+  .container {
+    padding: 0.5rem;
+    min-height: 70px;
+  }
+  
+  .emoji {
+    font-size: 1rem;
+    margin-bottom: 0.125rem;
+  }
+  
+  .label {
+    font-size: 0.7rem;
+    margin-bottom: 0.125rem;
+  }
+  
+  .displayText {
+    font-size: 0.75rem;
+  }
+  
+  .helpButton {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+  }
+  
+  .description {
+    min-width: 280px;
+    max-width: 320px;
+    max-height: 70vh;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .tooltip {
+    min-width: 200px;
+    max-width: 250px;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0.625rem;
+    min-height: 75px;
+  }
+  
+  .emoji {
+    font-size: 1.1rem;
+  }
+  
+  .label {
+    font-size: 0.7rem;
+  }
+  
+  .displayText {
+    font-size: 0.75rem;
+  }
+  
+  .description {
+    min-width: 350px;
+    max-width: 400px;
+    max-height: 80vh;
+  }
+  
+  .tooltip {
+    min-width: 220px;
+    max-width: 270px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 0.75rem;
+    min-height: 80px;
+  }
+  
+  .description {
+    min-width: 400px;
+    max-width: 500px;
+    max-height: 80vh;
+  }
+  
+  .tooltip {
+    min-width: 250px;
+    max-width: 300px;
+  }
+}
+
+/* Touch-friendly hover states for mobile */
+@media (max-width: 1023px) {
+  .container:hover {
+    transform: translateY(-2px) scale(1.02);
   }
 }

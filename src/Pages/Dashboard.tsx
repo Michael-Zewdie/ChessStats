@@ -15,15 +15,19 @@ export default function Dashboard() {
     // Wait for games to load before making decisions
     if (gamesLoading) {
         return (
-            <div>
-                <div className="fixed bottom-6 right-6 z-50">
-                    <BasicStatsUI username={username} games={games} />
-                </div>
-                <div className='fixed top-6 left-6 z-10'>
-                    <MonthlyStatsUI username={username} games={games} />
-                </div>
-                <div className="fixed bottom-6 left-6 z-50">
-                    <ChessStatsBoxUI username={username} games={games} />
+            <div className="responsive-dashboard">
+                <div className="stats-grid">
+                    <div className="monthly-stats">
+                        <MonthlyStatsUI username={username} games={games} />
+                    </div>
+                    <div className="bottom-section">
+                        <div className="basic-stats">
+                            <BasicStatsUI username={username} games={games} />
+                        </div>
+                        <div className="chess-stats">
+                            <ChessStatsBoxUI username={username} games={games} />
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -40,15 +44,19 @@ export default function Dashboard() {
     }
 
     return (
-        <div>
-            <div className="fixed bottom-6 right-6 z-50">
-                <BasicStatsUI username={username} games={games} />
-            </div>
-            <div className='fixed top-6 left-6 z-10'>
-                <MonthlyStatsUI username={username} games={games} />
-            </div>
-            <div className="fixed bottom-6 left-6 z-50">
-                <ChessStatsBoxUI username={username} games={games} />
+        <div className="responsive-dashboard">
+            <div className="stats-grid">
+                <div className="monthly-stats">
+                    <MonthlyStatsUI username={username} games={games} />
+                </div>
+                <div className="bottom-section">
+                    <div className="basic-stats">
+                        <BasicStatsUI username={username} games={games} />
+                    </div>
+                    <div className="chess-stats">
+                        <ChessStatsBoxUI username={username} games={games} />
+                    </div>
+                </div>
             </div>
         </div>
     );

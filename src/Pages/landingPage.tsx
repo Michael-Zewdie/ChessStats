@@ -22,22 +22,13 @@ export default function LandingPage() {
     };
 
     return (
-      <>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          gap: '1rem'
-        }}>
-          <div id="main" style={{ display: 'contents' }}>
-            <InputUserName 
-              className="input" 
-              onSubmit={handleUserSubmit}
-            />
-          </div>
+      <div className="landing-page">
+        <div className="landing-container">
+          <InputUserName 
+            className="input" 
+            onSubmit={handleUserSubmit}
+          />
         </div>
-      </>
+      </div>
     );
 }

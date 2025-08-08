@@ -7,7 +7,8 @@
 
 #poda {
   position: relative;
-  width: 320px;
+  width: 100%;
+  max-width: 400px;
   height: 70px;
 }
   
@@ -99,4 +100,43 @@ input {
 /* Pulsing blur effect on hover */
 #poda:hover .glow {
   box-shadow: 0 0 50px rgb(2, 27, 250), 0 0 100px #f0f;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  #poda {
+    max-width: 350px;
+    height: 60px;
+  }
+  
+  input {
+    font-size: 0.9rem;
+  }
+  
+  .searchContainer {
+    padding: 0 0.75rem;
+  }
+  
+  .searchIcon {
+    margin-right: 0.5rem;
+  }
+  
+  .filterIcon {
+    margin-left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #poda {
+    max-width: 320px;
+    height: 55px;
+  }
+  
+  input {
+    font-size: 0.85rem;
+  }
+  
+  .searchContainer {
+    padding: 0 0.5rem;
+  }
 }

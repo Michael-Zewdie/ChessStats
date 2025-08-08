@@ -12,16 +12,10 @@ interface ChessStatsUIProps {
 export default function BasicStatsUI({ username, games}: ChessStatsUIProps) {
   const { stats, loading, error} = useChessStats(username);
 
-  if (loading) return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <BasicStatsSkeleton />
-    </div>
-  );
+  if (loading) return <BasicStatsSkeleton />;
 
   if (error) return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <div>Error loading stats: {error}</div>
-    </div>
+    <div>Error loading stats: {error}</div>
   );
 
   if (!stats) return null;
