@@ -1,6 +1,8 @@
 import { useChessStats } from "../../hooks/useChessStats";
 import ChessStatsBox from "./ChessStatsBox";
 import ChessStatsBoxSkeleton from "./ChessStatsBoxSkeleton";
+import { ChessStatsBoxMobile, ChessStatsBoxMobileSkeleton } from "./mobile";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
 
 import type { ChessGame } from "../../Types/ChessGame";
@@ -12,12 +14,13 @@ interface ChessStatsBoxUIProps {
 
 export default function ChessStatsBoxUI({ username, games }: ChessStatsBoxUIProps) {
   const { stats, loading: statsLoading } = useChessStats(username);
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   const loading = statsLoading;
   
   if (loading || !games) {
-    return <ChessStatsBoxSkeleton />;
+    return isMobile ? <ChessStatsBoxMobileSkeleton /> : <ChessStatsBoxSkeleton />;
   }
 
   // if (games.length === 0) {
@@ -31,7 +34,9 @@ export default function ChessStatsBoxUI({ username, games }: ChessStatsBoxUIProp
                        1200; // fallback rating
 
   try {
-    return <ChessStatsBox games={games} currentRating={currentRating} />;
+    return isMobile ? 
+      <ChessStatsBoxMobile games={games} currentRating={currentRating} /> :
+      <ChessStatsBox games={games} currentRating={currentRating} />;
   } catch {
     navigate(`/error?username=${encodeURIComponent(username || '')}&message=${encodeURIComponent('Error displaying stats')}&suggestion=${encodeURIComponent('There was an unexpected error processing the chess statistics.')}`);
     return null;

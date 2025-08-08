@@ -17,13 +17,7 @@ export default function Dashboard() {
     // Wait for games to load before making decisions
     if (gamesLoading) {
         if (isMobile) {
-            return (
-                <div className="mobile-dashboard">
-                    <div className="mobile-chess-stats">
-                        <ChessStatsBoxUI username={username} games={games} />
-                    </div>
-                </div>
-            );
+            return <ChessStatsBoxUI username={username} games={games} />;
         }
 
         return (
@@ -56,13 +50,7 @@ export default function Dashboard() {
     }
 
     if (isMobile) {
-        return (
-            <div className="mobile-dashboard">
-                <div className="mobile-chess-stats">
-                    <ChessStatsBoxUI username={username} games={games} />
-                </div>
-            </div>
-        );
+        return <ChessStatsBoxUI username={username} games={games} />;
     }
 
     return (
