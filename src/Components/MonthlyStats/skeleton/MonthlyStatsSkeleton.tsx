@@ -1,12 +1,20 @@
 export default function MonthlyStatsSkeleton() {
   return (
     <div className="monthly-stats-container" role="status" aria-busy="true">
-      {/* Profile mini area placeholder */}
-      <div className="monthly-profile" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div className="skeleton" style={{ width: '3rem', height: '3rem', borderRadius: '50%' }} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          <div className="skeleton" style={{ width: '6rem', height: '0.9rem', borderRadius: 4 }} />
-          <div className="skeleton" style={{ width: '1.5rem', height: '1.2rem', borderRadius: 4 }} />
+      {/* Profile mini area placeholder (inside box, larger like live UI) */}
+      <div
+        className="monthly-profile"
+        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', top: '0.75rem', left: '0.75rem' }}
+      >
+        <div style={{ position: 'relative', width: '6rem', height: '6rem' }}>
+          <div
+            className="skeleton"
+            style={{ width: '6rem', height: '6rem', borderRadius: '50%', border: '4px solid #374151' }}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div className="skeleton" style={{ width: '10rem', height: '2rem', borderRadius: 6 }} />
+          <div className="skeleton" style={{ width: '2rem', height: '1.25rem', borderRadius: 3 }} />
         </div>
       </div>
 
