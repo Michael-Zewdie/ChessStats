@@ -81,44 +81,125 @@ yarn preview
 src/
 ├── Components/           # React UI components
 │   ├── BasicStats/      # Rating statistics display
-│   ├── ChessStatsBox/   # Fun statistics dashboard
-│   │   └── StatBoxes/   # Individual stat components
 │   ├── InputUserName/   # Username search interface
-│   └── MonthlyStats/    # Rating progression charts
-├── hooks/               # Custom React hooks
+│   ├── MonthlyStats/    # Rating progression charts
+│   └── AdvancedStats/   # Advanced statistical visualizations
+├── hooks/               # Custom React hooks (useChessGames, useChessProfile, etc.)
 ├── lib/                 # Core business logic
-│   ├── data/           # Data access layer
+│   ├── data/           # Data access layer (chessDataService)
 │   ├── services/       # API services and data processing
 │   │   └── FunStats/   # Statistical analysis services
-│   └── utils/          # Utility functions
-├── Pages/              # Page components
-├── Types/              # TypeScript type definitions
+│   └── utils/          # Utility functions and helpers
+├── Pages/              # Page components (Dashboard, ErrorPage, etc.)
+├── Types/              # Consolidated TypeScript type definitions
 └── Utils/              # Data transformation utilities
 ```
 
-### Key Components
+## 🔄 How It Works
 
-#### Data Flow
-1. **Username Input** → Username validation via Chess.com API
-2. **Data Fetching** → Parallel fetching of games, profile, and statistics
-3. **Data Processing** → Statistical analysis and chart data preparation
-4. **Visualization** → Interactive charts and statistics display
+### Data Architecture & Flow
 
-#### Core Services
+The application follows a multi-layered architecture designed for scalability and maintainability:
 
-**GameService** - Fetches and processes game data from Chess.com archives
-**ProfileService** - Handles user profile and statistics data
-**MonthlyStatsService** - Processes rating progression data
-**FunStats Services** - Individual services for each fun statistic calculation
+#### 1. Data Acquisition Layer
+- **Username Validation**: Real-time validation against Chess.com's player database
+- **Parallel Data Fetching**: Simultaneous retrieval of player profile, statistics, and game archives
+- **API Rate Management**: Intelligent handling of Chess.com API rate limits and error responses
+- **Data Caching**: Optimized data fetching to minimize redundant API calls
+
+#### 2. Data Processing Pipeline
+```
+Raw Chess.com API Data → Normalization → Statistical Analysis → Chart Data Preparation → UI Rendering
+```
+
+**Game Data Processing**:
+- Fetches complete game archives from Chess.com's monthly endpoints
+- Transforms raw PGN data into structured game objects
+- Calculates user perspective (win/loss/draw) based on color and result
+- Extracts rating, opponent, and temporal information
+
+**Statistical Computation**:
+- **Time-based Analysis**: Groups games by time class (bullet, blitz, rapid, daily)
+- **Rating Progression**: Computes monthly rating changes and trends  
+- **Performance Metrics**: Calculates win rates, average ratings, and streaks
+- **Opponent Analysis**: Builds relationship matrices for rival/nemesis detection
+
+#### 3. Core Services
+
+**ChessDataService**: Central orchestration layer that coordinates data fetching
+- Manages service dependencies and error propagation
+- Provides unified interface for React components
+
+**GameService**: Specialized game data processor
+- Handles Chess.com game archive API endpoints
+- Processes large datasets (10,000+ games) efficiently
+- Transforms raw game data into standardized format
+
+**ProfileService**: User profile and statistics manager
+- Fetches player metadata and rating statistics
+- Handles country information resolution
+- Manages profile data normalization
+
+**MonthlyStatsService**: Rating progression analytics
+- Processes historical rating data by time periods
+- Generates chart-ready data structures
+- Handles missing data points and interpolation
+
+**FunStats Services**: Specialized statistical calculators
+- **BestWinService**: Analyzes rating differentials for optimal victories
+- **StreakServices**: Computes consecutive game outcomes
+- **RivalService**: Identifies frequent opponents and playing patterns
+- **AdoptionService**: Tracks parent/child relationships (10+ consecutive games)
+
+#### 4. Frontend Architecture
+
+**Component Hierarchy**:
+```
+Dashboard
+├── InputUserName (username validation & search)
+├── BasicStats (rating overview & charts)
+├── MonthlyStats (rating progression visualization)
+└── AdvancedStats (fun statistics & insights)
+```
+
+**State Management**:
+- Custom React hooks for data fetching (`useChessGames`, `useChessProfile`, `useChessStats`)
+- Local component state for UI interactions
+- Error boundaries for graceful failure handling
+
+**Data Visualization**:
+- **Recharts Integration**: Interactive charts with responsive design
+- **Dynamic Scaling**: Automatic time interval selection based on data density
+- **Multi-series Support**: Comparative analysis across different time classes
 
 ### Technology Stack
 
 - **Frontend**: React 19 with TypeScript
 - **Build Tool**: Vite for fast development and optimized builds
 - **Charts**: Recharts for interactive data visualization
-- **Styling**: Tailwind CSS with CSS Modules for component-specific styles
-- **Routing**: React Router DOM for navigation
+- **Styling**: Tailwind CSS 4.1.11 with CSS Modules for component-specific styles
+- **Routing**: React Router DOM 7.7.0 for navigation
 - **API**: Chess.com Public API for live data
+
+### Performance & Scalability
+
+#### Data Processing Optimization
+- **Lazy Loading**: Components render progressively as data becomes available
+- **Memory Management**: Efficient processing of large game datasets (10,000+ games)
+- **Async Processing**: Non-blocking statistical calculations using web workers principles
+- **Error Recovery**: Graceful degradation when API limits are reached
+
+#### API Integration Strategy
+- **Rate Limit Handling**: Implements exponential backoff for Chess.com API limits
+- **Concurrent Requests**: Parallel fetching of different data types (profile, stats, games)
+- **Data Validation**: Robust type checking and data sanitization
+- **Cache Optimization**: Minimizes redundant API calls through intelligent caching
+
+#### Statistical Processing
+- **Algorithmic Efficiency**: O(n) complexity for most statistical calculations
+- **Data Structures**: Optimized data structures for rapid querying and filtering
+- **Memory Footprint**: Minimal memory usage through streaming data processing
+- **Real-time Updates**: Incremental calculations for dynamic chart updates
 
 ## 📊 Statistics Explained
 
