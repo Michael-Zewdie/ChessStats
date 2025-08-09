@@ -29,6 +29,3 @@ export interface ChessGame {
   gameUrl?: string;            // URL to view the game on Chess.com
 }
 
-// // Type aliases for backward compatibility and clarity
-// export type ChessComGame = ChessComGameRaw;
-// export type ChessComGameDetailed = ChessComGameRaw;
