@@ -203,7 +203,6 @@ export function RatingProgressionChart({
   }
 
   const chartData = groupGamesByInterval(games);
-  const interval = determineTimeInterval(games);
   
   if (chartData.length === 0) {
     return (
@@ -234,7 +233,7 @@ export function RatingProgressionChart({
             color: '#fff',
             margin: '0 0 4px 0'
           }}>
-            {title} ({interval})
+            {title}
           </h3>
           <p style={{ 
             fontSize: '13px', 

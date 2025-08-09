@@ -328,13 +328,14 @@ button:focus-visible {
   min-height: 0;
 }
 
-/* Ensure stat boxes fit within grid cells but maintain minimum size */
+/* Ensure stat boxes fit within grid cells and stretch fully */
 .chess-stats-grid > * {
   min-height: 60px;
+  height: 100%;
   overflow: visible; /* allow stat popovers to overflow grid cell wrappers */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
   box-sizing: border-box;
 }
 
@@ -396,7 +397,7 @@ button:focus-visible {
   }
 }
 
-/* Small Desktop - Enable scrolling when boxes get too cramped */
+/* Small Desktop - Enable scrolling when boxes get too cramped (ensure equal row heights) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .chess-stats-container {
     padding: 0.75rem;
@@ -406,10 +407,10 @@ button:focus-visible {
   
   .chess-stats-grid {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-rows: repeat(3, 1fr); /* equal row heights to avoid short tiles */
     gap: 0.5rem;
     overflow: visible;
-    height: auto;
+    height: 100%;
     min-height: 0;
   }
   
@@ -426,7 +427,7 @@ button:focus-visible {
   /* Allow stat boxes to size naturally */
   .chess-stats-grid > * {
     min-height: 70px !important;
-    height: auto;
+    height: 100%;
     overflow: visible !important;
   }
 }

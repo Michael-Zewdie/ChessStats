@@ -14,19 +14,19 @@ export default function LosingStreakBox({ games }: LosingStreakBoxProps) {
   
   return (
     <div 
-      className={styles.container}
+      className={`${styles.container} ${styles.extraBottomPadding}`}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
       <StatExplainer
         title="Losing Streak Stat Explained"
-        emoji="😠"
+        emoji=" 🥀"
         description="Your losing streak shows your worst consecutive losses. Lower is better!"
         calculation="How it's calculated:"
         details="• Counts consecutive losses in chronological order<br/>• Tracks the longest streak of losses<br/>• Shows the maximum consecutive losses you've had"
         showWhenVisible={showTooltip}
       />
-      <div className={styles.emoji}>😠</div>
+      <div className={styles.emoji}> 🥀</div>
       <div className={styles.label}>Losing Streak</div>
       <div className={styles.displayText}>
         {losingStreakStats.worstLosingStreak}

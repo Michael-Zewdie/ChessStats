@@ -34,7 +34,7 @@ export default function StatExplainer({
         style={helpButtonStyle}
         onClick={(e) => {
           e.stopPropagation();
-          setShowDescription(!showDescription);
+          setShowDescription(true);
         }}
         onMouseEnter={(e) => e.stopPropagation()}
       >
@@ -61,7 +61,9 @@ export default function StatExplainer({
           />
           <button
             className={styles.descriptionButton}
-            onClick={() => setShowDescription(false)}
+            onClick={() => {
+              setShowDescription(false);
+            }}
           >
             Got it!
           </button>
@@ -72,8 +74,10 @@ export default function StatExplainer({
       {showDescription && (
         <div
           className={styles.overlay}
-          // Do not close on overlay click; explainer should persist until "Got it!"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDescription(false);
+          }}
         />
       )}
     </>

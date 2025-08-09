@@ -33,14 +33,17 @@ export default function BasicStatsSkeleton() {
         </div>
       </div>
 
-      {/* Shimmer util */}
+      {/* Pulse util (shared with other skeletons) */}
       <style>{`
         .skeleton { 
-          background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
-          background-size: 400% 100%;
-          animation: shimmer 1.2s ease-in-out infinite;
+          background-color: #2a2c30;
+          animation: pulse 1.6s ease-in-out infinite;
+          border: 1px solid #2f3136;
         }
-        @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        @keyframes pulse { 
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
       `}</style>
     </div>
   );

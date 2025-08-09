@@ -148,9 +148,11 @@ function getCountryFlag(country: string | null): string {
 }
 
 export default function ProfileMini({ profile, country }: ProfileMiniProps) {
-  const avatarSrc = profile.avatar && profile.avatar.trim() !== "" 
-    ? profile.avatar 
-    : "/public/default-avatar.png";
+  // Simple: user's avatar or a single public fallback
+  const fallbackAvatar = '/public/default-avatar.png';
+  const avatarSrc = profile?.avatar && profile.avatar.trim() !== ''
+    ? profile.avatar.trim()
+    : fallbackAvatar;
 
   return (
     <div style={{
@@ -160,7 +162,7 @@ export default function ProfileMini({ profile, country }: ProfileMiniProps) {
     }}>
       <img
         src={avatarSrc}
-        alt={profile.name}
+        alt={profile.username}
         style={{
           width: '6rem', // Doubled from 3rem
           height: '6rem', // Doubled from 3rem
@@ -168,6 +170,13 @@ export default function ProfileMini({ profile, country }: ProfileMiniProps) {
           objectFit: 'cover',
           border: '4px solid #374151' // Doubled from 2px
         }}
+        onError={(e) => {
+          const img = e.currentTarget as HTMLImageElement;
+          if (!img.src.endsWith(fallbackAvatar)) {
+            img.src = fallbackAvatar;
+          }
+        }}
+        loading="lazy"
       />
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
         <div style={{ fontSize: '2rem', fontWeight: '500' }}>{profile.username}</div> 

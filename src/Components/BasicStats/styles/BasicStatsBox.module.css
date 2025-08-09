@@ -28,6 +28,10 @@
     margin: 0;
     position: relative;
     box-sizing: border-box;
+    /* Adjustable colors for Basic Stats chart */
+    --basic-bar-start: #1500ff; /* top of bar gradient */
+    --basic-bar-end: #312d76;   /* bottom of bar gradient */
+    --basic-line: #fafafa;      /* line stroke color */
 }
 
 /* Mobile styles */

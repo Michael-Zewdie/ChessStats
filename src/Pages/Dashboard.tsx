@@ -23,6 +23,13 @@ export default function Dashboard() {
         }
     }, [userNotFound, username, navigate]);
 
+    // Set document title to the current username
+    useEffect(() => {
+        if (username) {
+            document.title = username;
+        }
+    }, [username]);
+
     // Wait for games to load before making decisions
     if (gamesLoading) {
         if (isMobile) {

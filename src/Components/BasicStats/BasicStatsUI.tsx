@@ -12,7 +12,9 @@ interface ChessStatsUIProps {
 export default function BasicStatsUI({ username, games}: ChessStatsUIProps) {
   const { stats, loading, error} = useChessStats(username);
 
-  if (loading) return <BasicStatsSkeleton />;
+  // If upstream games aren't ready yet (undefined or still empty while fetching),
+  // keep skeleton to avoid initial render with all time classes and then refilter.
+  if (!games || games.length === 0 || loading) return <BasicStatsSkeleton />;
 
   if (error) return (
     <div>Error loading stats: {error}</div>
@@ -20,13 +22,12 @@ export default function BasicStatsUI({ username, games}: ChessStatsUIProps) {
 
   if (!stats) return null;
 
-  // Filter stats based on games if games are provided
-  const filteredStats = games && games.length > 0 
-    ? filterStatsForEligibleTimeControls(stats, getEligibleTimeControls(games))
-    : stats;
+  // Compute eligible time controls once to keep rendering stable
+  const eligible = getEligibleTimeControls(games);
+  const filteredStats = filterStatsForEligibleTimeControls(stats, eligible);
 
   // If no eligible time controls, don't render
-  if (games && games.length > 0 && getEligibleTimeControls(games).length === 0) {
+  if (eligible.length === 0) {
     return null;
   }
 

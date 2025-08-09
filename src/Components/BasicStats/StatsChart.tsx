@@ -28,8 +28,8 @@ export const StatsChart = ({data}: { data: ChartRow[] }) => {
             <ComposedChart data={data} barSize={window.innerWidth < 768 ? 16 : 22} barGap={8}>
             <defs>
                 <linearGradient id="currentGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#379683" stopOpacity={0.8}/>
+                    <stop offset="5%" stopColor="var(--basic-bar-start)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="var(--basic-bar-end)" stopOpacity={0.8}/>
                 </linearGradient>
             </defs>
             <CartesianGrid stroke="#333"/>
@@ -52,7 +52,7 @@ export const StatsChart = ({data}: { data: ChartRow[] }) => {
                 }}
             />
             <Bar dataKey="current" fill="url(#currentGradient)" radius={[4, 4, 0, 0]}/>
-            <Line type="monotone" dataKey="best" stroke="#6fb1fc" strokeWidth={3} dot={{r: 3}} activeDot={{r: 4}}/>
+            <Line type="monotone" dataKey="best" stroke="var(--basic-line)" strokeWidth={3} dot={{r: 3}} activeDot={{r: 4}}/>
             </ComposedChart>
         </ResponsiveContainer>
     );

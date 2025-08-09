@@ -28,7 +28,7 @@ export default function InputUserName({ onSubmit, className, onInputChange }: { 
         <input
           className={className}
           type="text"
-          placeholder="Enter username"
+          placeholder="Enter Chess.com Username"
           value={username}
           onChange={handleChange}
           onKeyDown={handleKeyDown}

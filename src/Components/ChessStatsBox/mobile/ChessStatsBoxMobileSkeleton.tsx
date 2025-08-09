@@ -9,11 +9,11 @@ export default function ChessStatsBoxMobileSkeleton() {
           <div
             key={i}
             style={{
-              backgroundColor: '#374151',
+              backgroundColor: '#2a2c30',
               borderRadius: '0.5rem',
-              animation: 'pulse 2s infinite',
+              animation: 'pulse 1.6s ease-in-out infinite',
               animationDelay: `${i * 0.1}s`,
-              border: '1px solid #4a5568',
+              border: '1px solid #2f3136',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -25,12 +25,8 @@ export default function ChessStatsBoxMobileSkeleton() {
       <style>
         {`
           @keyframes pulse {
-            0%, 100% {
-              opacity: 1;
-            }
-            50% {
-              opacity: 0.5;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
           }
         `}
       </style>

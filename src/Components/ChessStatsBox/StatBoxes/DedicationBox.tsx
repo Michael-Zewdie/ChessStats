@@ -14,7 +14,7 @@ export default function DedicationBox({ games }: DedicationBoxProps) {
   
   return (
     <div 
-      className={styles.container}
+      className={`${styles.container} ${styles.extraBottomPadding}`}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >

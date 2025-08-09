@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { MonthlyRatingPoint } from "../../hooks/useMonthlyStats";
 import type { ChessProfile } from "../../Types/ChessProfile";
 import { RatingProgressionChart, type GameData } from './RatingProgressionChart/index.ts';
@@ -12,10 +12,10 @@ interface MonthlyStatsBoxProps {
 }
 
 const COLORS: Record<string, string> = {
-  rapid: '#00C853', // green
-  blitz: '#FFD600', // yellow
-  bullet: '#D50000', // red
-  daily: '#42A5F5', // optional fallback for daily/correspondence
+  rapid: '#42A5F5', // green
+  blitz: '#A020F0', // yellow
+  bullet: '#FF0000', // red
+  daily: '#00FF00', // optional fallback for daily/correspondence
 };
 
 function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[]> {
@@ -49,7 +49,22 @@ function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[
 
 export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps) {
   const timeClasses = data && data.length > 0 ? Array.from(new Set(data.map((d) => d.time_class))) : [];
-  const [selectedClass, setSelectedClass] = useState<string>(timeClasses[0] || '');
+
+  // Pick the time class with the earliest activity so users see the longest history by default
+  const defaultTimeClass = useMemo(() => {
+    if (!data || data.length === 0) return '';
+    const byClass: Record<string, { firstGameTs: number }> = {};
+    for (const point of data) {
+      const ts = point.firstGameDate ? new Date(point.firstGameDate).getTime() : new Date(`${point.month}-01`).getTime();
+      if (!byClass[point.time_class] || ts < byClass[point.time_class].firstGameTs) {
+        byClass[point.time_class] = { firstGameTs: ts };
+      }
+    }
+    const sorted = Object.entries(byClass).sort((a, b) => a[1].firstGameTs - b[1].firstGameTs);
+    return sorted[0]?.[0] || timeClasses[0] || '';
+  }, [data, timeClasses]);
+
+  const [selectedClass, setSelectedClass] = useState<string>(defaultTimeClass);
   
   if (!data || data.length === 0) return null;
   

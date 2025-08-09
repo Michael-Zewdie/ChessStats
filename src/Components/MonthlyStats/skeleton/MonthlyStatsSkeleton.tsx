@@ -36,16 +36,39 @@ export default function MonthlyStatsSkeleton() {
       <div className="monthly-chart" style={{ position: 'relative' }}>
         <div style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '2.5rem', height: 1, backgroundColor: '#374151' }} />
         <div style={{ position: 'absolute', bottom: '2.5rem', top: '1rem', left: '3rem', width: 1, backgroundColor: '#374151' }} />
-        <div className="skeleton" style={{ position: 'absolute', left: '3rem', right: '2rem', bottom: '7rem', height: 3, borderRadius: 2 }} />
+        <svg aria-hidden width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', left: '3rem', right: '2rem', top: '1rem', bottom: '2.5rem' }}>
+          <defs>
+            <linearGradient id="skelStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#3a3d42" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#4a4e55" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#3a3d42" stopOpacity="0.8" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,70 L8,62 L16,64 L24,52 L32,56 L40,42 L48,46 L56,30 L64,38 L72,28 L80,34 L88,26 L100,32"
+            fill="none"
+            stroke="url(#skelStroke)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+            shapeRendering="geometricPrecision"
+          >
+            <animate attributeName="opacity" values="0.7;0.35;0.7" dur="2.2s" repeatCount="indefinite" />
+          </path>
+        </svg>
       </div>
 
       <style>{`
         .skeleton { 
-          background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
-          background-size: 400% 100%;
-          animation: shimmer 1.2s ease-in-out infinite;
+          background-color: #2a2c30;
+          animation: pulse 1.6s ease-in-out infinite;
+          border: 1px solid #2f3136;
         }
-        @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        @keyframes pulse { 
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
       `}</style>
     </div>
   );

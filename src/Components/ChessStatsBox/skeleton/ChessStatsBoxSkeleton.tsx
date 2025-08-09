@@ -1,6 +1,17 @@
+import type React from 'react';
+
 export default function ChessStatsBoxSkeleton() {
+  const containerStyle: React.CSSProperties & Record<'--csb-skel-bottom-gap', string> = {
+    '--csb-skel-bottom-gap': '4.5rem',
+  };
+
   return (
-    <div className="chess-stats-container" role="status" aria-busy="true">
+    <div
+      className="chess-stats-container"
+      role="status"
+      aria-busy="true"
+      style={containerStyle}
+    >
       <div className="chess-stats-grid">
         {/* First row: Rival, Nemesis, Victim, Dedication */}
         {Array.from({ length: 4 }, (_, i) => (
@@ -9,7 +20,7 @@ export default function ChessStatsBoxSkeleton() {
 
         {/* Second row: Best Win, Worst Loss, Win Streak, Losing Streak */}
         {Array.from({ length: 4 }, (_, i) => (
-          <div key={`r2-${i}`} className="skeleton-tile" />
+          <div key={`r2-${i}`} className="skeleton-tile" style={{height: '95%'}}/>
         ))}
 
         {/* Child and Parent rows use the same wrappers to preserve grid spans */}
@@ -19,22 +30,19 @@ export default function ChessStatsBoxSkeleton() {
 
       <style>{`
         /* Allow scrolling so bottom row never gets clipped on short viewports */
-        .chess-stats-container { overflow-y: auto !important; padding-bottom: 0.5rem; }
+        .chess-stats-container { overflow-y: auto !important; padding-bottom: var(--csb-skel-bottom-gap, 1rem); }
 
-        /* Force consistent 3-row grid for skeleton, mirroring live layout */
-        .chess-stats-grid {
-          grid-template-columns: repeat(4, 1fr);
-          grid-template-rows: repeat(3, minmax(6.75rem, auto));
-          gap: 0.75rem;
-        }
+        /* Use the same grid sizing as the live component (inherit from global css) */
 
         .skeleton-tile {
           width: 100%;
           height: 100%;
-          border-radius: 0.75rem;
-          background: linear-gradient(90deg, #2a2c30 25%, #3a3d42 37%, #2a2c30 63%);
-          background-size: 400% 100%;
-          animation: shimmer 1.2s ease-in-out infinite;
+          border-radius: 0.5rem;
+          padding: 0.75rem; /* match live card padding */
+          min-height: 80px; /* match live card min-height */
+          box-sizing: border-box; /* include padding/border in size like the real card */
+          background-color: #2a2c30;
+          animation: pulse 1.6s ease-in-out infinite;
           border: 1px solid #2f3136;
         }
 
@@ -46,19 +54,18 @@ export default function ChessStatsBoxSkeleton() {
         .child-box-wrapper .skeleton-tile,
         .parent-box-wrapper .skeleton-tile { height: 100%; width: 100%; }
 
-        /* When vertical space is tight, decrease row minimum height a bit */
-        @media (max-height: 820px) {
-          .chess-stats-grid { grid-template-rows: repeat(3, minmax(6rem, auto)); gap: 0.625rem; }
-        }
-        @media (max-height: 760px) {
-          .chess-stats-grid { grid-template-rows: repeat(3, minmax(5.5rem, auto)); gap: 0.5rem; }
-        }
-        @media (max-height: 700px) {
-          .chess-stats-grid { grid-template-rows: repeat(3, minmax(5rem, auto)); gap: 0.375rem; }
-          .chess-stats-container { padding: 0.75rem; }
+        /* Ensure bottom wide tiles visually match live height */
+        @media (min-width: 1024px) {
+          .child-box-wrapper .skeleton-tile,
+          .parent-box-wrapper .skeleton-tile { min-height: 140px; }
         }
 
-        @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        /* No row overrides here; skeleton follows app grid sizes */
+
+        @keyframes pulse { 
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
       `}</style>
     </div>
   );
