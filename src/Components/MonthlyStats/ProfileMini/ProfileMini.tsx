@@ -1,4 +1,4 @@
-import type { ChessProfile } from "../../../Types/ChessProfile";
+import type { ChessProfile } from "../../../Types/index";
 
 interface ProfileMiniProps {
   profile: ChessProfile;

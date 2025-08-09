@@ -1,5 +1,4 @@
-import type { ChessProfileStats } from '../Types/ChessStats.ts';
-import type { ChartRow } from "../Types/StatTypes.ts"
+import type { ChessProfileStats, ChartRow } from '../Types/index.ts';
 
 const CHESS_TIME_CLASSES = [
     { key: 'chess_daily', name: 'Daily' },

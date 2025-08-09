@@ -1,51 +1,47 @@
 import { useMonthlyStats } from "../../hooks/useMonthlyStats";
 import { useChessProfile } from "../../hooks/useChessProfile";
+import { useChessGames } from "../../hooks/useChessGames";
 import { MonthlyStatsBox } from "./MonthlyStatsBox";
 import MonthlyStatsSkeleton from "./skeleton/MonthlyStatsSkeleton";
 import { hasEnoughGamesForTimeControl } from "../../lib/utils/gameFilters";
 import { TIME_CONTROLS, type TimeControlKey } from "../../lib/config/gameThresholds";
-import type { ChessGame } from "../../Types/ChessGame";
+import { monthlyStatsService } from "../../lib/services/monthlyStatsService";
  
 
 interface MonthlyStatsUIProps {
   username?: string;
-  games?: ChessGame[];
 }
 
-export default function MonthlyStatsUI({ username, games }: MonthlyStatsUIProps) {
-  const { data, loading, error } = useMonthlyStats(username);
+export default function MonthlyStatsUI({ username }: MonthlyStatsUIProps) {
+  const { data: chartData, loading } = useMonthlyStats(username);
   const { profile, country } = useChessProfile(username);
+  const { games: allGames } = useChessGames(username);
 
   if (loading) return <MonthlyStatsSkeleton />;
+  if (!Object.keys(chartData).length) return null;
+
+  // Filter to only show time classes with enough games
+  const filteredChartData: Record<string, any[]> = {};
+  const timeClassStats = allGames ? monthlyStatsService.getTimeClassStats(allGames) : {};
   
-  if (error) {
-    return (
-      <div>Error loading monthly stats: {error}</div>
-    );
-  }
+  Object.entries(chartData).forEach(([timeClass, data]) => {
+    const timeControlKey = Object.entries(TIME_CONTROLS).find(
+      ([, value]) => value.replace('chess_', '') === timeClass
+    )?.[0] as TimeControlKey;
+    
+    if (timeControlKey && allGames && hasEnoughGamesForTimeControl(allGames, timeControlKey)) {
+      filteredChartData[timeClass] = data;
+    }
+  });
 
-  if (!data.length) {
-    return null;
-  }
-
-  // Filter monthly data to only include time classes with enough games
-  const filteredData = games && games.length > 0
-    ? data.filter(monthlyPoint => {
-        // Map time_class (e.g., 'blitz') to TimeControlKey (e.g., 'BLITZ')
-        const timeControlKey = Object.entries(TIME_CONTROLS).find(
-          ([, value]) => value.replace('chess_', '') === monthlyPoint.time_class
-        )?.[0] as TimeControlKey;
-        
-        return timeControlKey && hasEnoughGamesForTimeControl(games, timeControlKey);
-      })
-    : data;
-
-  // If no eligible data after filtering, don't render
-  if (filteredData.length === 0) {
-    return null;
-  }
+  if (!Object.keys(filteredChartData).length) return null;
 
   return (
-    <MonthlyStatsBox data={filteredData} profile={profile || undefined} country={country} />
+    <MonthlyStatsBox 
+      chartData={filteredChartData} 
+      timeClassStats={timeClassStats}
+      profile={profile || undefined} 
+      country={country} 
+    />
   );
 }

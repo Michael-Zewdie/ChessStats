@@ -3,9 +3,9 @@ import React from 'react';
 interface MobileDescriptionProps {
   title: string;
   emoji: string;
-  summary: string; // concise single-sentence summary (e.g., "You lost 73 games to X")
-  calculation?: string; // short header like "How it's calculated"
-  bullets?: string[]; // 2-3 short bullets
+  summary: string;
+  calculation?: string;
+  bullets?: string[];
   onClose: () => void;
 }
 

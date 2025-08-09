@@ -1,4 +1,4 @@
-import type { ChessGame } from '../../../Types/ChessGame';
+import type { ChessGame } from '../../../Types/index';
 
 export interface RivalStats {
   rival: string | null;
@@ -10,7 +10,7 @@ export interface RivalStats {
 
 export class RivalService {
   static calculate(games: ChessGame[]): RivalStats {
-    if (!games || games.length === 0) {
+    if (!games?.length) {
       return { 
         rival: null, 
         totalGamesWithRival: 0, 
@@ -19,8 +19,6 @@ export class RivalService {
         drawsAgainstRival: 0 
       };
     }
-    
-    try {
       const gameCountByOpponent: Record<string, {
         total: number;
         wins: number;
@@ -64,34 +62,23 @@ export class RivalService {
         };
       }
       
-      // Find opponent with most total games played
-      const mostPlayedOpponent = Object.entries(gameCountByOpponent)
-        .reduce((most, current) => current[1].total > most[1].total ? current : most);
-      
-      // Only consider them a rival if you've played at least 3 games
-      const rival = mostPlayedOpponent[1].total >= 3 ? mostPlayedOpponent[0] : null;
-      const rivalStats = rival ? mostPlayedOpponent[1] : {
-        total: 0,
-        wins: 0,
-        losses: 0,
-        draws: 0
-      };
-      
-      return {
-        rival,
-        totalGamesWithRival: rivalStats.total,
-        winsAgainstRival: rivalStats.wins,
-        lossesAgainstRival: rivalStats.losses,
-        drawsAgainstRival: rivalStats.draws
-      };
-    } catch {
-      return { 
-        rival: null, 
-        totalGamesWithRival: 0, 
-        winsAgainstRival: 0, 
-        lossesAgainstRival: 0, 
-        drawsAgainstRival: 0 
-      };
-    }
+    const mostPlayedOpponent = Object.entries(gameCountByOpponent)
+      .reduce((most, current) => current[1].total > most[1].total ? current : most);
+    
+    const rival = mostPlayedOpponent[1].total >= 3 ? mostPlayedOpponent[0] : null;
+    const rivalStats = rival ? mostPlayedOpponent[1] : {
+      total: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0
+    };
+    
+    return {
+      rival,
+      totalGamesWithRival: rivalStats.total,
+      winsAgainstRival: rivalStats.wins,
+      lossesAgainstRival: rivalStats.losses,
+      drawsAgainstRival: rivalStats.draws
+    };
   }
 }

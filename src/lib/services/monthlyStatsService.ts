@@ -1,87 +1,51 @@
-import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
 import { GameService } from './gameService';
+import type { GameData } from '../../Components/MonthlyStats/RatingProgressionChart/RatingProgressionChart';
+import type { ChessGame } from '../../Types/index';
 
 export class monthlyStatsService {
-  /**
-   * Processes chess games to generate monthly rating statistics
-   * Groups games by month and time class, calculating rating changes
-   */
-  static async fetchMonthlyStats(username: string): Promise<MonthlyRatingPoint[]> {
-    try {
-      const games = await GameService.fetchChessGames(username);
-      
-      if (!games || games.length === 0) {
-        return [];
-      }
+  static async fetchChartData(username: string): Promise<Record<string, GameData[]>> {
+    const games = await GameService.fetchChessGames(username);
+    return games?.length ? this.convertGamesToChartData(games) : {};
+  }
 
-      // Convert ChessGame format to the normalized format needed for processing
-      const normalized = games
-        .map((game) => ({
-          ts: new Date(game.date).getTime(),
+  private static convertGamesToChartData(games: ChessGame[]): Record<string, GameData[]> {
+    const chartData: Record<string, GameData[]> = {};
+    
+    games
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .forEach(game => {
+        if (!chartData[game.time_class]) {
+          chartData[game.time_class] = [];
+        }
+        
+        chartData[game.time_class].push({
+          date: game.date.split('T')[0],
           rating: game.userRating,
-          time_class: game.time_class,
-        }))
-        .filter((r) => typeof r.rating === 'number' && r.ts);
-
-      normalized.sort((a, b) => a.ts - b.ts);
-
-      // Track statistics for each time class
-      // Calculate first game date and total games per time class
-      const timeClassStats = new Map<string, { firstGameDate: string; totalGames: number }>();
-      for (const { ts, time_class } of normalized) {
-        const existing = timeClassStats.get(time_class);
-        if (!existing) {
-          timeClassStats.set(time_class, { 
-            firstGameDate: new Date(ts).toISOString(), 
-            totalGames: 1 
-          });
-        } else {
-          // Keep the earliest date and increment total games
-          if (ts < new Date(existing.firstGameDate).getTime()) {
-            existing.firstGameDate = new Date(ts).toISOString();
-          }
-          existing.totalGames++;
-        }
-      }
-
-      // Group games by month and time class, tracking first/last ratings and last game date within month
-      const byMonthClass = new Map<string, { month: string; time_class: string; start: number; end: number; lastTs: number }>();
-      for (const { ts, rating, time_class } of normalized) {
-        const month = new Date(ts).toISOString().slice(0, 7);
-        const key = `${month}|${time_class}`;
-        const existing = byMonthClass.get(key);
-        if (!existing) {
-          byMonthClass.set(key, { month, time_class, start: rating!, end: rating!, lastTs: ts });
-        } else {
-          existing.end = rating!;
-          existing.lastTs = Math.max(existing.lastTs, ts);
-        }
-      }
-
-      const result: MonthlyRatingPoint[] = Array.from(byMonthClass.values())
-        .map(v => {
-          const timeClassStat = timeClassStats.get(v.time_class);
-          return {
-            month: v.month,
-            start: v.start,
-            end: v.end,
-            change: v.end - v.start,
-            time_class: v.time_class,
-            firstGameDate: timeClassStat?.firstGameDate,
-            totalGames: timeClassStat?.totalGames,
-            lastGameDate: new Date(v.lastTs).toISOString(),
-          };
-        })
-        .sort((a, b) => {
-          if (a.time_class === b.time_class) {
-            return a.month.localeCompare(b.month);
-          }
-          return a.time_class.localeCompare(b.time_class);
+          time_class: game.time_class
         });
+      });
+    
+    return chartData;
+  }
 
-      return result;
-    } catch {
-      return [];
-    }
+  static getTimeClassStats(games: ChessGame[]) {
+    const stats: Record<string, { firstGameDate: string; totalGames: number }> = {};
+    
+    games.forEach(game => {
+      if (!stats[game.time_class]) {
+        stats[game.time_class] = {
+          firstGameDate: game.date,
+          totalGames: 0
+        };
+      }
+      
+      stats[game.time_class].totalGames++;
+      
+      if (game.date < stats[game.time_class].firstGameDate) {
+        stats[game.time_class].firstGameDate = game.date;
+      }
+    });
+    
+    return stats;
   }
 }

@@ -1,4 +1,4 @@
-export type { ChessGame } from '../../Types/ChessGame';
+export type { ChessGame } from '../../Types/index';
 
 export interface AdoptionRelationship {
   opponent: string;

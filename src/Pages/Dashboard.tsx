@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import BasicStatsUI from "../Components/BasicStats/BasicStatsUI.tsx";
 import MonthlyStatsUI from "../Components/MonthlyStats/MonthlyStatsUI.tsx";
-import ChessStatsBoxUI from "../Components/ChessStatsBox/ChessStatsBoxUI.tsx";
-import NoGamesAvailable from "../Components/ChessStatsBox/NoGamesAvailable.tsx";   
+import ChessStatsBoxUI from "../Components/AdvancedStats/AdvancedStatsUI.tsx";
+import ErrorPage from "./ErrorPage.tsx";   
 import { useChessGames } from "../hooks/useChessGames";
-import { useIsMobile } from "../hooks/useIsMobile";
+import { useIsMobile } from "../hooks/useIsMobile.ts";
 import { hasEnoughGamesInAnyTimeClass } from "../lib/utils/gameFilters";
 import { useEffect } from "react";
 
@@ -40,14 +40,14 @@ export default function Dashboard() {
             <div className="responsive-dashboard">
                 <div className="stats-grid">
                     <div className="monthly-stats">
-                        <MonthlyStatsUI username={username} games={games} />
+                        <MonthlyStatsUI username={username} />
                     </div>
                     <div className="bottom-section">
                         <div className="basic-stats">
-                            <BasicStatsUI username={username} games={games} />
+                            <BasicStatsUI username={username} games={games} gamesLoading={gamesLoading} />
                         </div>
                         <div className="chess-stats">
-                            <ChessStatsBoxUI username={username} games={games} />
+                            <ChessStatsBoxUI username={username} games={games} gamesLoading={gamesLoading} />
                         </div>
                     </div>
                 </div>
@@ -57,30 +57,38 @@ export default function Dashboard() {
     
     // If games have loaded but user doesn't have enough games in any time_class, show fallback
     if (games && games.length > 0 && !hasEnoughGamesInAnyTimeClass(games)) {
-        return <NoGamesAvailable />;
+        return <ErrorPage 
+            username={username}
+            message="Not Enough Games"
+            suggestion="Sorry, you haven't played enough games to generate statistics. Play more games to unlock your chess insights and fun facts!"
+        />;
     }
     
     // If no games at all (empty array), show fallback
     if (games && games.length === 0) {
-        return <NoGamesAvailable />;
+        return <ErrorPage 
+            username={username}
+            message="Not Enough Games"
+            suggestion="Sorry, you haven't played enough games to generate statistics. Play more games to unlock your chess insights and fun facts!"
+        />;
     }
 
     if (isMobile) {
-        return <ChessStatsBoxUI username={username} games={games} />;
+        return <ChessStatsBoxUI username={username} games={games} gamesLoading={gamesLoading} />;
     }
 
     return (
         <div className="responsive-dashboard">
             <div className="stats-grid">
                 <div className="monthly-stats">
-                    <MonthlyStatsUI username={username} games={games} />
+                    <MonthlyStatsUI username={username} />
                 </div>
                 <div className="bottom-section">
                     <div className="basic-stats">
-                        <BasicStatsUI username={username} games={games} />
+                        <BasicStatsUI username={username} games={games} gamesLoading={gamesLoading} />
                     </div>
                     <div className="chess-stats">
-                        <ChessStatsBoxUI username={username} games={games} />
+                        <ChessStatsBoxUI username={username} games={games} gamesLoading={gamesLoading} />
                     </div>
                 </div>
             </div>

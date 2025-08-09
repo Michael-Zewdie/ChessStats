@@ -8,6 +8,19 @@ interface BestWinBoxProps {
   games: ChessGame[];
 }
 
+const gameLink = {
+  color: '#10b981',
+  textDecoration: 'none',
+  fontSize: 'inherit',
+  fontWeight: '600',
+  padding: '0',
+  border: 'none',
+  borderRadius: '0',
+  display: 'inline',
+  transition: 'all 0.2s ease',
+  backgroundColor: 'transparent'
+} as const;
+
 export default function BestWinBox({ games }: BestWinBoxProps) {
   const bestWin = useMemo(() => BestWinService.findBestWin(games), [games]);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -37,26 +50,15 @@ export default function BestWinBox({ games }: BestWinBoxProps) {
               href={bestWin.gameUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              style={{
+              style={gameLink}
+              onMouseEnter={(e) => Object.assign(e.currentTarget.style, {
+                color: '#ffffff',
+                textShadow: '0 0 8px #10b981'
+              })}
+              onMouseLeave={(e) => Object.assign(e.currentTarget.style, {
                 color: '#10b981',
-                textDecoration: 'none',
-                fontSize: 'inherit',
-                fontWeight: '600',
-                padding: '0',
-                border: 'none',
-                borderRadius: '0',
-                display: 'inline',
-                transition: 'all 0.2s ease',
-                backgroundColor: 'transparent'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#ffffff';
-                e.currentTarget.style.textShadow = '0 0 8px #10b981';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#10b981';
-                e.currentTarget.style.textShadow = 'none';
-              }}
+                textShadow: 'none'
+              })}
             >
               🏆 View Game
             </a>

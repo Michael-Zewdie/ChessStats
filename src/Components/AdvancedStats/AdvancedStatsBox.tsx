@@ -12,15 +12,12 @@ import type { ChessGame } from './types';
 
 interface ChessStatsBoxProps {
   games: ChessGame[];
-  currentRating: number;
 }
-
 
 export default function ChessStatsBox({ games }: ChessStatsBoxProps) {
   
   return (
     <div className="chess-stats-container">
-      {/* Main Stats Grid */}
       <div className="chess-stats-grid">
         <RivalBox games={games} />
         <NemesisBox games={games} />

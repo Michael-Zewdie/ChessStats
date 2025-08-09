@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChessDataService } from "../lib/data/chessDataService";
-import type { ChessGame } from "../Types/ChessGame";
+import type { ChessGame } from "../Types/index";
 
 export function useChessGames(username: string | undefined) {
   const [games, setGames] = useState<ChessGame[]>([]);

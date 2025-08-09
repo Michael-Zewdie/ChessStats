@@ -1,5 +1,4 @@
-import type { ChessProfile } from '../../Types/ChessProfile';
-import type { ChessProfileStats } from '../../Types/ChessStats';
+import type { ChessProfile, ChessProfileStats } from '../../Types/index';
 import { toChessProfile, toChessProfileStats } from '../utils/profileHelpers';
 
 export class ProfileService {

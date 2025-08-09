@@ -1,5 +1,4 @@
-import type { ChessGame, ChessComGameRaw } from '../../Types/ChessGame';
-import { determineResult } from '../utils/gameHelpers';
+import type { ChessGame, ChessComGameRaw } from '../../Types/index';
 
 export class GameService {
   private static readonly BASE_URL = 'https://api.chess.com/pub/player';
@@ -40,7 +39,6 @@ export class GameService {
     try {
       const archives = await this.fetchGameArchives(username);
 
-      // Fetch all monthly archives simply in parallel; browser will naturally limit connections
       const monthlyPayloads = await Promise.all(
         archives.map((url) => this.fetchMonthlyGames(url))
       );
@@ -49,12 +47,10 @@ export class GameService {
         .filter(Boolean)
         .flatMap((games) => games as ChessComGameRaw[]);
 
-      // Keep only standard chess games. Exclude variants like chess960, kingofthehill, etc.
       const standardGames: ChessComGameRaw[] = allGames.filter(
         (game) => (game.rules ?? 'chess') === 'chess'
       );
 
-      // Some very old archives may include malformed or future-dated end_time; guard against that
       const now = Date.now();
 
       const validGames = standardGames
@@ -73,7 +69,9 @@ export class GameService {
             return null;
           }
 
-          const result = determineResult(userColor, game.white.result, game.black.result);
+          const userResult = userColor === 'white' ? game.white.result : game.black.result;
+          const oppResult = userColor === 'white' ? game.black.result : game.white.result;
+          const result: 'win' | 'loss' | 'draw' = userResult === 'win' ? 'win' : (oppResult === 'win' ? 'loss' : 'draw');
 
           return {
             opponent: opponent.username,

@@ -1,5 +1,4 @@
-import type { ChessGame } from '../../Types/ChessGame';
-import type { ComparisonPoint, MultiPlayerData } from '../../Types/StatTypes';
+import type { ChessGame, ComparisonPoint, MultiPlayerData } from '../../Types/index';
 
 export interface GameFilter {
   timeClass?: string;
@@ -22,59 +21,30 @@ export interface OpponentRecord {
 export class ChessHelpers {
   static filterGames(games: ChessGame[], filter: GameFilter): ChessGame[] {
     return games.filter(game => {
-      if (filter.timeClass && game.time_class !== filter.timeClass) {
-        return false;
-      }
-      
-      if (filter.dateFrom && new Date(game.date) < filter.dateFrom) {
-        return false;
-      }
-      
-      if (filter.dateTo && new Date(game.date) > filter.dateTo) {
-        return false;
-      }
-      
-      if (filter.result && game.result !== filter.result) {
-        return false;
-      }
-      
+      const gameDate = new Date(game.date);
       const ratingDiff = game.opponentRating - game.userRating;
-      if (filter.ratingDifferenceMin !== undefined && ratingDiff < filter.ratingDifferenceMin) {
-        return false;
-      }
       
-      if (filter.ratingDifferenceMax !== undefined && ratingDiff > filter.ratingDifferenceMax) {
-        return false;
-      }
-      
-      return true;
+      return (!filter.timeClass || game.time_class === filter.timeClass) &&
+             (!filter.dateFrom || gameDate >= filter.dateFrom) &&
+             (!filter.dateTo || gameDate <= filter.dateTo) &&
+             (!filter.result || game.result === filter.result) &&
+             (filter.ratingDifferenceMin === undefined || ratingDiff >= filter.ratingDifferenceMin) &&
+             (filter.ratingDifferenceMax === undefined || ratingDiff <= filter.ratingDifferenceMax);
     });
   }
 
   static groupGamesByOpponent(games: ChessGame[]): Record<string, ChessGame[]> {
-    const grouped: Record<string, ChessGame[]> = {};
-    
-    games.forEach(game => {
-      if (!grouped[game.opponent]) {
-        grouped[game.opponent] = [];
-      }
-      grouped[game.opponent].push(game);
-    });
-    
-    return grouped;
+    return games.reduce((acc, game) => {
+      (acc[game.opponent] ??= []).push(game);
+      return acc;
+    }, {} as Record<string, ChessGame[]>);
   }
 
   static groupGamesByTimeClass(games: ChessGame[]): Record<string, ChessGame[]> {
-    const grouped: Record<string, ChessGame[]> = {};
-    
-    games.forEach(game => {
-      if (!grouped[game.time_class]) {
-        grouped[game.time_class] = [];
-      }
-      grouped[game.time_class].push(game);
-    });
-    
-    return grouped;
+    return games.reduce((acc, game) => {
+      (acc[game.time_class] ??= []).push(game);
+      return acc;
+    }, {} as Record<string, ChessGame[]>);
   }
 
   static calculateOpponentRecords(games: ChessGame[]): OpponentRecord[] {
@@ -132,41 +102,30 @@ export class ChessHelpers {
   }
 
   static getWinRate(games: ChessGame[]): number {
-    if (games.length === 0) return 0;
-    const wins = games.filter(game => game.result === 'win').length;
-    return Math.round((wins / games.length) * 100);
+    if (!games.length) return 0;
+    return Math.round((games.filter(game => game.result === 'win').length / games.length) * 100);
   }
 
   static getAverageRating(games: ChessGame[]): number {
-    if (games.length === 0) return 0;
-    const sum = games.reduce((acc, game) => acc + game.userRating, 0);
-    return Math.round(sum / games.length);
+    return games.length ? Math.round(games.reduce((acc, game) => acc + game.userRating, 0) / games.length) : 0;
   }
 
   static getAverageOpponentRating(games: ChessGame[]): number {
-    if (games.length === 0) return 0;
-    const sum = games.reduce((acc, game) => acc + game.opponentRating, 0);
-    return Math.round(sum / games.length);
+    return games.length ? Math.round(games.reduce((acc, game) => acc + game.opponentRating, 0) / games.length) : 0;
   }
 
   static getRatingRange(games: ChessGame[]): { min: number; max: number } {
-    if (games.length === 0) return { min: 0, max: 0 };
-    
+    if (!games.length) return { min: 0, max: 0 };
     const ratings = games.map(game => game.userRating);
-    return {
-      min: Math.min(...ratings),
-      max: Math.max(...ratings)
-    };
+    return { min: Math.min(...ratings), max: Math.max(...ratings) };
   }
 
   static getUniqueOpponents(games: ChessGame[]): string[] {
-    const opponents = new Set(games.map(game => game.opponent));
-    return Array.from(opponents).sort();
+    return [...new Set(games.map(game => game.opponent))].sort();
   }
 
   static getUniqueTimeClasses(games: ChessGame[]): string[] {
-    const timeClasses = new Set(games.map(game => game.time_class));
-    return Array.from(timeClasses).sort();
+    return [...new Set(games.map(game => game.time_class))].sort();
   }
 
   static mergePlayersData(playerData: MultiPlayerData): ComparisonPoint[] {
@@ -197,9 +156,7 @@ export class ChessHelpers {
   }
 
   static getTimeClassesFromComparison(comparisonData: ComparisonPoint[]): string[] {
-    const timeClasses = new Set<string>();
-    comparisonData.forEach(point => timeClasses.add(point.time_class));
-    return Array.from(timeClasses).sort();
+    return [...new Set(comparisonData.map(point => point.time_class))].sort();
   }
 
   static getUsernamesFromComparison(comparisonData: ComparisonPoint[]): string[] {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChessDataService } from "../lib/data/chessDataService";
-import type { ChessProfileStats } from "../Types/ChessStats";
+import type { ChessProfileStats } from "../Types/index";
 
 export function useChessStats(username: string | undefined) {
   const [stats, setStats] = useState<ChessProfileStats | null>(null);

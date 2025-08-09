@@ -1,6 +1,6 @@
 import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import styles from "./styles/BasicStatsBox.module.css";
-import type { ChartRow } from "../../Types/StatTypes.ts";
+import type { ChartRow } from "../../Types/index.ts";
 
 type TooltipEntry = { dataKey: 'current' | 'best'; value: number };
 interface TooltipProps {

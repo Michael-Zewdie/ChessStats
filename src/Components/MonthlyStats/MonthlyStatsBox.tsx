@@ -1,80 +1,42 @@
-import { useMemo, useState } from 'react';
-import type { MonthlyRatingPoint } from "../../hooks/useMonthlyStats";
-import type { ChessProfile } from "../../Types/ChessProfile";
-import { RatingProgressionChart, type GameData } from './RatingProgressionChart/index.ts';
+import { useState } from 'react';
+import type { ChessProfile } from "../../Types/index";
+import { RatingProgressionChart, type GameData } from './RatingProgressionChart/RatingProgressionChart';
 import ProfileMini from '../MonthlyStats/ProfileMini/ProfileMini.tsx';
 import '../../index.css'
 
 interface MonthlyStatsBoxProps {
-  data: MonthlyRatingPoint[]; // raw MonthlyStats(username) output
+  chartData: Record<string, GameData[]>;
+  timeClassStats: Record<string, { firstGameDate: string; totalGames: number }>;
   profile?: ChessProfile;
   country?: string | null;
 }
 
 const COLORS: Record<string, string> = {
-  rapid: '#42A5F5', // green
-  blitz: '#A020F0', // yellow
-  bullet: '#FF0000', // red
-  daily: '#00FF00', // optional fallback for daily/correspondence
+  rapid: '#42A5F5',
+  blitz: '#A020F0', 
+  bullet: '#FF0000',
+  daily: '#00FF00',
 };
 
-function convertToGameData(data: MonthlyRatingPoint[]): Record<string, GameData[]> {
-  const gamesByTimeClass: Record<string, GameData[]> = {};
-  
-  data.forEach((point) => {
-    if (!gamesByTimeClass[point.time_class]) {
-      gamesByTimeClass[point.time_class] = [];
-    }
-    
-    // Use lastGameDate when available; otherwise fallback to last day of month
-    let dateIso: string;
-    if (point.lastGameDate) {
-      dateIso = new Date(point.lastGameDate).toISOString().split('T')[0];
-    } else {
-      const [year, month] = point.month.split('-');
-      const lastDayOfMonth = new Date(parseInt(year), parseInt(month), 0);
-      dateIso = lastDayOfMonth.toISOString().split('T')[0];
-    }
-    
-    gamesByTimeClass[point.time_class].push({
-      date: dateIso,
-      rating: point.end,
-      time_class: point.time_class
-    });
-  });
-  
-  return gamesByTimeClass;
+function getDefaultTimeClass(timeClassStats: Record<string, { totalGames: number }>): string {
+  return Object.entries(timeClassStats)
+    .reduce((best, [timeClass, stats]) => 
+      stats.totalGames > (timeClassStats[best]?.totalGames || 0) ? timeClass : best
+    , Object.keys(timeClassStats)[0] || '');
 }
 
-
-export function MonthlyStatsBox({ data, profile, country }: MonthlyStatsBoxProps) {
-  const timeClasses = data && data.length > 0 ? Array.from(new Set(data.map((d) => d.time_class))) : [];
-
-  // Pick the time class with the earliest activity so users see the longest history by default
-  const defaultTimeClass = useMemo(() => {
-    if (!data || data.length === 0) return '';
-    const byClass: Record<string, { firstGameTs: number }> = {};
-    for (const point of data) {
-      const ts = point.firstGameDate ? new Date(point.firstGameDate).getTime() : new Date(`${point.month}-01`).getTime();
-      if (!byClass[point.time_class] || ts < byClass[point.time_class].firstGameTs) {
-        byClass[point.time_class] = { firstGameTs: ts };
-      }
-    }
-    const sorted = Object.entries(byClass).sort((a, b) => a[1].firstGameTs - b[1].firstGameTs);
-    return sorted[0]?.[0] || timeClasses[0] || '';
-  }, [data, timeClasses]);
+export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }: MonthlyStatsBoxProps) {
+  if (!Object.keys(chartData).length) return null;
+  
+  const timeClasses = Object.keys(chartData);
+  const defaultTimeClass = getDefaultTimeClass(timeClassStats);
 
   const [selectedClass, setSelectedClass] = useState<string>(defaultTimeClass);
   
-  if (!data || data.length === 0) return null;
-  
-  const gamesByTimeClass = convertToGameData(data);
-  const selectedGames = gamesByTimeClass[selectedClass] || [];
-  
-  // Get first game date and total games for selected time class
-  const selectedTimeClassData = data.find(d => d.time_class === selectedClass);
-  const firstGameDate = selectedTimeClassData?.firstGameDate;
-  const totalGames = selectedTimeClassData?.totalGames;
+  const selectedGames = chartData[selectedClass] || [];
+  const selectedStats = timeClassStats[selectedClass];
+  const firstGameDate = selectedStats?.firstGameDate;
+  const totalGames = selectedStats?.totalGames;
 
   return (
     <div className="monthly-stats-container">

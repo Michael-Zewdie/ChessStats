@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChessDataService } from "../lib/data/chessDataService";
-import type { ChessProfile } from "../Types/ChessProfile";
+import type { ChessProfile } from "../Types/index";
 
 export function useChessProfile(username: string | undefined) {
     const [profile, setProfile] = useState<ChessProfile | null>(null);

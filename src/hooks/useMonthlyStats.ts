@@ -1,31 +1,25 @@
 
 
 import { useEffect, useState } from "react";
-import { ChessDataService } from "../lib/data/chessDataService";
-import type { MonthlyRatingPoint } from "../Types/MonthlyStats";
-
-export type { MonthlyRatingPoint };
+import { monthlyStatsService } from "../lib/services/monthlyStatsService";
+import type { GameData } from "../Components/MonthlyStats/RatingProgressionChart/RatingProgressionChart";
 
 export function useMonthlyStats(username: string | undefined) {
-  const [data, setData] = useState<MonthlyRatingPoint[]>([]);
+  const [data, setData] = useState<Record<string, GameData[]>>({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!username) {
-      setData([]);
+      setData({});
       return;
     }
+    
     let cancelled = false;
     setLoading(true);
-    setError(null);
 
-    ChessDataService.fetchMonthlyStats(username)
-      .then((res) => {
-        if (!cancelled) setData(res);
-      })
-      .catch(() => {
-        if (!cancelled) setError("Failed to fetch monthly stats.");
+    monthlyStatsService.fetchChartData(username)
+      .then((chartData) => {
+        if (!cancelled) setData(chartData);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -36,5 +30,5 @@ export function useMonthlyStats(username: string | undefined) {
     };
   }, [username]);
 
-  return { data, loading, error };
+  return { data, loading };
 }

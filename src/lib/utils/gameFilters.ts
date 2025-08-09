@@ -1,5 +1,4 @@
-import type { ChessGame } from '../../Types/ChessGame';
-import type { ChessProfileStats } from '../../Types/ChessStats';
+import type { ChessGame, ChessProfileStats } from '../../Types/index';
 import { MINIMUM_GAME_COUNTS, TIME_CONTROLS, type TimeControlKey } from '../config/gameThresholds';
 
 /**

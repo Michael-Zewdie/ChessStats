@@ -33,9 +33,6 @@ export default function InputUserName({ onSubmit, className, onInputChange }: { 
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        <div className="filterIcon">
-          {/* filter icon SVG */}
-        </div>
       </div>
     </div>
   );

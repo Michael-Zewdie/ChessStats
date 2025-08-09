@@ -1,4 +1,4 @@
-import type { ChessGame } from '../../../Types/ChessGame';
+import type { ChessGame } from '../../../Types/index';
 
 export interface LosingStreakStats {
   worstLosingStreak: number;
@@ -6,32 +6,26 @@ export interface LosingStreakStats {
 
 export class LosingStreakService {
   static calculate(games: ChessGame[]): LosingStreakStats {
-    if (!games || games.length === 0) {
+    if (!games?.length) {
       return { worstLosingStreak: 0 };
     }
     
-    try {
-      // Sort games by date to ensure chronological order
-      const sortedGames = [...games].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-      
-      let currentStreak = 0;
-      let worstLosingStreak = 0;
-      
-      for (const game of sortedGames) {
-        if (game.result === 'loss') {
-          currentStreak++;
-          worstLosingStreak = Math.max(worstLosingStreak, currentStreak);
-        } else {
-          // Reset streak on win or draw
-          currentStreak = 0;
-        }
+    const sortedGames = [...games].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    
+    let currentStreak = 0;
+    let worstLosingStreak = 0;
+    
+    for (const game of sortedGames) {
+      if (game.result === 'loss') {
+        currentStreak++;
+        worstLosingStreak = Math.max(worstLosingStreak, currentStreak);
+      } else {
+        currentStreak = 0;
       }
-      
-      return {
-        worstLosingStreak
-      };
-    } catch {
-      return { worstLosingStreak: 0 };
     }
+    
+    return {
+      worstLosingStreak
+    };
   }
 }

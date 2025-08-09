@@ -31,14 +31,8 @@ export interface RatingProgressionChartProps {
   totalGames?: number;
 }
 
-type TimeInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+type TimeInterval = 'monthly' | 'yearly';
 
-/**
- * Determines the appropriate time interval for chart display based on data span
- * Less than 6 months: weekly grouping
- * 6 months to 5 years: monthly grouping
- * More than 5 years: yearly grouping
- */
 function determineTimeInterval(games: GameData[]): TimeInterval {
   if (games.length === 0) return 'monthly';
   
@@ -49,9 +43,7 @@ function determineTimeInterval(games: GameData[]): TimeInterval {
   const diffInMonths = (lastDate.getFullYear() - firstDate.getFullYear()) * 12 + 
                       (lastDate.getMonth() - firstDate.getMonth());
   
-  if (diffInMonths < 6) return 'weekly';
-  if (diffInMonths <= 60) return 'monthly';
-  return 'yearly';
+  return diffInMonths <= 150 ? 'monthly' : 'yearly';
 }
 
 function getIntervalKey(date: Date, interval: TimeInterval): string {
@@ -59,18 +51,8 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
   const month = date.getMonth();
   
   switch (interval) {
-    case 'weekly':
-      {
-        const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay());
-        return `${year}-W${Math.ceil((weekStart.getDate() + new Date(year, 0, 1).getDay()) / 7)}`;
-      }
     case 'monthly':
       return `${year}-${String(month + 1).padStart(2, '0')}`;
-    case 'quarterly':
-      {
-        return `${year}-Q${Math.ceil((month + 1) / 3)}`;
-      }
     case 'yearly':
       return String(year);
   }
@@ -78,32 +60,18 @@ function getIntervalKey(date: Date, interval: TimeInterval): string {
 
 function formatDisplayLabel(period: string, interval: TimeInterval): string {
   switch (interval) {
-    case 'weekly':
-      {
-        const [year, week] = period.split('-W');
-        return `${year} W${week}`;
-      }
     case 'monthly':
       {
-        const [monthYear, monthNum] = period.split('-');
+        const [year, monthNum] = period.split('-');
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return `${monthNames[parseInt(monthNum) - 1]} ${monthYear}`;
-      }
-    case 'quarterly':
-      {
-        const [qYear, quarter] = period.split('-Q');
-        return `${qYear} Q${quarter}`;
+        return `${monthNames[parseInt(monthNum) - 1]} ${year}`;
       }
     case 'yearly':
       return period;
   }
 }
 
-/**
- * Groups game data by time interval and returns the last rating for each period
- * This creates chart data points showing rating progression over time
- */
 function groupGamesByInterval(games: GameData[]): ChartDataPoint[] {
   if (games.length === 0) return [];
   
@@ -187,37 +155,9 @@ export function RatingProgressionChart({
   firstGameDate,
   totalGames
 }: Omit<RatingProgressionChartProps, 'height'>) {
-  if (!games || games.length === 0) {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        backgroundColor: 'transparent',
-        borderRadius: '8px'
-      }}>
-        <p style={{ color: '#9ca3af' }}>No rating data available</p>
-      </div>
-    );
-  }
 
   const chartData = groupGamesByInterval(games);
   
-  if (chartData.length === 0) {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        backgroundColor: 'transparent',
-        borderRadius: '8px'
-      }}>
-        <p style={{ color: '#9ca3af' }}>No valid rating data found</p>
-      </div>
-    );
-  }
 
   const { min, max } = getRatingBounds(chartData);
   const finalLineColor = lineColor || getLineColor(chartData);
@@ -256,14 +196,13 @@ export function RatingProgressionChart({
               color: '#9ca3af',
               margin: '2px 0 0 0'
             }}>
-              You have played {totalGames.toLocaleString()} total games
-              {firstGameDate && (() => {
+              You have played {totalGames.toLocaleString()} total games{firstGameDate ? (() => {
                 const firstDate = new Date(firstGameDate);
                 const lastDate = new Date(Math.max(...games.map(g => new Date(g.date).getTime())));
                 const daysDiff = Math.max(1, Math.ceil((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24)));
                 const gamesPerDay = Math.round((totalGames / daysDiff) * 100) / 100;
                 return `, that is ${gamesPerDay} games per day!`;
-              })()}
+              })() : ''}
             </p>
           )}
         </div>

@@ -1,5 +1,5 @@
 import styles from "./styles/BasicStatsBox.module.css";
-import type { ChessProfileStats } from "../../Types/ChessStats";
+import type { ChessProfileStats } from "../../Types/index";
 import { StatsChart } from "./StatsChart.tsx";
 import { buildChartData } from "../../Utils/buildChartData.tsx";
 

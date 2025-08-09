@@ -1,5 +1,4 @@
-import type { ChessProfile, rawChessProfile } from '../../Types/ChessProfile';
-import type { ChessProfileStats } from '../../Types/ChessStats';
+import type { ChessProfile, rawChessProfile, ChessProfileStats } from '../../Types/index';
 
 type ModeStats = NonNullable<ChessProfileStats['chess_blitz']>;
 

@@ -1,14 +1,10 @@
-import type { ChessProfile } from '../../Types/ChessProfile';
-import type { ChessProfileStats } from '../../Types/ChessStats';
-import type { ChessGame } from '../../Types/ChessGame';
-import type { MonthlyRatingPoint } from '../../Types/MonthlyStats';
+import type { ChessProfile, ChessProfileStats, ChessGame } from '../../Types/index';
 
 import { ProfileService } from '../services/profileService';
 import { GameService } from '../services/gameService';
 import { monthlyStatsService } from '../services/monthlyStatsService';
 
 export class ChessDataService {
-  // Profile methods
   static async fetchUserProfile(username: string): Promise<ChessProfile | null> {
     return ProfileService.fetchUserProfile(username);
   }
@@ -21,13 +17,11 @@ export class ChessDataService {
     return ProfileService.fetchCountryInfo(countryUrl);
   }
 
-  // Game methods
   static async fetchChessGames(username: string): Promise<ChessGame[]> {
     return GameService.fetchChessGames(username);
   }
 
-  // Monthly stats methods
-  static async fetchMonthlyStats(username: string): Promise<MonthlyRatingPoint[]> {
-    return monthlyStatsService.fetchMonthlyStats(username);
+  static async fetchMonthlyStats(username: string) {
+    return monthlyStatsService.fetchChartData(username);
   }
 }
