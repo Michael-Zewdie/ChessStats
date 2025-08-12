@@ -149,7 +149,7 @@ function getCountryFlag(country: string | null): string {
 
 export default function ProfileMini({ profile, country }: ProfileMiniProps) {
   // Simple: user's avatar or a single public fallback
-  const fallbackAvatar = '/public/default-avatar.png';
+  const fallbackAvatar = `${import.meta.env.BASE_URL}default-avatar.png`;
   const avatarSrc = profile?.avatar && profile.avatar.trim() !== ''
     ? profile.avatar.trim()
     : fallbackAvatar;
