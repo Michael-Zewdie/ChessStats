@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChessProfile } from "../../Types/index";
 import { RatingProgressionChart, type GameData } from './RatingProgressionChart/RatingProgressionChart';
 import ProfileMini from '../MonthlyStats/ProfileMini/ProfileMini.tsx';
+import { useAnalytics } from '../../hooks/useAnalytics';
 import '../../index.css'
 
 interface MonthlyStatsBoxProps {
@@ -26,12 +27,17 @@ function getDefaultTimeClass(timeClassStats: Record<string, { totalGames: number
 }
 
 export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }: MonthlyStatsBoxProps) {
-  if (!Object.keys(chartData).length) return null;
-  
+  const { trackChartInteraction } = useAnalytics();
   const timeClasses = Object.keys(chartData);
   const defaultTimeClass = getDefaultTimeClass(timeClassStats);
-
   const [selectedClass, setSelectedClass] = useState<string>(defaultTimeClass);
+  
+  if (!Object.keys(chartData).length) return null;
+
+  const handleTimeClassChange = (timeClass: string) => {
+    setSelectedClass(timeClass);
+    trackChartInteraction(`rating_progression_${timeClass}`);
+  };
   
   const selectedGames = chartData[selectedClass] || [];
   const selectedStats = timeClassStats[selectedClass];
@@ -49,7 +55,7 @@ export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }:
         {timeClasses.map((tc) => (
           <button
             key={tc}
-            onClick={() => setSelectedClass(tc)}
+            onClick={() => handleTimeClassChange(tc)}
             className="monthly-tab"
             style={{
               border: selectedClass === tc ? `2px solid ${COLORS[tc] || '#fff'}` : '2px solid transparent',

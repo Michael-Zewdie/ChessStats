@@ -6,6 +6,7 @@ import MonthlyStatsSkeleton from "./skeleton/MonthlyStatsSkeleton";
 import { hasEnoughGamesForTimeControl } from "../../lib/utils/gameFilters";
 import { TIME_CONTROLS, type TimeControlKey } from "../../lib/config/gameThresholds";
 import { monthlyStatsService } from "../../lib/services/monthlyStatsService";
+import type { GameData } from "./RatingProgressionChart/RatingProgressionChart";
  
 
 interface MonthlyStatsUIProps {
@@ -21,7 +22,7 @@ export default function MonthlyStatsUI({ username }: MonthlyStatsUIProps) {
   if (!Object.keys(chartData).length) return null;
 
   // Filter to only show time classes with enough games
-  const filteredChartData: Record<string, any[]> = {};
+  const filteredChartData: Record<string, GameData[]> = {};
   const timeClassStats = allGames ? monthlyStatsService.getTimeClassStats(allGames) : {};
   
   Object.entries(chartData).forEach(([timeClass, data]) => {

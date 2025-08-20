@@ -7,21 +7,31 @@ import { useChessGames } from "../hooks/useChessGames";
 import { useIsMobile } from "../hooks/useIsMobile.ts";
 import { hasEnoughGamesInAnyTimeClass } from "../lib/utils/gameFilters";
 import { useEffect } from "react";
+import { useAnalytics } from "../hooks/useAnalytics";
 
 
 export default function Dashboard() {
     const { username } = useParams<{ username: string }>();
     const isMobile = useIsMobile();
     const navigate = useNavigate();
+    const { trackProfileView, trackError } = useAnalytics();
     
     const { games, loading: gamesLoading, userNotFound } = useChessGames(username);
+
+    // Track successful profile views
+    useEffect(() => {
+        if (username && games && games.length > 0 && !gamesLoading) {
+            trackProfileView(username);
+        }
+    }, [username, games, gamesLoading, trackProfileView]);
 
     // Redirect to error page if user doesn't exist
     useEffect(() => {
         if (userNotFound && username) {
+            trackError('user_not_found', `User ${username} not found`);
             navigate(`/error?username=${encodeURIComponent(username)}&message=${encodeURIComponent('User not found')}&suggestion=${encodeURIComponent('Please check the username spelling or try a different Chess.com user.')}`);
         }
-    }, [userNotFound, username, navigate]);
+    }, [userNotFound, username, navigate, trackError]);
 
     // Set document title to the current username
     useEffect(() => {

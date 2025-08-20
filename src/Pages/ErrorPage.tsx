@@ -1,5 +1,7 @@
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import type React from 'react';
+import { useEffect } from 'react';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 interface ErrorPageProps {
   username?: string;
@@ -16,11 +18,21 @@ export default function ErrorPage({
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const state = location.state as { username?: string; message?: string; suggestion?: string } | null;
+  const { trackError } = useAnalytics();
   
   // Props take precedence, then state, then URL search params
   const username = propUsername || state?.username || searchParams.get('username') || '';
   const message = propMessage || state?.message || searchParams.get('message') || 'No chess data found';
   const suggestion = propSuggestion || state?.suggestion || searchParams.get('suggestion') || 'This user may not have played any rated games on Chess.com or their games may be private.';
+
+  // Track error occurrence
+  useEffect(() => {
+    const errorType = message.toLowerCase().includes('not found') ? 'user_not_found' :
+                     message.toLowerCase().includes('not enough games') ? 'insufficient_games' :
+                     'general_error';
+    
+    trackError(errorType, username ? `${message} (${username})` : message);
+  }, [message, username, trackError]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
