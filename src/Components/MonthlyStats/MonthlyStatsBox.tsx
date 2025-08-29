@@ -3,6 +3,9 @@ import type { ChessProfile } from "../../Types/index";
 import { RatingProgressionChart, type GameData } from './RatingProgressionChart/RatingProgressionChart';
 import ProfileMini from '../MonthlyStats/ProfileMini/ProfileMini.tsx';
 import { useAnalytics } from '../../hooks/useAnalytics';
+import { FeedbackIcon } from '../Feedback/FeedbackIcon';
+import { FeedbackModal } from '../Feedback/FeedbackModal';
+import { submitFeedback } from '../../lib/services/feedbackService';
 import '../../index.css'
 
 interface MonthlyStatsBoxProps {
@@ -31,12 +34,17 @@ export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }:
   const timeClasses = Object.keys(chartData);
   const defaultTimeClass = getDefaultTimeClass(timeClassStats);
   const [selectedClass, setSelectedClass] = useState<string>(defaultTimeClass);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   
   if (!Object.keys(chartData).length) return null;
 
   const handleTimeClassChange = (timeClass: string) => {
     setSelectedClass(timeClass);
     trackChartInteraction(`rating_progression_${timeClass}`);
+  };
+
+  const handleFeedbackSubmit = async (feedback: string) => {
+    await submitFeedback(feedback, profile?.username);
   };
   
   const selectedGames = chartData[selectedClass] || [];
@@ -46,8 +54,10 @@ export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }:
 
   return (
     <div className="monthly-stats-container">
+      <FeedbackIcon onClick={() => setIsFeedbackModalOpen(true)} />
+      
       {profile && (
-        <div className="monthly-profile" style={{ padding: '1.5rem' }}>
+        <div className="monthly-profile" >
           <ProfileMini profile={profile} country={country ?? null} />
         </div>
       )}
@@ -78,6 +88,12 @@ export function MonthlyStatsBox({ chartData, timeClassStats, profile, country }:
           totalGames={totalGames}
         />
       </div>
+      
+      <FeedbackModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => setIsFeedbackModalOpen(false)}
+        onSubmit={handleFeedbackSubmit}
+      />
     </div>
   );
 }

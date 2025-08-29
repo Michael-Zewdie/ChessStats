@@ -4,7 +4,7 @@ export default function MonthlyStatsSkeleton() {
       {/* Profile mini area placeholder (inside box, larger like live UI) */}
       <div
         className="monthly-profile"
-        style={{ display: 'flex', alignItems: 'center', padding: '1.5rem' }}
+        style={{ display: 'flex', alignItems: 'center'}}
       >
         <div style={{ position: 'relative', width: '6rem', height: '6rem' }}>
           <div
