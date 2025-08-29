@@ -12,6 +12,9 @@ import type { ChessGame } from '../types';
 import styles from '../styles/ChessStatsBoxMobile.module.css';
 import { useState } from 'react';
 import MobileDescription from './MobileDescription';
+import { FeedbackButtonMobile } from '../../Feedback/FeedbackButtonMobile';
+import { FeedbackModal } from '../../Feedback/FeedbackModal';
+import { submitFeedback } from '../../../lib/services/feedbackService';
 
 interface ChessStatsBoxMobileProps {
   games: ChessGame[];
@@ -22,9 +25,14 @@ export default function ChessStatsBoxMobile({ games }: ChessStatsBoxMobileProps)
   const [modal, setModal] = useState<null | {
     title: string; emoji: string; summary: string; bullets?: string[];
   }>(null);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   const open = (payload: { title: string; emoji: string; summary: string; bullets?: string[] }) => setModal(payload);
   const close = () => setModal(null);
+
+  const handleFeedbackSubmit = async (feedback: string) => {
+    await submitFeedback(feedback);
+  };
 
   return (
     <div className={styles.mobileContainer}>
@@ -41,6 +49,10 @@ export default function ChessStatsBoxMobile({ games }: ChessStatsBoxMobileProps)
         <div onClick={() => open({ title: 'Child', emoji: '👶', summary: 'Opponent you “adopted” (10+ consecutive wins).', bullets: ['10+ win streak vs same player & time class'] })}><ChildBox games={games} /></div>
         <div onClick={() => open({ title: 'Parent', emoji: '👨‍👧‍👦', summary: 'Opponent who “adopted” you (10+ consecutive losses).', bullets: ['10+ loss streak vs same player & time class'] })}><ParentBox games={games} /></div>
       </div>
+      
+      <div className={styles.feedbackContainer}>
+        <FeedbackButtonMobile onClick={() => setIsFeedbackModalOpen(true)} />
+      </div>
 
       {modal && (
         <MobileDescription
@@ -52,6 +64,12 @@ export default function ChessStatsBoxMobile({ games }: ChessStatsBoxMobileProps)
           onClose={close}
         />
       )}
+      
+      <FeedbackModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => setIsFeedbackModalOpen(false)}
+        onSubmit={handleFeedbackSubmit}
+      />
     </div>
   );
 }
