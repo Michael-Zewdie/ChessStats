@@ -84,7 +84,7 @@ export function FeedbackModal({ isOpen, onClose, onSubmit }: FeedbackModalProps)
             </div>
             
             <div className={styles.feedbackModalBody}>
-              <p>Thanks for using ChessStats! Shout out to the GOAT <a href="https://www.chess.com/member/the_lorax_lover" target="_blank" rel="noopener noreferrer">The_lorax_lover</a></p>
+              <p>Thanks for using ChessStats! I will try to respond to your feedback but please send feedback while viewing your account so I know who to respond to. Also shout out to the GOAT <a href="https://www.chess.com/member/the_lorax_lover" target="_blank" rel="noopener noreferrer">The_lorax_lover</a></p>
               
               <form onSubmit={handleSubmit}>
                 <textarea
